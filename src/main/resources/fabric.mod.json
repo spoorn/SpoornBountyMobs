@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "id": "spoornbountymobs",
+  "version": "${version}",
+  "name": "SpoornBountyMobs",
+  "description": "Mobs have a chance to spawn with a Bounty and special abilities",
+  "authors": [
+    "spoorn"
+  ],
+  "contact": {
+    "website": "https://www.curseforge.com/minecraft/mc-mods/spoorn-bounty-mobs"
+  },
+  "license": "MIT",
+  "icon": "assets/spoornbountymobs/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "client": [
+      "org.spoorn.spoornbountymobs.client.SpoornBountyMobsClient"
+    ],
+    "main": [
+      "org.spoorn.spoornbountymobs.SpoornBountyMobs"
+    ]
+  },
+  "mixins": [
+    "spoornbountymobs.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": "*",
+    "fabric": "*",
+    "minecraft": ">=1.16.1"
+  }
+}
