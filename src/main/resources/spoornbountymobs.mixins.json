@@ -4,6 +4,11 @@
   "package": "org.spoorn.spoornbountymobs.mixin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
+    "DataTrackerAccessorMixin",
+    "HostileEntityMixin",
+    "EntityMixin",
+    "EntityAccessorMixin",
+    "LivingEntityRendererMixin"
   ],
   "client": [
   ],
