@@ -45,7 +45,10 @@ import java.util.Optional;
  *
  * It's also extra annoying because vanilla Minecraft limits data to 255 entries, so once we hit that we're
  * fucked and the game will crash.  Until then, pray and hope
+ *
+ * @deprecated Use Cardinal Components API which does this data management plus networking for us.
  */
+@Deprecated
 @Log4j2
 public class SpoornEntityDataUtil {
 
@@ -143,21 +146,31 @@ public class SpoornEntityDataUtil {
      * If the SpoornTrackedData is already registered and has started tracking on entity,
      * fetch it from the entity data tracker.  Create a new clean SpoornTrackedData if entity is tracking
      * it, but is empty, so caller of this method can start populating.
+     *
+     * Expects caller to set the tracked data later.
+     *
+     * This is typically used by the entrypoint that starts tracking SpoornTrackedData on an entity.
      */
     public static Optional<SpoornTrackedData> getSpoornTrackedDataOrCreate(Entity entity) {
+        Optional<SpoornTrackedData> spoornTrackedData = getSpoornTrackedDataIfExists(entity);
+
+        if (!spoornTrackedData.isPresent()) {
+            spoornTrackedData = Optional.of(new SpoornTrackedData());
+        }
+
+        return spoornTrackedData;
+    }
+
+    /**
+     * Get SpoornTrackedData from entity if it exists, else Optional.empty().
+     */
+    public static Optional<SpoornTrackedData> getSpoornTrackedDataIfExists(Entity entity) {
         if (containsTrackedData(entity.getClass())) {
             TrackedData<Optional<SpoornTrackedData>> trackedData
                     = getTrackedData(entity.getClass());
-            Optional<SpoornTrackedData> spoornTrackedData = Optional.empty();
             if (entityDataTrackerHasSpoornData(entity)) {
-                spoornTrackedData = entity.getDataTracker().get(trackedData);
+                return entity.getDataTracker().get(trackedData);
             }
-
-            if (!spoornTrackedData.isPresent()) {
-                spoornTrackedData = Optional.of(new SpoornTrackedData());
-            }
-
-            return spoornTrackedData;
         }
 
         return Optional.empty();

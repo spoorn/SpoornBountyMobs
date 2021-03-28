@@ -19,6 +19,14 @@
     ],
     "main": [
       "org.spoorn.spoornbountymobs.SpoornBountyMobs"
+    ],
+    "cardinal-components-entity": [
+      "org.spoorn.spoornbountymobs.entity.SpoornBountyEntityRegistry"
+    ]
+  },
+  "custom": {
+    "cardinal-components": [
+      "spoornbountymobs:hostileentitydata"
     ]
   },
   "mixins": [

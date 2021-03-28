@@ -14,15 +14,16 @@ import org.spoorn.spoornbountymobs.util.SpoornBountyMobsUtil;
 @Mixin(LivingEntityRenderer.class)
 public abstract class LivingEntityRendererMixin<T extends LivingEntity, M extends EntityModel<T>> {
 
+    /**
+     * Scale entity size rendering if it has a bounty.
+     */
     @Redirect(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/util/math/MatrixStack;scale(FFF)V"))
     public void scaleEntityRendering(MatrixStack matrixStack, float x, float y, float z, T livingEntity,
         float f, float g, MatrixStack matrixStack2, VertexConsumerProvider vertexConsumerProvider, int i) {
-        //System.out.println("living entity: " + livingEntity);
 
-        if (true || SpoornBountyMobsUtil.isHostileEntity(livingEntity)) {
-            float scale = (float)ModConfig.get().bountyMobSizeScale;
+        if (SpoornBountyMobsUtil.isHostileEntity(livingEntity) && SpoornBountyMobsUtil.entityHasBounty(livingEntity)) {
+            float scale = (float) ModConfig.get().bountyMobSizeScale;
             matrixStack.scale(-scale, -scale, scale);
-            //matrixStack.translate(0, 1, 0);
         } else {
             matrixStack.scale(x, y, z);
         }

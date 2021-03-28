@@ -2,7 +2,7 @@ package org.spoorn.spoornbountymobs;
 
 import net.fabricmc.api.ModInitializer;
 import org.spoorn.spoornbountymobs.config.ModConfig;
-import org.spoorn.spoornbountymobs.entity.SpoornBountyRegistry;
+import org.spoorn.spoornbountymobs.entity.SpoornBountyEntityRegistry;
 
 public class SpoornBountyMobs implements ModInitializer {
 
@@ -14,6 +14,6 @@ public class SpoornBountyMobs implements ModInitializer {
         ModConfig.init();
 
         // Bounty registry
-        SpoornBountyRegistry.init();
+        SpoornBountyEntityRegistry.init();
     }
 }

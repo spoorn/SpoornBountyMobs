@@ -7,10 +7,10 @@
     "DataTrackerAccessorMixin",
     "HostileEntityMixin",
     "EntityMixin",
-    "EntityAccessorMixin",
-    "LivingEntityRendererMixin"
+    "EntityAccessorMixin"
   ],
   "client": [
+    "LivingEntityRendererMixin"
   ],
   "server": [
   ],
