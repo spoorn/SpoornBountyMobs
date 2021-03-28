@@ -6,6 +6,12 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 
+/**
+ * Custom Tracked Data for entities.
+ *
+ * @deprecated Use Cardinal Components API which does this data management plus networking for us.
+ */
+@Deprecated
 @NoArgsConstructor
 @AllArgsConstructor
 @Data

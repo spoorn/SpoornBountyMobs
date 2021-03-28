@@ -44,8 +44,10 @@ public class SpoornBountyEntityRegistry implements EntityComponentInitializer {
                     SpoornBountyEntityRegistry.HOSTILE_ENTITY_DATA.get(hostileEntity).setHasBounty(true);
                     SpoornBountyEntityRegistry.HOSTILE_ENTITY_DATA.sync(hostileEntity);
 
+                    // This will trigger our EntityMixin which sets entity dimensions on the server side
+                    hostileEntity.calculateDimensions();
                     if (ModConfig.get().bountyMobGlow) {
-                        hostileEntity.addStatusEffect(new StatusEffectInstance(StatusEffects.GLOWING, 1000000000, 0, false, false));
+                        hostileEntity.addStatusEffect(new StatusEffectInstance(StatusEffects.GLOWING, Integer.MAX_VALUE, 0, false, false));
                     }
                 }
             }

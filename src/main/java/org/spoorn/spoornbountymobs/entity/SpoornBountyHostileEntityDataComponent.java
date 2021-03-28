@@ -46,7 +46,7 @@ public class SpoornBountyHostileEntityDataComponent implements SpoornEntityDataC
         // Call super
         AutoSyncedComponent.super.applySyncPacket(buf);
 
-        // Recalculate entity dimensions how that we've marked it as having a bounty
+        // Recalculate entity dimensions how that we've marked it as having a bounty on client side
         if (this.hasBounty && this.provider instanceof Entity) {
             ((Entity) this.provider).calculateDimensions();
         }
