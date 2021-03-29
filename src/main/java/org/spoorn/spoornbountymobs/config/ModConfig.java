@@ -16,8 +16,11 @@ public class ModConfig implements ConfigData {
     @Comment("Bounty mob size scale [default = 2.0]")
     public double bountyMobSizeScale = 2.0;
 
-    @Comment("True if Bounty mobs should glow through walls, else false [default = true]")
-    public boolean bountyMobGlow = true;
+    @Comment("True if Bounty mobs should glow through walls permanently, else false [default = false]")
+    public boolean bountyMobPermanentGlow = false;
+
+    @Comment("Duration in seconds Bounty mobs should glow when they are first found if bountyMobPermanentGlow is false [default = 15]")
+    public int bountyMobGlowDuration = 15;
 
     public static void init() {
         AutoConfig.register(ModConfig.class, JanksonConfigSerializer::new);
