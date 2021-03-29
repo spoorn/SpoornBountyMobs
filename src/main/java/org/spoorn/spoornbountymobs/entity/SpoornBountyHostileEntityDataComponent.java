@@ -13,7 +13,7 @@ import org.spoorn.spoornbountymobs.SpoornBountyTier;
  * Implementation of SpoornEntityDataComponent per Entity.
  */
 @ToString
-public class SpoornBountyHostileEntityDataComponent implements SpoornEntityDataComponent, AutoSyncedComponent {
+public class SpoornBountyHostileEntityDataComponent implements EntityDataComponent, AutoSyncedComponent {
 
     private static final String HAS_BOUNTY = "hasBounty";
     private static final String SPOORN_BOUNTY_TIER = "spoornBountyTier";

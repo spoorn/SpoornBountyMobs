@@ -8,7 +8,7 @@ import org.spoorn.spoornbountymobs.SpoornBountyTier;
 /**
  * Base SpoornEntityData.
  */
-public interface SpoornEntityDataComponent extends ComponentV3 {
+public interface EntityDataComponent extends ComponentV3 {
 
     Identifier ID = new Identifier(SpoornBountyMobs.MODID, "hostileentitydata");
 

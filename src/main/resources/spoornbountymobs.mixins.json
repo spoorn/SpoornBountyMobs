@@ -11,7 +11,8 @@
     "SpiderEntityAttackGoalMixin",
     "MeleeAttackGoalAccessorMixin",
     "MobEntityMixin",
-    "LivingEntityMixin"
+    "LivingEntityMixin",
+    "PlayerEntityMixin"
   ],
   "client": [
     "LivingEntityRendererMixin"

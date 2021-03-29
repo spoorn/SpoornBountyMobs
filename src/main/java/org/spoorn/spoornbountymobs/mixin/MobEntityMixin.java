@@ -9,7 +9,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import org.spoorn.spoornbountymobs.SpoornBountyTier;
-import org.spoorn.spoornbountymobs.entity.SpoornEntityDataComponent;
+import org.spoorn.spoornbountymobs.entity.EntityDataComponent;
 import org.spoorn.spoornbountymobs.util.SpoornBountyMobsUtil;
 
 @Mixin(MobEntity.class)
@@ -27,7 +27,7 @@ public abstract class MobEntityMixin {
     public void scaleExperience(PlayerEntity player, CallbackInfoReturnable<Integer> cir) {
         MobEntity mobEntity = (MobEntity) (Object) this;
         if (SpoornBountyMobsUtil.entityIsHostileAndHasBounty(mobEntity)) {
-            SpoornEntityDataComponent component = SpoornBountyMobsUtil.getSpoornEntityDataComponent(mobEntity);
+            EntityDataComponent component = SpoornBountyMobsUtil.getSpoornEntityDataComponent(mobEntity);
 
             //System.out.println("increase exp from " + this.experiencePoints + " to " + this.experiencePoints * component.getSpoornBountyTier().getExperienceScale());
             this.experiencePoints = this.experiencePoints * component.getSpoornBountyTier().getExperienceScale();
@@ -41,7 +41,7 @@ public abstract class MobEntityMixin {
     public float increaseBountyMobDamage(float f) {
         MobEntity mobEntity = (MobEntity) (Object) this;
         if (SpoornBountyMobsUtil.entityIsHostileAndHasBounty(mobEntity)) {
-            SpoornEntityDataComponent component = SpoornBountyMobsUtil.getSpoornEntityDataComponent(mobEntity);
+            EntityDataComponent component = SpoornBountyMobsUtil.getSpoornEntityDataComponent(mobEntity);
             SpoornBountyTier tier = component.getSpoornBountyTier();
             float bonusDamage = tier.getMinDamageIncrease() +
                 SpoornBountyMobsUtil.RANDOM.nextFloat() * (tier.getMaxDamageIncrease() - tier.getMinDamageIncrease());

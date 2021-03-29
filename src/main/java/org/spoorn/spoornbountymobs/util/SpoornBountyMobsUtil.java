@@ -9,7 +9,7 @@ import org.apache.commons.math3.distribution.EnumeratedDistribution;
 import org.apache.commons.math3.util.Pair;
 import org.spoorn.spoornbountymobs.SpoornBountyTier;
 import org.spoorn.spoornbountymobs.entity.SpoornBountyEntityRegistry;
-import org.spoorn.spoornbountymobs.entity.SpoornEntityDataComponent;
+import org.spoorn.spoornbountymobs.entity.EntityDataComponent;
 
 import java.util.Random;
 
@@ -34,7 +34,7 @@ public class SpoornBountyMobsUtil {
         return entity instanceof HostileEntity && SpoornBountyEntityRegistry.HOSTILE_ENTITY_DATA.get(entity).hasBounty();
     }
 
-    public static SpoornEntityDataComponent getSpoornEntityDataComponent(Entity entity) {
+    public static EntityDataComponent getSpoornEntityDataComponent(Entity entity) {
         return SpoornBountyEntityRegistry.HOSTILE_ENTITY_DATA.get(entity);
     }
 

@@ -26,7 +26,8 @@
   },
   "custom": {
     "cardinal-components": [
-      "spoornbountymobs:hostileentitydata"
+      "spoornbountymobs:hostileentitydata",
+      "spoornbountymobs:playerdata"
     ]
   },
   "mixins": [

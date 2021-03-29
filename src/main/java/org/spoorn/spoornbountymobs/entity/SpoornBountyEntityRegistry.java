@@ -6,6 +6,7 @@ import dev.onyxstudios.cca.api.v3.component.ComponentRegistryV3;
 import dev.onyxstudios.cca.api.v3.entity.EntityComponentFactoryRegistry;
 import dev.onyxstudios.cca.api.v3.entity.EntityComponentInitializer;
 import lombok.extern.log4j.Log4j2;
+import nerdhub.cardinal.components.api.util.RespawnCopyStrategy;
 import net.fabricmc.fabric.api.networking.v1.EntityTrackingEvents;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.mob.HostileEntity;
@@ -19,8 +20,11 @@ import org.spoorn.spoornbountymobs.util.SpoornBountyMobsUtil;
 public class SpoornBountyEntityRegistry implements EntityComponentInitializer {
 
     // Hostile Entity data
-    public static final ComponentKey<SpoornEntityDataComponent> HOSTILE_ENTITY_DATA =
-            ComponentRegistryV3.INSTANCE.getOrCreate(SpoornEntityDataComponent.ID, SpoornEntityDataComponent.class);
+    public static final ComponentKey<EntityDataComponent> HOSTILE_ENTITY_DATA =
+            ComponentRegistryV3.INSTANCE.getOrCreate(EntityDataComponent.ID, EntityDataComponent.class);
+    // Player data
+    public static final ComponentKey<PlayerDataComponent> PLAYER_DATA =
+            ComponentRegistryV3.INSTANCE.getOrCreate(PlayerDataComponent.ID, PlayerDataComponent.class);
 
     public static void init() {
         registerStartTrackingCallback();
@@ -28,7 +32,11 @@ public class SpoornBountyEntityRegistry implements EntityComponentInitializer {
 
     @Override
     public void registerEntityComponentFactories(EntityComponentFactoryRegistry registry) {
+        // Entity data
         registry.registerFor(HostileEntity.class, HOSTILE_ENTITY_DATA, e -> new SpoornBountyHostileEntityDataComponent(e));
+
+        // Player data, should be persisted across sessions
+        registry.registerForPlayers(PLAYER_DATA, player -> new SpoornBountyPlayerDataComponent(player), RespawnCopyStrategy.ALWAYS_COPY);
     }
 
     // On entity being tracked by a player, chance to mark the entity as having a bounty.  Update entity data
@@ -38,7 +46,7 @@ public class SpoornBountyEntityRegistry implements EntityComponentInitializer {
                 float randFloat = SpoornBountyMobsUtil.RANDOM.nextFloat();
                 if (randFloat < (1.0/ ModConfig.get().bountySpawnChance)) {
                     HostileEntity hostileEntity = (HostileEntity) trackedEntity;
-                    SpoornEntityDataComponent component =
+                    EntityDataComponent component =
                         SpoornBountyMobsUtil.getSpoornEntityDataComponent(hostileEntity);
 
                     // Set Entity data
