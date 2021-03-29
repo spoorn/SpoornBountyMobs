@@ -7,7 +7,8 @@ import lombok.ToString;
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.PacketByteBuf;
-import org.spoorn.spoornbountymobs.SpoornBountyTier;
+import org.spoorn.spoornbountymobs.tiers.SpoornBountyTier;
+import org.spoorn.spoornbountymobs.tiers.SpoornBountyTierTypes;
 
 /**
  * Implementation of SpoornEntityDataComponent per Entity.
@@ -36,13 +37,14 @@ public class SpoornBountyHostileEntityDataComponent implements EntityDataCompone
     @Override
     public void readFromNbt(CompoundTag tag) {
         this.hasBounty = tag.getBoolean(HAS_BOUNTY);
-        this.spoornBountyTier = SpoornBountyTier.fromValue(tag.getString(SPOORN_BOUNTY_TIER));
+        this.spoornBountyTier = SpoornBountyTier.fromValue(SpoornBountyTierTypes.valueOf(tag.getString(SPOORN_BOUNTY_TIER)));
     }
 
     @Override
     public void writeToNbt(CompoundTag tag) {
         tag.putBoolean(HAS_BOUNTY, hasBounty);
-        tag.putString(SPOORN_BOUNTY_TIER, this.spoornBountyTier.getValue());
+        // Could use ordinal for efficiency in future, but could cause compatibility complexities
+        tag.putString(SPOORN_BOUNTY_TIER, this.spoornBountyTier.getTierType().name());
     }
 
     @Override

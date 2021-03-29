@@ -5,9 +5,11 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.mob.HostileEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import org.apache.commons.math3.distribution.EnumeratedDistribution;
 import org.apache.commons.math3.util.Pair;
-import org.spoorn.spoornbountymobs.SpoornBountyTier;
+import org.spoorn.spoornbountymobs.tiers.SpoornBountyTier;
+import org.spoorn.spoornbountymobs.entity.PlayerDataComponent;
 import org.spoorn.spoornbountymobs.entity.SpoornBountyEntityRegistry;
 import org.spoorn.spoornbountymobs.entity.EntityDataComponent;
 
@@ -36,6 +38,10 @@ public class SpoornBountyMobsUtil {
 
     public static EntityDataComponent getSpoornEntityDataComponent(Entity entity) {
         return SpoornBountyEntityRegistry.HOSTILE_ENTITY_DATA.get(entity);
+    }
+
+    public static PlayerDataComponent getPlayerDataComponent(PlayerEntity player) {
+        return SpoornBountyEntityRegistry.PLAYER_DATA.get(player);
     }
 
     public static StatusEffectInstance getStatusEffectInstance(StatusEffect statusEffect, int duration, int amplifier) {

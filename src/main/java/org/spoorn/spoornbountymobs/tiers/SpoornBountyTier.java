@@ -1,5 +1,6 @@
-package org.spoorn.spoornbountymobs;
+package org.spoorn.spoornbountymobs.tiers;
 
+import static org.spoorn.spoornbountymobs.tiers.SpoornBountyTierTypes.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
@@ -19,7 +20,7 @@ public final class SpoornBountyTier {
     public static SpoornBountyTier DOOM;
 
     @Getter
-    private String value;
+    private SpoornBountyTierTypes tierType;
     @Getter
     private double weight;
     @Getter
@@ -31,9 +32,9 @@ public final class SpoornBountyTier {
     @Getter
     private int maxDamageIncrease;
 
-    private SpoornBountyTier(String value, int weight, float maxHealthIncrease, int experienceScale,
+    private SpoornBountyTier(SpoornBountyTierTypes tierType, int weight, float maxHealthIncrease, int experienceScale,
                              int minDamageIncrease, int maxDamageIncrease) {
-        this.value = value;
+        this.tierType = tierType;
         this.weight = weight;
         this.maxHealthIncrease = maxHealthIncrease;
         this.experienceScale = experienceScale;
@@ -43,27 +44,27 @@ public final class SpoornBountyTier {
 
     // Lazy initialization of static values so that we can wait for ModConfig to get initialized first
     public static void init() {
-        COMMON = new SpoornBountyTier("common", 20, 80, 3, 0, 1);
-        UNCOMMON = new SpoornBountyTier("uncommon", 15, 120, 6, 1, 2);
-        RARE = new SpoornBountyTier("rare", 10, 240, 9, 2, 3);
-        EPIC = new SpoornBountyTier("epic", 6, 360, 12, 3, 4);
-        LEGENDARY = new SpoornBountyTier("legendary", 3, 450, 15, 4, 5);
-        DOOM = new SpoornBountyTier("doom", 1, 600, 20, 5, 6);
+        COMMON = new SpoornBountyTier(COMMON_TIER, 20, 80, 3, 0, 1);
+        UNCOMMON = new SpoornBountyTier(UNCOMMON_TIER, 15, 120, 6, 1, 2);
+        RARE = new SpoornBountyTier(RARE_TIER, 10, 240, 9, 2, 3);
+        EPIC = new SpoornBountyTier(EPIC_TIER, 6, 360, 12, 3, 4);
+        LEGENDARY = new SpoornBountyTier(LEGENDARY_TIER, 3, 450, 15, 4, 5);
+        DOOM = new SpoornBountyTier(DOOM_TIER, 1, 600, 20, 5, 6);
     }
 
-    public static SpoornBountyTier fromValue(String value) {
-        switch (value) {
-            case "common":
+    public static SpoornBountyTier fromValue(SpoornBountyTierTypes spoornBountyTierTypes) {
+        switch (spoornBountyTierTypes) {
+            case COMMON_TIER:
                 return COMMON;
-            case "uncommon":
+            case UNCOMMON_TIER:
                 return UNCOMMON;
-            case "rare":
+            case RARE_TIER:
                 return RARE;
-            case "epic":
+            case EPIC_TIER:
                 return EPIC;
-            case "legendary":
+            case LEGENDARY_TIER:
                 return LEGENDARY;
-            case "doom":
+            case DOOM_TIER:
                 return DOOM;
             default:
                 return COMMON;

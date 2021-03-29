@@ -3,7 +3,7 @@ package org.spoorn.spoornbountymobs.entity;
 import dev.onyxstudios.cca.api.v3.component.ComponentV3;
 import net.minecraft.util.Identifier;
 import org.spoorn.spoornbountymobs.SpoornBountyMobs;
-import org.spoorn.spoornbountymobs.SpoornBountyTier;
+import org.spoorn.spoornbountymobs.tiers.SpoornBountyTier;
 
 /**
  * Base SpoornEntityData.

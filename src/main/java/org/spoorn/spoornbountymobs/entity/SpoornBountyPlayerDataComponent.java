@@ -4,6 +4,7 @@ import dev.onyxstudios.cca.api.v3.component.sync.AutoSyncedComponent;
 import lombok.Getter;
 import lombok.ToString;
 import net.minecraft.nbt.CompoundTag;
+import org.spoorn.spoornbountymobs.tiers.SpoornBountyTier;
 
 @ToString
 public class SpoornBountyPlayerDataComponent implements PlayerDataComponent, AutoSyncedComponent {
@@ -34,33 +35,29 @@ public class SpoornBountyPlayerDataComponent implements PlayerDataComponent, Aut
     }
 
     @Override
-    public void incrementCommonKillCount() {
-        this.commonKillCount++;
-    }
-
-    @Override
-    public void incrementUncommonKillCount() {
-        this.uncommonKillCount++;
-    }
-
-    @Override
-    public void incrementRareKillCount() {
-        this.rareKillCount++;
-    }
-
-    @Override
-    public void incrementEpicKillCount() {
-        this.epicKillCount++;
-    }
-
-    @Override
-    public void incrementLegendaryKillCount() {
-        this.legendaryKillCount++;
-    }
-
-    @Override
-    public void incrementDoomKillCount() {
-        this.doomKillCount++;
+    public void incrementBountyKillCount(SpoornBountyTier spoornBountyTier) {
+        switch (spoornBountyTier.getTierType()) {
+            case COMMON_TIER:
+                this.commonKillCount++;
+                break;
+            case UNCOMMON_TIER:
+                this.uncommonKillCount++;
+                break;
+            case RARE_TIER:
+                this.rareKillCount++;
+                break;
+            case EPIC_TIER:
+                this.epicKillCount++;
+                break;
+            case LEGENDARY_TIER:
+                this.legendaryKillCount++;
+                break;
+            case DOOM_TIER:
+                this.doomKillCount++;
+                break;
+            default:
+                throw new IllegalStateException("Unexpected value: " + spoornBountyTier.getTierType());
+        }
     }
 
     @Override
