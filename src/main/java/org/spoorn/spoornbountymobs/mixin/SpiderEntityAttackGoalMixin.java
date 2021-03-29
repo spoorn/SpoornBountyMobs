@@ -22,7 +22,7 @@ public class SpiderEntityAttackGoalMixin {
         MeleeAttackGoalAccessorMixin meleeAttackGoal = (MeleeAttackGoalAccessorMixin) (Object) this;
         Entity mob = meleeAttackGoal.getMob();
         if (SpoornBountyMobsUtil.entityIsHostileAndHasBounty(mob)) {
-            System.out.println("changed spider range");
+            //System.out.println("changed spider range");
             cir.setReturnValue((double) (Math.sqrt(Math.pow(mob.getWidth()*2,2) + Math.pow(mob.getHeight()*2,2))*2
                 + entity.getWidth()));
         }

@@ -3,7 +3,7 @@ package org.spoorn.spoornbountymobs.entity;
 import dev.onyxstudios.cca.api.v3.component.ComponentV3;
 import net.minecraft.util.Identifier;
 import org.spoorn.spoornbountymobs.SpoornBountyMobs;
-import org.spoorn.spoornbountymobs.SpoornBountyTiers;
+import org.spoorn.spoornbountymobs.SpoornBountyTier;
 
 /**
  * Base SpoornEntityData.
@@ -16,7 +16,7 @@ public interface SpoornEntityDataComponent extends ComponentV3 {
 
     void setHasBounty(boolean hasBounty);
 
-    SpoornBountyTiers getSpoornBountyTier();
+    SpoornBountyTier getSpoornBountyTier();
 
-    void setSpoornBountyTier(SpoornBountyTiers spoornBountyTier);
+    void setSpoornBountyTier(SpoornBountyTier spoornBountyTier);
 }
