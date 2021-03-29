@@ -24,7 +24,7 @@ public class MeleeAttackGoalMixin {
      */
     @Inject(method = "getSquaredMaxAttackDistance", at = @At(value = "TAIL"), cancellable = true)
     private void changeAttackDistanceForBountyMobs(LivingEntity entity, CallbackInfoReturnable<Double> cir) {
-        if (SpoornBountyMobsUtil.isHostileEntity(entity) && SpoornBountyMobsUtil.entityHasBounty(entity)) {
+        if (SpoornBountyMobsUtil.entityIsHostileAndHasBounty(entity)) {
             cir.setReturnValue((double) (Math.sqrt(Math.pow(this.mob.getWidth()*2,2) + Math.pow(this.mob.getHeight()*2,2))*2
                     + entity.getWidth()));
         }

@@ -21,7 +21,7 @@ public abstract class LivingEntityRendererMixin<T extends LivingEntity, M extend
     public void scaleEntityRendering(MatrixStack matrixStack, float x, float y, float z, T livingEntity,
         float f, float g, MatrixStack matrixStack2, VertexConsumerProvider vertexConsumerProvider, int i) {
 
-        if (SpoornBountyMobsUtil.isHostileEntity(livingEntity) && SpoornBountyMobsUtil.entityHasBounty(livingEntity)) {
+        if (SpoornBountyMobsUtil.entityIsHostileAndHasBounty(livingEntity)) {
             float scale = (float) ModConfig.get().bountyMobSizeScale;
             matrixStack.scale(-scale, -scale, scale);
         } else {

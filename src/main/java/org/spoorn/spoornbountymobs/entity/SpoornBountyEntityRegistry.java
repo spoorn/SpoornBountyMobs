@@ -1,12 +1,12 @@
 package org.spoorn.spoornbountymobs.entity;
 
+import static org.spoorn.spoornbountymobs.util.SpoornBountyMobsUtil.getStatusEffectInstance;
 import dev.onyxstudios.cca.api.v3.component.ComponentKey;
 import dev.onyxstudios.cca.api.v3.component.ComponentRegistryV3;
 import dev.onyxstudios.cca.api.v3.entity.EntityComponentFactoryRegistry;
 import dev.onyxstudios.cca.api.v3.entity.EntityComponentInitializer;
 import lombok.extern.log4j.Log4j2;
 import net.fabricmc.fabric.api.networking.v1.EntityTrackingEvents;
-import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.mob.HostileEntity;
 import org.spoorn.spoornbountymobs.config.ModConfig;
@@ -19,9 +19,8 @@ import org.spoorn.spoornbountymobs.util.SpoornBountyMobsUtil;
 public class SpoornBountyEntityRegistry implements EntityComponentInitializer {
 
     // Hostile Entity data
-    public static final ComponentKey<SpoornBountyHostileEntityDataComponent> HOSTILE_ENTITY_DATA =
-            ComponentRegistryV3.INSTANCE.getOrCreate(SpoornBountyHostileEntityDataComponent.ID,
-                SpoornBountyHostileEntityDataComponent.class);
+    public static final ComponentKey<SpoornEntityDataComponent> HOSTILE_ENTITY_DATA =
+            ComponentRegistryV3.INSTANCE.getOrCreate(SpoornEntityDataComponent.ID, SpoornEntityDataComponent.class);
 
     public static void init() {
         registerStartTrackingCallback();
@@ -39,8 +38,8 @@ public class SpoornBountyEntityRegistry implements EntityComponentInitializer {
                 float randFloat = SpoornBountyMobsUtil.RANDOM.nextFloat();
                 if (randFloat < (1.0/ ModConfig.get().bountySpawnChance)) {
                     HostileEntity hostileEntity = (HostileEntity) trackedEntity;
-                    SpoornBountyHostileEntityDataComponent component =
-                        SpoornBountyEntityRegistry.HOSTILE_ENTITY_DATA.get(hostileEntity);
+                    SpoornEntityDataComponent component =
+                        SpoornBountyMobsUtil.getSpoornEntityDataComponent(hostileEntity);
 
                     // Set Entity data
                     component.setHasBounty(true);
@@ -52,8 +51,14 @@ public class SpoornBountyEntityRegistry implements EntityComponentInitializer {
 
                     // This will trigger our EntityMixin which sets entity dimensions on the server side
                     hostileEntity.calculateDimensions();
-                    int glowDuration = ModConfig.get().bountyMobPermanentGlow ? Integer.MAX_VALUE : ModConfig.get().bountyMobGlowDuration * 20;
-                    hostileEntity.addStatusEffect(new StatusEffectInstance(StatusEffects.GLOWING, glowDuration, 0, false, false));
+
+                    // Set status effects
+                    int glowDuration = ModConfig.get().bountyMobPermanentGlow ? Integer.MAX_VALUE
+                        : ModConfig.get().bountyMobGlowDuration * 20;
+                    hostileEntity.addStatusEffect(getStatusEffectInstance(StatusEffects.GLOWING, glowDuration, 0));
+
+                    // Heal entity to max health
+                    hostileEntity.setHealth(hostileEntity.getMaxHealth());
                 }
             }
         });

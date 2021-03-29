@@ -1,13 +1,12 @@
 package org.spoorn.spoornbountymobs.entity;
 
 import dev.onyxstudios.cca.api.v3.component.sync.AutoSyncedComponent;
+import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.PacketByteBuf;
-import net.minecraft.util.Identifier;
-import org.spoorn.spoornbountymobs.SpoornBountyMobs;
 import org.spoorn.spoornbountymobs.SpoornBountyTiers;
 
 /**
@@ -16,15 +15,11 @@ import org.spoorn.spoornbountymobs.SpoornBountyTiers;
 @ToString
 public class SpoornBountyHostileEntityDataComponent implements SpoornEntityDataComponent, AutoSyncedComponent {
 
-    public static final Identifier ID = new Identifier(SpoornBountyMobs.MODID, "hostileentitydata");
-
     private static final String HAS_BOUNTY = "hasBounty";
     private static final String SPOORN_BOUNTY_TIER = "spoornBountyTier";
 
-    @Setter
-    private boolean hasBounty;
-    @Setter
-    private SpoornBountyTiers spoornBountyTier;
+    @Setter private boolean hasBounty;
+    @Getter @Setter private SpoornBountyTiers spoornBountyTier;
     private Object provider;
 
     public SpoornBountyHostileEntityDataComponent(Object provider) {

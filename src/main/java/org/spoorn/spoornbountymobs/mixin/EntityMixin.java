@@ -27,7 +27,7 @@ public abstract class EntityMixin {
     @Inject(method = "getDimensions", at = @At(value = "TAIL"), cancellable = true)
     private void resizeEntity(EntityPose pose, CallbackInfoReturnable<EntityDimensions> cir) {
         Entity entity = (Entity) (Object) this;
-        if (SpoornBountyMobsUtil.isHostileEntity(entity) && SpoornBountyMobsUtil.entityHasBounty(entity)) {
+        if (SpoornBountyMobsUtil.entityIsHostileAndHasBounty(entity)) {
             EntityDimensions dimensions = cir.getReturnValue();
             EntityDimensions newDimensions = dimensions.scaled((float) ModConfig.get().bountyMobSizeScale);
             this.dimensions = newDimensions;

@@ -5,12 +5,13 @@
   "compatibilityLevel": "JAVA_8",
   "mixins": [
     "DataTrackerAccessorMixin",
-    "HostileEntityMixin",
     "EntityMixin",
     "EntityAccessorMixin",
     "MeleeAttackGoalMixin",
     "SpiderEntityAttackGoalMixin",
-    "MeleeAttackGoalAccessorMixin"
+    "MeleeAttackGoalAccessorMixin",
+    "MobEntityMixin",
+    "LivingEntityMixin"
   ],
   "client": [
     "LivingEntityRendererMixin"
