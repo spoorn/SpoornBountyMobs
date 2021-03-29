@@ -45,7 +45,7 @@ public class SpoornBountyEntityRegistry implements EntityComponentInitializer {
                     component.setHasBounty(true);
                     component.setSpoornBountyTier(SpoornBountyMobsUtil.SPOORN_BOUNTY_TIERS.sample());
 
-                    log.info("tracked component={}", component);
+                    log.info("tracked bounty mob={}", component);
 
                     SpoornBountyEntityRegistry.HOSTILE_ENTITY_DATA.sync(hostileEntity);
 

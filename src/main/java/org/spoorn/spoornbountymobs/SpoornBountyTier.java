@@ -11,19 +11,19 @@ import lombok.ToString;
 @ToString
 public final class SpoornBountyTier {
 
-    public static final SpoornBountyTier COMMON = new SpoornBountyTier("common", 20, 2f, 3, 0, 1);
-    public static final SpoornBountyTier UNCOMMON = new SpoornBountyTier("uncommon", 15, 3f, 6, 1, 2);
-    public static final SpoornBountyTier RARE = new SpoornBountyTier("rare", 10, 4f, 9, 2, 3);
-    public static final SpoornBountyTier EPIC = new SpoornBountyTier("epic", 6, 5f, 12, 3, 4);
-    public static final SpoornBountyTier LEGENDARY = new SpoornBountyTier("legendary", 3, 6f, 15, 4, 5);
-    public static final SpoornBountyTier DOOM = new SpoornBountyTier("doom", 1, 7f, 20, 5, 6);
+    public static SpoornBountyTier COMMON;
+    public static SpoornBountyTier UNCOMMON;
+    public static SpoornBountyTier RARE;
+    public static SpoornBountyTier EPIC;
+    public static SpoornBountyTier LEGENDARY;
+    public static SpoornBountyTier DOOM;
 
     @Getter
     private String value;
     @Getter
     private double weight;
     @Getter
-    private float maxHealthScale;
+    private float maxHealthIncrease;
     @Getter
     private int experienceScale;
     @Getter
@@ -31,14 +31,24 @@ public final class SpoornBountyTier {
     @Getter
     private int maxDamageIncrease;
 
-    private SpoornBountyTier(String value, int weight, float maxHealthScale, int experienceScale,
+    private SpoornBountyTier(String value, int weight, float maxHealthIncrease, int experienceScale,
                              int minDamageIncrease, int maxDamageIncrease) {
         this.value = value;
         this.weight = weight;
-        this.maxHealthScale = maxHealthScale;
+        this.maxHealthIncrease = maxHealthIncrease;
         this.experienceScale = experienceScale;
         this.minDamageIncrease = minDamageIncrease;
         this.maxDamageIncrease = maxDamageIncrease;
+    }
+
+    // Lazy initialization of static values so that we can wait for ModConfig to get initialized first
+    public static void init() {
+        COMMON = new SpoornBountyTier("common", 20, 80, 3, 0, 1);
+        UNCOMMON = new SpoornBountyTier("uncommon", 15, 120, 6, 1, 2);
+        RARE = new SpoornBountyTier("rare", 10, 240, 9, 2, 3);
+        EPIC = new SpoornBountyTier("epic", 6, 360, 12, 3, 4);
+        LEGENDARY = new SpoornBountyTier("legendary", 3, 450, 15, 4, 5);
+        DOOM = new SpoornBountyTier("doom", 1, 600, 20, 5, 6);
     }
 
     public static SpoornBountyTier fromValue(String value) {

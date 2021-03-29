@@ -13,6 +13,9 @@ public class SpoornBountyMobs implements ModInitializer {
         // Config
         ModConfig.init();
 
+        // Lazy initialize Bounty Tiers
+        SpoornBountyTier.init();
+
         // Bounty registry
         SpoornBountyEntityRegistry.init();
     }

@@ -14,8 +14,8 @@ public class LivingEntityMixin {
     public void setMaxHealthForBountyMob(CallbackInfoReturnable<Float> cir) {
         LivingEntity livingEntity = (LivingEntity) (Object) this;
         if (SpoornBountyMobsUtil.entityIsHostileAndHasBounty(livingEntity)) {
-            cir.setReturnValue(cir.getReturnValue() *
-                SpoornBountyMobsUtil.getSpoornEntityDataComponent(livingEntity).getSpoornBountyTier().getMaxHealthScale());
+            cir.setReturnValue(cir.getReturnValue() +
+                SpoornBountyMobsUtil.getSpoornEntityDataComponent(livingEntity).getSpoornBountyTier().getMaxHealthIncrease());
         }
     }
 }
