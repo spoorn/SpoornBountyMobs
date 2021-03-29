@@ -41,6 +41,10 @@ dependencies {
     modImplementation "io.github.onyxstudios.Cardinal-Components-API:${project.cardinal_components_basemodule}:${project.cardinal_components_version}"
     // Includes Cardinal Components API as a Jar-in-Jar dependency (optional)
     include "io.github.onyxstudios.Cardinal-Components-API:${project.cardinal_components_basemodule}:${project.cardinal_components_version}"
+
+
+    // Apache Commons
+    implementation "org.apache.commons:commons-math3:${project.apache_commons_version}"
 }
 
 repositories {
@@ -51,6 +55,11 @@ repositories {
     maven {
         name = "Ladysnake Libs"
         url = "https://dl.bintray.com/ladysnake/libs"
+    }
+
+    // Apache Commons
+    maven {
+        url "https://mvnrepository.com/artifact"
     }
 }
 

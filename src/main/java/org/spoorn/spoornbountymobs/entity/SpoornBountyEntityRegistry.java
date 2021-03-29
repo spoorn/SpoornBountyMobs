@@ -39,9 +39,15 @@ public class SpoornBountyEntityRegistry implements EntityComponentInitializer {
                 float randFloat = SpoornBountyMobsUtil.RANDOM.nextFloat();
                 if (randFloat < (1.0/ ModConfig.get().bountySpawnChance)) {
                     HostileEntity hostileEntity = (HostileEntity) trackedEntity;
+                    SpoornBountyHostileEntityDataComponent component =
+                        SpoornBountyEntityRegistry.HOSTILE_ENTITY_DATA.get(hostileEntity);
 
                     // Set Entity data
-                    SpoornBountyEntityRegistry.HOSTILE_ENTITY_DATA.get(hostileEntity).setHasBounty(true);
+                    component.setHasBounty(true);
+                    component.setSpoornBountyTier(SpoornBountyMobsUtil.SPOORN_BOUNTY_TIERS.sample());
+
+                    log.info("tracked component={}", component);
+
                     SpoornBountyEntityRegistry.HOSTILE_ENTITY_DATA.sync(hostileEntity);
 
                     // This will trigger our EntityMixin which sets entity dimensions on the server side
