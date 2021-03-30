@@ -43,17 +43,16 @@ public class SpoornBountyEntityRegistry implements EntityComponentInitializer {
     private static void registerStartTrackingCallback() {
         EntityTrackingEvents.START_TRACKING.register((trackedEntity, player) -> {
             if (SpoornBountyMobsUtil.isHostileEntity(trackedEntity)) {
-                float randFloat = SpoornBountyMobsUtil.RANDOM.nextFloat();
-                if (randFloat < (1.0/ ModConfig.get().bountySpawnChance)) {
-                    HostileEntity hostileEntity = (HostileEntity) trackedEntity;
-                    EntityDataComponent component =
+                HostileEntity hostileEntity = (HostileEntity) trackedEntity;
+                EntityDataComponent component =
                         SpoornBountyMobsUtil.getSpoornEntityDataComponent(hostileEntity);
-
+                if (!component.hasBounty() && (SpoornBountyMobsUtil.RANDOM.nextFloat() < (1.0/ ModConfig.get().bountySpawnChance))) {
                     // Set Entity data
                     component.setHasBounty(true);
                     component.setSpoornBountyTier(SpoornBountyMobsUtil.SPOORN_BOUNTY_TIERS.sample());
+                    component.setBonusHealth(SpoornBountyMobsUtil.getHealthIncreaseFromBountyScore(player, hostileEntity));
 
-                    log.info("tracked bounty mob={}", component);
+                    //log.info("tracked bounty mob={}", component);
 
                     SpoornBountyEntityRegistry.HOSTILE_ENTITY_DATA.sync(hostileEntity);
 
@@ -65,7 +64,7 @@ public class SpoornBountyEntityRegistry implements EntityComponentInitializer {
                         : ModConfig.get().bountyMobGlowDuration * 20;
                     hostileEntity.addStatusEffect(getStatusEffectInstance(StatusEffects.GLOWING, glowDuration, 0));
 
-                    // Heal entity to max health
+                    // Heal entity to max health, triggers LivingEntityMixin with overridden health
                     hostileEntity.setHealth(hostileEntity.getMaxHealth());
                 }
             }

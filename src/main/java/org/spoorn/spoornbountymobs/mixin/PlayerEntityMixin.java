@@ -19,12 +19,15 @@ public class PlayerEntityMixin {
     /**
      * For testing player data persistence.
      */
-    /*@Inject(method = "attack", at = @At(value = "HEAD"))
+    @Inject(method = "attack", at = @At(value = "HEAD"))
     public void testPlayerData(Entity target, CallbackInfo ci) {
         PlayerEntity player = (PlayerEntity) (Object) this;
-        System.out.println("attacking player: " + SpoornBountyEntityRegistry.PLAYER_DATA.get(player));
-    }*/
+        System.out.println("player: " + SpoornBountyEntityRegistry.PLAYER_DATA.get(player));
+    }
 
+    /**
+     * Increment player's bounty kill count and score upon killing a Bounty mob.
+     */
     @Inject(method = "onKilledOther", at = @At(value = "TAIL"))
     public void incrementBountyCount(ServerWorld serverWorld, LivingEntity livingEntity, CallbackInfo ci) {
         if (SpoornBountyMobsUtil.entityIsHostileAndHasBounty(livingEntity)) {
@@ -32,6 +35,7 @@ public class PlayerEntityMixin {
             EntityDataComponent entityDataComponent = SpoornBountyMobsUtil.getSpoornEntityDataComponent(livingEntity);
             PlayerDataComponent playerDataComponent = SpoornBountyMobsUtil.getPlayerDataComponent(player);
             playerDataComponent.incrementBountyKillCount(entityDataComponent.getSpoornBountyTier());
+            SpoornBountyEntityRegistry.PLAYER_DATA.sync(player);
         }
     }
 }

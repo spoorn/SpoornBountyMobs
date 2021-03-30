@@ -12,12 +12,11 @@
     "MeleeAttackGoalAccessorMixin",
     "MobEntityMixin",
     "LivingEntityMixin",
-    "PlayerEntityMixin"
+    "PlayerEntityMixin",
+    "ServerPlayerEntityMixin"
   ],
   "client": [
     "LivingEntityRendererMixin"
-  ],
-  "server": [
   ],
   "injectors": {
     "defaultRequire": 1

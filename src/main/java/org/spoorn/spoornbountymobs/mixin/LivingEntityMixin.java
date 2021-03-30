@@ -15,7 +15,8 @@ public class LivingEntityMixin {
         LivingEntity livingEntity = (LivingEntity) (Object) this;
         if (SpoornBountyMobsUtil.entityIsHostileAndHasBounty(livingEntity)) {
             cir.setReturnValue(cir.getReturnValue() +
-                SpoornBountyMobsUtil.getSpoornEntityDataComponent(livingEntity).getSpoornBountyTier().getMaxHealthIncrease());
+                SpoornBountyMobsUtil.getSpoornEntityDataComponent(livingEntity).getSpoornBountyTier().getMaxHealthIncrease()
+                + SpoornBountyMobsUtil.getSpoornEntityDataComponent(livingEntity).getBonusHealth());
         }
     }
 }

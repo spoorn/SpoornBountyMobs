@@ -5,6 +5,9 @@ import net.minecraft.util.Identifier;
 import org.spoorn.spoornbountymobs.SpoornBountyMobs;
 import org.spoorn.spoornbountymobs.tiers.SpoornBountyTier;
 
+/**
+ * Base player data.
+ */
 public interface PlayerDataComponent extends ComponentV3 {
 
     Identifier ID = new Identifier(SpoornBountyMobs.MODID, "playerdata");
@@ -22,4 +25,7 @@ public interface PlayerDataComponent extends ComponentV3 {
     int getDoomKillCount();
 
     void incrementBountyKillCount(SpoornBountyTier spoornBountyTier);
+
+    double getBountyScore();
+    void setBountyScore(double bountyScore);
 }

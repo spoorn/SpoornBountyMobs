@@ -18,9 +18,11 @@ public class SpoornBountyHostileEntityDataComponent implements EntityDataCompone
 
     private static final String HAS_BOUNTY = "hasBounty";
     private static final String SPOORN_BOUNTY_TIER = "spoornBountyTier";
+    private static final String BONUS_HEALTH = "bonusHealth";
 
     @Setter private boolean hasBounty;
     @Getter @Setter private SpoornBountyTier spoornBountyTier;
+    @Getter @Setter private float bonusHealth;
     private Object provider;
 
     public SpoornBountyHostileEntityDataComponent(Object provider) {
@@ -38,13 +40,15 @@ public class SpoornBountyHostileEntityDataComponent implements EntityDataCompone
     public void readFromNbt(CompoundTag tag) {
         this.hasBounty = tag.getBoolean(HAS_BOUNTY);
         this.spoornBountyTier = SpoornBountyTier.fromValue(SpoornBountyTierTypes.valueOf(tag.getString(SPOORN_BOUNTY_TIER)));
+        this.bonusHealth = tag.getFloat(BONUS_HEALTH);
     }
 
     @Override
     public void writeToNbt(CompoundTag tag) {
-        tag.putBoolean(HAS_BOUNTY, hasBounty);
+        tag.putBoolean(HAS_BOUNTY, this.hasBounty);
         // Could use ordinal for efficiency in future, but could cause compatibility complexities
         tag.putString(SPOORN_BOUNTY_TIER, this.spoornBountyTier.getTierType().name());
+        tag.putFloat(BONUS_HEALTH, this.bonusHealth);
     }
 
     @Override
