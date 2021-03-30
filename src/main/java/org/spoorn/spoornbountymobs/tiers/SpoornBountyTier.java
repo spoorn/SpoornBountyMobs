@@ -4,6 +4,7 @@ import static org.spoorn.spoornbountymobs.tiers.SpoornBountyTierTypes.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
+import org.spoorn.spoornbountymobs.config.*;
 
 /**
  * Bounty tiers to make bounties more dynamic.
@@ -47,12 +48,18 @@ public final class SpoornBountyTier {
 
     // Lazy initialization of static values so that we can wait for ModConfig to get initialized first
     public static void init() {
-        COMMON = new SpoornBountyTier(COMMON_TIER, 20, 1, 80, 3, 0, 1);
-        UNCOMMON = new SpoornBountyTier(UNCOMMON_TIER, 15, 2, 120, 6, 1, 2);
-        RARE = new SpoornBountyTier(RARE_TIER, 10, 4, 240, 9, 2, 3);
-        EPIC = new SpoornBountyTier(EPIC_TIER, 6, 5, 360, 12, 3, 4);
-        LEGENDARY = new SpoornBountyTier(LEGENDARY_TIER, 3, 7, 450, 15, 4, 5);
-        DOOM = new SpoornBountyTier(DOOM_TIER, 1, 8, 600, 20, 5, 6);
+        CommonTierConfig commonConfig = ModConfig.get().COMMON_TIER;
+        UncommonTierConfig uncommonConfig = ModConfig.get().UNCOMMON_TIER;
+        RareTierConfig rareConfig = ModConfig.get().RARE_TIER;
+        EpicTierConfig epicConfig = ModConfig.get().EPIC_TIER;
+        LegendaryTierConfig legendaryConfig = ModConfig.get().LEGENDARY_TIER;
+        DoomTierConfig doomConfig = ModConfig.get().DOOM_TIER;
+        COMMON = new SpoornBountyTier(COMMON_TIER, commonConfig.spawnChance, 1, commonConfig.baseBonusHealth, 3, 0, 1);
+        UNCOMMON = new SpoornBountyTier(UNCOMMON_TIER, uncommonConfig.spawnChance, 2, uncommonConfig.baseBonusHealth, 6, 1, 2);
+        RARE = new SpoornBountyTier(RARE_TIER, rareConfig.spawnChance, 4, rareConfig.baseBonusHealth, 9, 2, 3);
+        EPIC = new SpoornBountyTier(EPIC_TIER, epicConfig.spawnChance, 5, epicConfig.baseBonusHealth, 12, 3, 4);
+        LEGENDARY = new SpoornBountyTier(LEGENDARY_TIER, legendaryConfig.spawnChance, 7, legendaryConfig.baseBonusHealth, 15, 4, 5);
+        DOOM = new SpoornBountyTier(DOOM_TIER, doomConfig.spawnChance, 8, doomConfig.baseBonusHealth, 20, 5, 6);
     }
 
     public static SpoornBountyTier fromValue(SpoornBountyTierTypes spoornBountyTierTypes) {

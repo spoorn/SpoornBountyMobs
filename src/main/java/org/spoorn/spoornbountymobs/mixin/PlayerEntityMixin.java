@@ -19,11 +19,11 @@ public class PlayerEntityMixin {
     /**
      * For testing player data persistence.
      */
-    @Inject(method = "attack", at = @At(value = "HEAD"))
+    /*@Inject(method = "attack", at = @At(value = "HEAD"))
     public void testPlayerData(Entity target, CallbackInfo ci) {
         PlayerEntity player = (PlayerEntity) (Object) this;
         System.out.println("player: " + SpoornBountyEntityRegistry.PLAYER_DATA.get(player));
-    }
+    }*/
 
     /**
      * Increment player's bounty kill count and score upon killing a Bounty mob.

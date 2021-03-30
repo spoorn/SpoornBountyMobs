@@ -42,7 +42,8 @@ public class SpoornBountyEntityRegistry implements EntityComponentInitializer {
     // On entity being tracked by a player, chance to mark the entity as having a bounty.  Update entity data
     private static void registerStartTrackingCallback() {
         EntityTrackingEvents.START_TRACKING.register((trackedEntity, player) -> {
-            if (SpoornBountyMobsUtil.isHostileEntity(trackedEntity)) {
+            double spawnChance = ModConfig.get().bountySpawnChance;
+            if (spawnChance > 0 && SpoornBountyMobsUtil.isHostileEntity(trackedEntity)) {
                 HostileEntity hostileEntity = (HostileEntity) trackedEntity;
                 EntityDataComponent component =
                         SpoornBountyMobsUtil.getSpoornEntityDataComponent(hostileEntity);

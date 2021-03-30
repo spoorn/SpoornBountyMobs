@@ -11,8 +11,8 @@ import org.spoorn.spoornbountymobs.SpoornBountyMobs;
 @Config(name = SpoornBountyMobs.MODID)
 public class ModConfig implements ConfigData {
 
-    @Comment("Chance for mob to spawn with a bounty [1/value] [default = 300]")
-    public int bountySpawnChance = 300;
+    @Comment("Chance for mob to spawn with a bounty [1/value] [default = 100]")
+    public int bountySpawnChance = 100;
 
     @Comment("Bounty mob size scale [default = 2.0]")
     public double bountyMobSizeScale = 2.0;
@@ -23,7 +23,7 @@ public class ModConfig implements ConfigData {
     @Comment("Duration in seconds Bounty mobs should glow when they are first found if bountyMobPermanentGlow is false [default = 15]")
     public int bountyMobGlowDuration = 15;
 
-    @Comment("Player's Bounty hunter tier increments at this value (Recommend to not change this) [default = 10]")
+    @Comment("Player's Bounty hunter tier increments at this value [default = 10]")
     public int playerBountyHunterTierIntervals = 10;
 
     @Comment("Percentage of player's Bounty score LOST on death [default = 20, min=0, max=100]")

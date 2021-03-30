@@ -1,6 +1,7 @@
 package org.spoorn.spoornbountymobs.util;
 
 import com.google.common.collect.ImmutableList;
+import lombok.extern.log4j.Log4j2;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
@@ -16,6 +17,7 @@ import org.spoorn.spoornbountymobs.tiers.SpoornBountyTier;
 
 import java.util.Random;
 
+@Log4j2
 public class SpoornBountyMobsUtil {
 
     public static final Random RANDOM = new Random();
