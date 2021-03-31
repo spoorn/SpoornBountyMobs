@@ -1,5 +1,6 @@
 package org.spoorn.spoornbountymobs.mixin;
 
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import org.spongepowered.asm.mixin.Mixin;
@@ -8,8 +9,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import org.spoorn.spoornbountymobs.tiers.SpoornBountyTier;
 import org.spoorn.spoornbountymobs.entity.EntityDataComponent;
+import org.spoorn.spoornbountymobs.tiers.SpoornBountyTier;
 import org.spoorn.spoornbountymobs.util.SpoornBountyMobsUtil;
 
 @Mixin(MobEntity.class)
@@ -38,15 +39,23 @@ public abstract class MobEntityMixin {
      * Increase Bounty mob's damage based on tier.
      */
     @ModifyVariable(method = "tryAttack", ordinal = 0, at = @At(value = "STORE", ordinal = 0))
-    public float increaseBountyMobDamage(float f) {
+    public float increaseBountyMobDamage(float f, Entity target) {
         MobEntity mobEntity = (MobEntity) (Object) this;
         if (SpoornBountyMobsUtil.entityIsHostileAndHasBounty(mobEntity)) {
             EntityDataComponent component = SpoornBountyMobsUtil.getSpoornEntityDataComponent(mobEntity);
             SpoornBountyTier tier = component.getSpoornBountyTier();
-            float bonusDamage = tier.getMinDamageIncrease() +
-                SpoornBountyMobsUtil.RANDOM.nextFloat() * (tier.getMaxDamageIncrease() - tier.getMinDamageIncrease());
-            /*System.out.println("old damage: " + f);
-            System.out.println("new damage: " + (f+bonusDamage));*/
+
+            // Base damage
+            float bonusDamage = (float)(tier.getMinDamageIncrease() +
+                SpoornBountyMobsUtil.RANDOM.nextFloat() * (tier.getMaxDamageIncrease() - tier.getMinDamageIncrease()));
+
+            // Bonus tier damage
+            if (SpoornBountyMobsUtil.isPlayerEntity(target)) {
+                //System.out.println("bonus tier damage: " + SpoornBountyMobsUtil.getDamageIncreaseFromBountyScore((PlayerEntity) target, mobEntity));
+                bonusDamage += SpoornBountyMobsUtil.getDamageIncreaseFromBountyScore((PlayerEntity) target, mobEntity);
+            }
+            //System.out.println("old damage: " + f);
+            //System.out.println("new damage: " + (f+bonusDamage));
             return f + bonusDamage;
         }
 

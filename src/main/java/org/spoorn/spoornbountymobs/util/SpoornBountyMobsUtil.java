@@ -35,6 +35,8 @@ public class SpoornBountyMobsUtil {
         return entity instanceof HostileEntity;
     }
 
+    public static boolean isPlayerEntity(Entity entity) { return entity instanceof PlayerEntity; }
+
     public static boolean entityIsHostileAndHasBounty(Entity entity) {
         return entity instanceof HostileEntity && SpoornBountyEntityRegistry.HOSTILE_ENTITY_DATA.get(entity).hasBounty();
     }
@@ -83,6 +85,21 @@ public class SpoornBountyMobsUtil {
             default:
                 return 0;
         }
+    }
+
+    /**
+     * Get mob damage increase based on entity's tier and player's bounty score.
+     */
+    public static double getDamageIncreaseFromBountyScore(PlayerEntity player, Entity entity) {
+        EntityDataComponent entityDataComponent = getSpoornEntityDataComponent(entity);
+
+        // No increase if mob doesn't have a bounty
+        if (!entityDataComponent.hasBounty()) {
+            return 0;
+        }
+
+        int bountyTier = getBountyHunterTier(player);
+        return entityDataComponent.getSpoornBountyTier().getMilestoneDamageIncrease() * bountyTier;
     }
 
     /**

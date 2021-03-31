@@ -10,6 +10,12 @@ public class UncommonTierConfig {
     @Comment("Base bonus health for this tier [default = 30]")
     public int baseBonusHealth = 30;
 
+    @Comment("Experience scale for this tier [default = 6]")
+    public int experienceScale = 6;
+
     @Comment("Health increase per bounty score milestone [default = 10]")
     public int milestoneHealthIncrease = 10;
+
+    @Comment("Damage increase per bounty score milestone [default = 0.2]")
+    public double milestoneDamageIncrease = 0.2;
 }

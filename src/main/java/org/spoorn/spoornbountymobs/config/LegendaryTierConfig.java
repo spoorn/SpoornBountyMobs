@@ -10,6 +10,12 @@ public class LegendaryTierConfig {
     @Comment("Base bonus health for this tier [default = 60]")
     public int baseBonusHealth = 60;
 
+    @Comment("Experience scale for this tier [default = 15]")
+    public int experienceScale = 15;
+
     @Comment("Health increase per bounty score milestone [default = 25]")
     public int milestoneHealthIncrease = 25;
+
+    @Comment("Damage increase per bounty score milestone [default = 0.5]")
+    public double milestoneDamageIncrease = 0.5;
 }
