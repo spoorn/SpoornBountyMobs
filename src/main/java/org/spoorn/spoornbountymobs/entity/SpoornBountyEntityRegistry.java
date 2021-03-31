@@ -8,6 +8,7 @@ import dev.onyxstudios.cca.api.v3.entity.EntityComponentInitializer;
 import lombok.extern.log4j.Log4j2;
 import nerdhub.cardinal.components.api.util.RespawnCopyStrategy;
 import net.fabricmc.fabric.api.networking.v1.EntityTrackingEvents;
+import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.mob.HostileEntity;
 import org.spoorn.spoornbountymobs.config.ModConfig;
@@ -47,14 +48,17 @@ public class SpoornBountyEntityRegistry implements EntityComponentInitializer {
                 HostileEntity hostileEntity = (HostileEntity) trackedEntity;
                 EntityDataComponent component =
                         SpoornBountyMobsUtil.getSpoornEntityDataComponent(hostileEntity);
-                if (!component.hasBounty() && (SpoornBountyMobsUtil.RANDOM.nextFloat() < (1.0/ ModConfig.get().bountySpawnChance))) {
+                if (!component.hasTracked() && (SpoornBountyMobsUtil.RANDOM.nextFloat() < (1.0/ ModConfig.get().bountySpawnChance))) {
                     // Set Entity data
+                    component.track();
                     component.setHasBounty(true);
                     component.setSpoornBountyTier(SpoornBountyMobsUtil.SPOORN_BOUNTY_TIERS.sample());
-                    component.setBonusHealth(SpoornBountyMobsUtil.getHealthIncreaseFromBountyScore(player, hostileEntity));
+                    component.setBonusBountyTierHealth(SpoornBountyMobsUtil.getHealthIncreaseFromBountyScore(player, hostileEntity));
 
-                    //log.info("tracked bounty mob={}", component);
+                    log.info("tracked bounty mob={}", component);
+                    log.info("player info={}", SpoornBountyMobsUtil.getPlayerDataComponent(player));
 
+                    // Sync entity data to client
                     SpoornBountyEntityRegistry.HOSTILE_ENTITY_DATA.sync(hostileEntity);
 
                     // This will trigger our EntityMixin which sets entity dimensions on the server side

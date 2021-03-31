@@ -15,6 +15,7 @@ import org.spoorn.spoornbountymobs.tiers.SpoornBountyTier;
 @ToString
 public class SpoornBountyPlayerDataComponent implements PlayerDataComponent, AutoSyncedComponent {
 
+    // These should never change or there will be backwards incompatibility
     private static final String COMMON_COUNT = "commonKillCount";
     private static final String UNCOMMON_COUNT = "uncommonKillCount";
     private static final String RARE_COUNT = "rareKillCount";

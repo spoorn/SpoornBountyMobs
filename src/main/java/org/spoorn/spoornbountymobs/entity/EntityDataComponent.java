@@ -12,12 +12,15 @@ public interface EntityDataComponent extends ComponentV3 {
 
     Identifier ID = new Identifier(SpoornBountyMobs.MODID, "hostileentitydata");
 
+    boolean hasTracked();
+    void track();
+
     boolean hasBounty();
     void setHasBounty(boolean hasBounty);
 
     SpoornBountyTier getSpoornBountyTier();
     void setSpoornBountyTier(SpoornBountyTier spoornBountyTier);
 
-    float getBonusHealth();
-    void setBonusHealth(float bonusHealth);
+    float getBonusBountyTierHealth();
+    void setBonusBountyTierHealth(float bonusHealth);
 }

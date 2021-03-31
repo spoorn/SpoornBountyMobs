@@ -27,26 +27,26 @@ public final class SpoornBountyTier {
     @Getter
     private double bountyScoreScale;
     @Getter
-    private float maxHealthIncrease;
+    private float maxBaseHealthIncrease;
     @Getter
     private int experienceScale;
     @Getter
-    private double minDamageIncrease;
+    private double minBaseDamageIncrease;
     @Getter
-    private double maxDamageIncrease;
+    private double maxBaseDamageIncrease;
     @Getter
     private double milestoneDamageIncrease;
 
     private SpoornBountyTier(SpoornBountyTierTypes tierType, int weight, double bountyScoreScale,
-        float maxHealthIncrease, int experienceScale, double minDamageIncrease, double maxDamageIncrease,
+        float maxBaseHealthIncrease, int experienceScale, double minBaseDamageIncrease, double maxBaseDamageIncrease,
         double milestoneDamageIncrease) {
         this.tierType = tierType;
         this.weight = weight;
         this.bountyScoreScale = bountyScoreScale;
-        this.maxHealthIncrease = maxHealthIncrease;
+        this.maxBaseHealthIncrease = maxBaseHealthIncrease;
         this.experienceScale = experienceScale;
-        this.minDamageIncrease = minDamageIncrease;
-        this.maxDamageIncrease = maxDamageIncrease;
+        this.minBaseDamageIncrease = minBaseDamageIncrease;
+        this.maxBaseDamageIncrease = maxBaseDamageIncrease;
         this.milestoneDamageIncrease = milestoneDamageIncrease;
     }
 

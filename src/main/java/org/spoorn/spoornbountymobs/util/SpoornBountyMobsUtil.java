@@ -105,7 +105,7 @@ public class SpoornBountyMobsUtil {
     /**
      * Player's bounty hunter tier used to determine milestones in bounty hunting.
      */
-    private static int getBountyHunterTier(PlayerEntity player) {
+    public static int getBountyHunterTier(PlayerEntity player) {
         return (int)calculateBountyScore(player)/ModConfig.get().playerBountyHunterTierIntervals;
     }
 

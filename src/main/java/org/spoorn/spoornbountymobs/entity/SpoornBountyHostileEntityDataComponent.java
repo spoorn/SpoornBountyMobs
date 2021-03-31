@@ -16,19 +16,32 @@ import org.spoorn.spoornbountymobs.tiers.SpoornBountyTierTypes;
 @ToString
 public class SpoornBountyHostileEntityDataComponent implements EntityDataComponent, AutoSyncedComponent {
 
+    private static final String HAS_TRACKED = "hasTracked";
     private static final String HAS_BOUNTY = "hasBounty";
     private static final String SPOORN_BOUNTY_TIER = "spoornBountyTier";
-    private static final String BONUS_HEALTH = "bonusHealth";
+    private static final String BONUS_BOUNTY_TIER_HEALTH = "bonusBountyTierHP";
 
+    private boolean hasTracked;
     @Setter private boolean hasBounty;
     @Getter @Setter private SpoornBountyTier spoornBountyTier;
-    @Getter @Setter private float bonusHealth;
+    @Getter @Setter private float bonusBountyTierHealth;
     private Object provider;
 
     public SpoornBountyHostileEntityDataComponent(Object provider) {
+        this.hasTracked = false;
         this.hasBounty = false;
         this.spoornBountyTier = SpoornBountyTier.COMMON;
         this.provider = provider;
+    }
+
+    @Override
+    public boolean hasTracked() {
+        return this.hasTracked;
+    }
+
+    @Override
+    public void track() {
+        this.hasTracked = true;
     }
 
     @Override
@@ -38,17 +51,19 @@ public class SpoornBountyHostileEntityDataComponent implements EntityDataCompone
 
     @Override
     public void readFromNbt(CompoundTag tag) {
+        this.hasTracked = tag.getBoolean(HAS_TRACKED);
         this.hasBounty = tag.getBoolean(HAS_BOUNTY);
         this.spoornBountyTier = SpoornBountyTier.fromValue(SpoornBountyTierTypes.valueOf(tag.getString(SPOORN_BOUNTY_TIER)));
-        this.bonusHealth = tag.getFloat(BONUS_HEALTH);
+        this.bonusBountyTierHealth = tag.getFloat(BONUS_BOUNTY_TIER_HEALTH);
     }
 
     @Override
     public void writeToNbt(CompoundTag tag) {
+        tag.putBoolean(HAS_TRACKED, this.hasTracked);
         tag.putBoolean(HAS_BOUNTY, this.hasBounty);
         // Could use ordinal for efficiency in future, but could cause compatibility complexities
         tag.putString(SPOORN_BOUNTY_TIER, this.spoornBountyTier.getTierType().name());
-        tag.putFloat(BONUS_HEALTH, this.bonusHealth);
+        tag.putFloat(BONUS_BOUNTY_TIER_HEALTH, this.bonusBountyTierHealth);
     }
 
     @Override

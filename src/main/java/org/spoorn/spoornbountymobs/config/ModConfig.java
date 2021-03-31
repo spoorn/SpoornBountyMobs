@@ -23,8 +23,12 @@ public class ModConfig implements ConfigData {
     @Comment("Duration in seconds Bounty mobs should glow when they are first found if bountyMobPermanentGlow is false [default = 15]")
     public int bountyMobGlowDuration = 15;
 
-    @Comment("Player's Bounty hunter tier increments at this value [default = 10]")
+    @Comment("Player's Bounty Hunter tier increments at this value [default = 10]")
     public int playerBountyHunterTierIntervals = 10;
+
+    @Comment("Bonus health for Player per Bounty Hunter tier [default = 2 (one heart)]")
+    @ConfigEntry.BoundedDiscrete(min=0, max=Long.MAX_VALUE)
+    public double playerBonusHealthPerBountyHunterTier = 2;
 
     @Comment("Percentage of player's Bounty score LOST on death [default = 20, min=0, max=100]")
     @ConfigEntry.BoundedDiscrete(min=0, max=100)

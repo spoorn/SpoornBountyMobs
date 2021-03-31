@@ -46,8 +46,8 @@ public abstract class MobEntityMixin {
             SpoornBountyTier tier = component.getSpoornBountyTier();
 
             // Base damage
-            float bonusDamage = (float)(tier.getMinDamageIncrease() +
-                SpoornBountyMobsUtil.RANDOM.nextFloat() * (tier.getMaxDamageIncrease() - tier.getMinDamageIncrease()));
+            float bonusDamage = (float)(tier.getMinBaseDamageIncrease() +
+                SpoornBountyMobsUtil.RANDOM.nextFloat() * (tier.getMaxBaseDamageIncrease() - tier.getMinBaseDamageIncrease()));
 
             // Bonus tier damage
             if (SpoornBountyMobsUtil.isPlayerEntity(target)) {

@@ -1,12 +1,14 @@
 package org.spoorn.spoornbountymobs.mixin;
 
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spoorn.spoornbountymobs.config.ModConfig;
 import org.spoorn.spoornbountymobs.entity.EntityDataComponent;
 import org.spoorn.spoornbountymobs.entity.PlayerDataComponent;
 import org.spoorn.spoornbountymobs.entity.SpoornBountyEntityRegistry;
@@ -34,6 +36,8 @@ public class PlayerEntityMixin {
             EntityDataComponent entityDataComponent = SpoornBountyMobsUtil.getSpoornEntityDataComponent(livingEntity);
             PlayerDataComponent playerDataComponent = SpoornBountyMobsUtil.getPlayerDataComponent(player);
             playerDataComponent.incrementBountyKillCount(entityDataComponent.getSpoornBountyTier());
+
+            // Sync new player data to clients
             SpoornBountyEntityRegistry.PLAYER_DATA.sync(player);
         }
     }
