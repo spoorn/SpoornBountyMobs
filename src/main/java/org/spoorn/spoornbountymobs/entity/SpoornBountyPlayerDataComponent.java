@@ -23,6 +23,7 @@ public class SpoornBountyPlayerDataComponent implements PlayerDataComponent, Aut
     private static final String LEGENDARY_COUNT = "legendaryKillCount";
     private static final String DOOM_COUNT = "doomKillCount";
     private static final String BOUNTY_SCORE = "bountyScore";
+    private static final String HIGHEST_BOUNTY_HUNTER_TIER = "highestBountyTier";
 
     private Object provider;
     @Getter
@@ -39,6 +40,8 @@ public class SpoornBountyPlayerDataComponent implements PlayerDataComponent, Aut
     private int doomKillCount;
     @Getter @Setter
     private double bountyScore;
+    @Getter @Setter
+    private int highestBountyHunterTier;
 
     public SpoornBountyPlayerDataComponent(Object provider) {
         this.provider = provider;
@@ -85,6 +88,7 @@ public class SpoornBountyPlayerDataComponent implements PlayerDataComponent, Aut
         this.legendaryKillCount = tag.getInt(LEGENDARY_COUNT);
         this.doomKillCount = tag.getInt(DOOM_COUNT);
         this.bountyScore = tag.getDouble(BOUNTY_SCORE);
+        this.highestBountyHunterTier = tag.getInt(HIGHEST_BOUNTY_HUNTER_TIER);
     }
 
     @Override
@@ -96,5 +100,6 @@ public class SpoornBountyPlayerDataComponent implements PlayerDataComponent, Aut
         tag.putInt(LEGENDARY_COUNT, this.legendaryKillCount);
         tag.putInt(DOOM_COUNT, this.doomKillCount);
         tag.putDouble(BOUNTY_SCORE, this.bountyScore);
+        tag.putInt(HIGHEST_BOUNTY_HUNTER_TIER, this.highestBountyHunterTier);
     }
 }

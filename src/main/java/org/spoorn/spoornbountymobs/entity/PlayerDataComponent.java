@@ -28,4 +28,7 @@ public interface PlayerDataComponent extends ComponentV3 {
 
     double getBountyScore();
     void setBountyScore(double bountyScore);
+
+    int getHighestBountyHunterTier();
+    void setHighestBountyHunterTier(int tier);
 }

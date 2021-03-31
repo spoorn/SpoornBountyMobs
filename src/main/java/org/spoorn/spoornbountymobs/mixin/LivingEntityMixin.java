@@ -35,13 +35,13 @@ public abstract class LivingEntityMixin {
                 + entityDataComponent.getBonusBountyTierHealth());
         } else if (SpoornBountyMobsUtil.isPlayerEntity(livingEntity)) {
             PlayerEntity player = (PlayerEntity) livingEntity;
-            // Add bonus health to player based on bounty hunter tier
-            int currTier = SpoornBountyMobsUtil.getBountyHunterTier(player);
+            // Add bonus health to player based on their highest bounty hunter tier
+            int highestTier = SpoornBountyMobsUtil.getPlayerDataComponent(player).getHighestBountyHunterTier();
             //System.out.println("old val: " + cir.getReturnValue());
             //System.out.println("maxhealth: " + (cir.getReturnValue() +
             //        ((float)ModConfig.get().playerBonusHealthPerBountyHunterTier * currTier)));
             cir.setReturnValue(cir.getReturnValue() +
-                ((float)ModConfig.get().playerBonusHealthPerBountyHunterTier * currTier));
+                ((float)ModConfig.get().playerBonusHealthPerBountyHunterTier * highestTier));
         }
     }
 }

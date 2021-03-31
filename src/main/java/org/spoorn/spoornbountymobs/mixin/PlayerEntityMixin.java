@@ -37,6 +37,13 @@ public class PlayerEntityMixin {
             PlayerDataComponent playerDataComponent = SpoornBountyMobsUtil.getPlayerDataComponent(player);
             playerDataComponent.incrementBountyKillCount(entityDataComponent.getSpoornBountyTier());
 
+            // Update player's highest tier if increased
+            int highestTier = playerDataComponent.getHighestBountyHunterTier();
+            int currTier = SpoornBountyMobsUtil.getBountyHunterTier(player);
+            if (currTier > highestTier) {
+                playerDataComponent.setHighestBountyHunterTier(currTier);
+            }
+
             // Sync new player data to clients
             SpoornBountyEntityRegistry.PLAYER_DATA.sync(player);
         }
