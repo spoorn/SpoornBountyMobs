@@ -9,7 +9,7 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import org.spoorn.spoornbountymobs.config.ModConfig;
+import org.spoorn.spoornbountymobs.entity.EntityDataComponent;
 import org.spoorn.spoornbountymobs.util.SpoornBountyMobsUtil;
 
 @Mixin(Entity.class)
@@ -29,12 +29,14 @@ public abstract class EntityMixin {
         Entity entity = (Entity) (Object) this;
         if (SpoornBountyMobsUtil.entityIsHostileAndHasBounty(entity)) {
             EntityDimensions dimensions = cir.getReturnValue();
-            EntityDimensions newDimensions = dimensions.scaled((float) ModConfig.get().bountyMobSizeScale);
+            EntityDataComponent entityDataComponent = SpoornBountyMobsUtil.getSpoornEntityDataComponent(entity);
+            float scale = entityDataComponent.getSpoornBountyTier().getMobSizeScale();
+            EntityDimensions newDimensions = dimensions.scaled(scale);
             this.dimensions = newDimensions;
             Box box = this.getBoundingBox();
             this.setBoundingBox(new Box(box.minX, box.minY, box.minZ, box.minX + (double)newDimensions.width,
                 box.minY + (double)newDimensions.height, box.minZ + (double)newDimensions.width));
-            cir.setReturnValue(dimensions.scaled((float) ModConfig.get().bountyMobSizeScale));
+            cir.setReturnValue(dimensions.scaled(scale));
         }
     }
 }

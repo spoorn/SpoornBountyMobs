@@ -8,7 +8,7 @@ import net.minecraft.entity.LivingEntity;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
-import org.spoorn.spoornbountymobs.config.ModConfig;
+import org.spoorn.spoornbountymobs.entity.EntityDataComponent;
 import org.spoorn.spoornbountymobs.util.SpoornBountyMobsUtil;
 
 @Mixin(LivingEntityRenderer.class)
@@ -22,7 +22,8 @@ public abstract class LivingEntityRendererMixin<T extends LivingEntity, M extend
         float f, float g, MatrixStack matrixStack2, VertexConsumerProvider vertexConsumerProvider, int i) {
 
         if (SpoornBountyMobsUtil.entityIsHostileAndHasBounty(livingEntity)) {
-            float scale = (float) ModConfig.get().bountyMobSizeScale;
+            EntityDataComponent entityDataComponent = SpoornBountyMobsUtil.getSpoornEntityDataComponent(livingEntity);
+            float scale = entityDataComponent.getSpoornBountyTier().getMobSizeScale();
             matrixStack.scale(-scale, -scale, scale);
         } else {
             matrixStack.scale(x, y, z);

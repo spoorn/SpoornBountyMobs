@@ -14,9 +14,6 @@ public class ModConfig implements ConfigData {
     @Comment("Chance for mob to spawn with a bounty [1/value] [default = 100]")
     public int bountySpawnChance = 100;
 
-    @Comment("Bounty mob size scale [default = 2.0]")
-    public double bountyMobSizeScale = 2.0;
-
     @Comment("True if Bounty mobs should glow through walls permanently, else false [default = false]")
     public boolean bountyMobPermanentGlow = false;
 

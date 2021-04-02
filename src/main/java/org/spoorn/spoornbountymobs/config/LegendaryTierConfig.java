@@ -7,6 +7,9 @@ public class LegendaryTierConfig {
     @Comment("Spawn weight of this tier (higher number is higher chance of spawn) [default = 3]")
     public int spawnChance = 3;
 
+    @Comment("This tier's Mob size scale [default = 3.0]")
+    public double mobSizeScale = 3.0;
+
     @Comment("Base bonus health for this tier [default = 60]")
     public int baseBonusHealth = 60;
 

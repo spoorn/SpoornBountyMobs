@@ -7,6 +7,9 @@ public class UncommonTierConfig {
     @Comment("Spawn weight of this tier (higher number is higher chance of spawn) [default = 15]")
     public int spawnChance = 15;
 
+    @Comment("This tier's Mob size scale [default = 1.75]")
+    public double mobSizeScale = 1.75;
+
     @Comment("Base bonus health for this tier [default = 30]")
     public int baseBonusHealth = 30;
 

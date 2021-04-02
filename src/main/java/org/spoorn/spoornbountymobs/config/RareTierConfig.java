@@ -7,6 +7,9 @@ public class RareTierConfig {
     @Comment("Spawn weight of this tier (higher number is higher chance of spawn) [default = 10]")
     public int spawnChance = 10;
 
+    @Comment("This tier's Mob size scale [default = 2.0]")
+    public double mobSizeScale = 2.0;
+
     @Comment("Base bonus health for this tier [default = 40]")
     public int baseBonusHealth = 40;
 

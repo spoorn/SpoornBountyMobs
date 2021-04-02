@@ -25,6 +25,8 @@ public final class SpoornBountyTier {
     @Getter
     private double weight;
     @Getter
+    private float mobSizeScale;
+    @Getter
     private double bountyScoreScale;
     @Getter
     private float maxBaseHealthIncrease;
@@ -37,11 +39,12 @@ public final class SpoornBountyTier {
     @Getter
     private double milestoneDamageIncrease;
 
-    private SpoornBountyTier(SpoornBountyTierTypes tierType, int weight, double bountyScoreScale,
+    private SpoornBountyTier(SpoornBountyTierTypes tierType, int weight, float mobSizeScale, double bountyScoreScale,
         float maxBaseHealthIncrease, int experienceScale, double minBaseDamageIncrease, double maxBaseDamageIncrease,
         double milestoneDamageIncrease) {
         this.tierType = tierType;
         this.weight = weight;
+        this.mobSizeScale = mobSizeScale;
         this.bountyScoreScale = bountyScoreScale;
         this.maxBaseHealthIncrease = maxBaseHealthIncrease;
         this.experienceScale = experienceScale;
@@ -58,18 +61,18 @@ public final class SpoornBountyTier {
         EpicTierConfig epicConfig = ModConfig.get().EPIC_TIER;
         LegendaryTierConfig legendaryConfig = ModConfig.get().LEGENDARY_TIER;
         DoomTierConfig doomConfig = ModConfig.get().DOOM_TIER;
-        COMMON = new SpoornBountyTier(COMMON_TIER, commonConfig.spawnChance, 1, commonConfig.baseBonusHealth,
-            commonConfig.experienceScale, 0, 1, commonConfig.milestoneDamageIncrease);
-        UNCOMMON = new SpoornBountyTier(UNCOMMON_TIER, uncommonConfig.spawnChance, 2, uncommonConfig.baseBonusHealth,
-            uncommonConfig.experienceScale, 1, 2, uncommonConfig.milestoneDamageIncrease);
-        RARE = new SpoornBountyTier(RARE_TIER, rareConfig.spawnChance, 4, rareConfig.baseBonusHealth,
-            rareConfig.experienceScale, 2, 3, rareConfig.milestoneDamageIncrease);
-        EPIC = new SpoornBountyTier(EPIC_TIER, epicConfig.spawnChance, 5, epicConfig.baseBonusHealth,
-            epicConfig.experienceScale, 3, 4, epicConfig.milestoneDamageIncrease);
-        LEGENDARY = new SpoornBountyTier(LEGENDARY_TIER, legendaryConfig.spawnChance, 7, legendaryConfig.baseBonusHealth,
-            legendaryConfig.experienceScale, 4, 5, legendaryConfig.milestoneDamageIncrease);
-        DOOM = new SpoornBountyTier(DOOM_TIER, doomConfig.spawnChance, 8, doomConfig.baseBonusHealth,
-            doomConfig.experienceScale, 5, 6, doomConfig.milestoneDamageIncrease);
+        COMMON = new SpoornBountyTier(COMMON_TIER, commonConfig.spawnChance, (float)commonConfig.mobSizeScale, 1,
+            commonConfig.baseBonusHealth, commonConfig.experienceScale, 0, 1, commonConfig.milestoneDamageIncrease);
+        UNCOMMON = new SpoornBountyTier(UNCOMMON_TIER, uncommonConfig.spawnChance, (float)uncommonConfig.mobSizeScale, 2,
+            uncommonConfig.baseBonusHealth, uncommonConfig.experienceScale, 1, 2, uncommonConfig.milestoneDamageIncrease);
+        RARE = new SpoornBountyTier(RARE_TIER, rareConfig.spawnChance, (float)rareConfig.mobSizeScale, 4,
+            rareConfig.baseBonusHealth, rareConfig.experienceScale, 2, 3, rareConfig.milestoneDamageIncrease);
+        EPIC = new SpoornBountyTier(EPIC_TIER, epicConfig.spawnChance, (float)epicConfig.mobSizeScale, 5,
+            epicConfig.baseBonusHealth, epicConfig.experienceScale, 3, 4, epicConfig.milestoneDamageIncrease);
+        LEGENDARY = new SpoornBountyTier(LEGENDARY_TIER, legendaryConfig.spawnChance, (float)legendaryConfig.mobSizeScale,
+            7, legendaryConfig.baseBonusHealth, legendaryConfig.experienceScale, 4, 5, legendaryConfig.milestoneDamageIncrease);
+        DOOM = new SpoornBountyTier(DOOM_TIER, doomConfig.spawnChance, (float)doomConfig.mobSizeScale, 8,
+            doomConfig.baseBonusHealth, doomConfig.experienceScale, 5, 6, doomConfig.milestoneDamageIncrease);
     }
 
     public static SpoornBountyTier fromValue(SpoornBountyTierTypes spoornBountyTierTypes) {
