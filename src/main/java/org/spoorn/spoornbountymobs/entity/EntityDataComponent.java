@@ -23,4 +23,25 @@ public interface EntityDataComponent extends ComponentV3 {
 
     float getBonusBountyTierHealth();
     void setBonusBountyTierHealth(float bonusHealth);
+
+    boolean hasWeaknessAttack();
+    void setHasWeaknessAttack(boolean hasWeaknessSkill);
+
+    boolean hasWitherAttack();
+    void setHasWitherAttack(boolean hasWitherSkill);
+
+    boolean hasBlindnessAttack();
+    void setHasBlindnessAttack(boolean hasBlindnessAttack);
+
+    boolean hasPoisonAttack();
+    void setHasPoisonAttack(boolean hasPoisonAttack);
+
+    boolean hasSlownessAttack();
+    void setHasSlownessAttack(boolean hasSlownessAttack);
+
+    boolean hasHungerAttack();
+    void setHasHungerAttack(boolean hasHungerAttack);
+
+    boolean hasBurningAttack();
+    void setHasBurningAttack(boolean hasBurningAttack);
 }

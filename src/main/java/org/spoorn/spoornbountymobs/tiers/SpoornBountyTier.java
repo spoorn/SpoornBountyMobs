@@ -38,10 +38,30 @@ public final class SpoornBountyTier {
     private double maxBaseDamageIncrease;
     @Getter
     private double milestoneDamageIncrease;
+    @Getter
+    private float chanceWeaknessAttack;
+    @Getter
+    private float chanceWitherAttack;
+    @Getter
+    private float chanceBlindnessAttack;
+    @Getter
+    private float chancePoisonAttack;
+    @Getter
+    private float chanceSlownessAttack;
+    @Getter
+    private float chanceHungerAttack;
+    @Getter
+    private float chanceBurningAttack;
+    @Getter
+    private float chanceResistance;
+    @Getter
+    private float chanceRegeneration;
 
     private SpoornBountyTier(SpoornBountyTierTypes tierType, int weight, float mobSizeScale, double bountyScoreScale,
         float maxBaseHealthIncrease, int experienceScale, double minBaseDamageIncrease, double maxBaseDamageIncrease,
-        double milestoneDamageIncrease) {
+        double milestoneDamageIncrease, float chanceWeaknessAttack, float chanceWitherAttack, float chanceBlindnessAttack,
+        float chancePoisonAttack, float chanceSlownessAttack, float chanceHungerAttack, float chanceBurningAttack,
+        float chanceResistance, float chanceRegeneration) {
         this.tierType = tierType;
         this.weight = weight;
         this.mobSizeScale = mobSizeScale;
@@ -51,6 +71,15 @@ public final class SpoornBountyTier {
         this.minBaseDamageIncrease = minBaseDamageIncrease;
         this.maxBaseDamageIncrease = maxBaseDamageIncrease;
         this.milestoneDamageIncrease = milestoneDamageIncrease;
+        this.chanceWeaknessAttack = chanceWeaknessAttack;
+        this.chanceWitherAttack = chanceWitherAttack;
+        this.chanceBlindnessAttack = chanceBlindnessAttack;
+        this.chancePoisonAttack = chancePoisonAttack;
+        this.chanceSlownessAttack = chanceSlownessAttack;
+        this.chanceHungerAttack = chanceHungerAttack;
+        this.chanceBurningAttack = chanceBurningAttack;
+        this.chanceResistance = chanceResistance;
+        this.chanceRegeneration = chanceRegeneration;
     }
 
     // Lazy initialization of static values so that we can wait for ModConfig to get initialized first
@@ -62,17 +91,23 @@ public final class SpoornBountyTier {
         LegendaryTierConfig legendaryConfig = ModConfig.get().LEGENDARY_TIER;
         DoomTierConfig doomConfig = ModConfig.get().DOOM_TIER;
         COMMON = new SpoornBountyTier(COMMON_TIER, commonConfig.spawnChance, (float)commonConfig.mobSizeScale, 1,
-            commonConfig.baseBonusHealth, commonConfig.experienceScale, 0, 1, commonConfig.milestoneDamageIncrease);
+            commonConfig.baseBonusHealth, commonConfig.experienceScale, 0, 1, commonConfig.milestoneDamageIncrease,
+            0.05f, 0.0f, 0.0f, 0.05f, 0.05f, 0.0f, 0.0f, 0.0f, 0.0f);
         UNCOMMON = new SpoornBountyTier(UNCOMMON_TIER, uncommonConfig.spawnChance, (float)uncommonConfig.mobSizeScale, 2,
-            uncommonConfig.baseBonusHealth, uncommonConfig.experienceScale, 1, 2, uncommonConfig.milestoneDamageIncrease);
+            uncommonConfig.baseBonusHealth, uncommonConfig.experienceScale, 1, 2, uncommonConfig.milestoneDamageIncrease,
+            0.05f, 0.0f, 0.0f, 0.05f, 0.05f, 0.05f, 0.0f, 0.05f, 0.05f);
         RARE = new SpoornBountyTier(RARE_TIER, rareConfig.spawnChance, (float)rareConfig.mobSizeScale, 4,
-            rareConfig.baseBonusHealth, rareConfig.experienceScale, 2, 3, rareConfig.milestoneDamageIncrease);
+            rareConfig.baseBonusHealth, rareConfig.experienceScale, 2, 3, rareConfig.milestoneDamageIncrease,
+            0.1f, 0.05f, 0.05f, 0.1f, 0.05f, 0.05f, 0.0f, 0.1f, 0.1f);
         EPIC = new SpoornBountyTier(EPIC_TIER, epicConfig.spawnChance, (float)epicConfig.mobSizeScale, 5,
-            epicConfig.baseBonusHealth, epicConfig.experienceScale, 3, 4, epicConfig.milestoneDamageIncrease);
+            epicConfig.baseBonusHealth, epicConfig.experienceScale, 3, 4, epicConfig.milestoneDamageIncrease,
+            0.15f, 0.1f, 0.05f, 0.1f, 0.1f, 0.1f, 0.0f, 0.15f, 0.15f);
         LEGENDARY = new SpoornBountyTier(LEGENDARY_TIER, legendaryConfig.spawnChance, (float)legendaryConfig.mobSizeScale,
-            7, legendaryConfig.baseBonusHealth, legendaryConfig.experienceScale, 4, 5, legendaryConfig.milestoneDamageIncrease);
+            7, legendaryConfig.baseBonusHealth, legendaryConfig.experienceScale, 4, 5, legendaryConfig.milestoneDamageIncrease,
+            0.2f, 0.15f, 0.05f, 0.15f, 0.15f, 0.15f, 0.0f, 0.2f, 0.2f);
         DOOM = new SpoornBountyTier(DOOM_TIER, doomConfig.spawnChance, (float)doomConfig.mobSizeScale, 8,
-            doomConfig.baseBonusHealth, doomConfig.experienceScale, 5, 6, doomConfig.milestoneDamageIncrease);
+            doomConfig.baseBonusHealth, doomConfig.experienceScale, 5, 6, doomConfig.milestoneDamageIncrease,
+            0.25f, 0.2f, 0.05f, 0.2f, 0.2f, 0.2f, 0.2f, 0.25f, 0.25f);
     }
 
     public static SpoornBountyTier fromValue(SpoornBountyTierTypes spoornBountyTierTypes) {
