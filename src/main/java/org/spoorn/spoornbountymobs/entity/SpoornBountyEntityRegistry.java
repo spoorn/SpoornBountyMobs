@@ -51,7 +51,6 @@ public class SpoornBountyEntityRegistry implements EntityComponentInitializer {
                         SpoornBountyMobsUtil.getSpoornEntityDataComponent(hostileEntity);
                 if (!component.hasTracked() && (SpoornBountyMobsUtil.RANDOM.nextFloat() < (1.0/ ModConfig.get().bountySpawnChance))) {
                     // Set Entity data
-                    component.track();
                     component.setHasBounty(true);
                     component.setBonusBountyTierHealth(SpoornBountyMobsUtil.getHealthIncreaseFromBountyScore(player, hostileEntity));
 
@@ -105,6 +104,9 @@ public class SpoornBountyEntityRegistry implements EntityComponentInitializer {
                         hostileEntity.addStatusEffect(SpoornBountyMobsUtil.getStatusEffectInstanceMaxDuration(StatusEffects.REGENERATION, 1));
                     }
                 }
+
+                // Set entity as tracked
+                component.track();
             }
         });
     }
