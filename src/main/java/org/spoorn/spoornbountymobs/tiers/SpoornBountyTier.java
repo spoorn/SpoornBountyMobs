@@ -92,22 +92,22 @@ public final class SpoornBountyTier {
         DoomTierConfig doomConfig = ModConfig.get().DOOM_TIER;
         COMMON = new SpoornBountyTier(COMMON_TIER, commonConfig.spawnChance, (float)commonConfig.mobSizeScale, 1,
             commonConfig.baseBonusHealth, commonConfig.experienceScale, 0, 1, commonConfig.milestoneDamageIncrease,
-            0.05f, 0.0f, 0.0f, 0.05f, 0.05f, 0.0f, 0.0f, 0.0f, 0.0f);
+            0.1f, 0.05f, 0.0f, 0.1f, 0.1f, 0.05f, 0.0f, 0.0f, 0.0f);
         UNCOMMON = new SpoornBountyTier(UNCOMMON_TIER, uncommonConfig.spawnChance, (float)uncommonConfig.mobSizeScale, 2,
             uncommonConfig.baseBonusHealth, uncommonConfig.experienceScale, 1, 2, uncommonConfig.milestoneDamageIncrease,
-            0.05f, 0.0f, 0.0f, 0.05f, 0.05f, 0.05f, 0.0f, 0.05f, 0.05f);
+            0.15f, 0.1f, 0.0f, 0.1f, 0.1f, 0.05f, 0.0f, 0.1f, 0.1f);
         RARE = new SpoornBountyTier(RARE_TIER, rareConfig.spawnChance, (float)rareConfig.mobSizeScale, 4,
             rareConfig.baseBonusHealth, rareConfig.experienceScale, 2, 3, rareConfig.milestoneDamageIncrease,
-            0.1f, 0.05f, 0.05f, 0.1f, 0.05f, 0.05f, 0.0f, 0.1f, 0.1f);
+            0.2f, 0.15f, 0.05f, 0.15f, 0.15f, 0.1f, 0.0f, 0.15f, 0.15f);
         EPIC = new SpoornBountyTier(EPIC_TIER, epicConfig.spawnChance, (float)epicConfig.mobSizeScale, 5,
             epicConfig.baseBonusHealth, epicConfig.experienceScale, 3, 4, epicConfig.milestoneDamageIncrease,
-            0.15f, 0.1f, 0.05f, 0.1f, 0.1f, 0.1f, 0.0f, 0.15f, 0.15f);
+            0.2f, 0.2f, 0.1f, 0.2f, 0.2f, 0.15f, 0.0f, 0.2f, 0.2f);
         LEGENDARY = new SpoornBountyTier(LEGENDARY_TIER, legendaryConfig.spawnChance, (float)legendaryConfig.mobSizeScale,
             7, legendaryConfig.baseBonusHealth, legendaryConfig.experienceScale, 4, 5, legendaryConfig.milestoneDamageIncrease,
-            0.2f, 0.15f, 0.05f, 0.15f, 0.15f, 0.15f, 0.0f, 0.2f, 0.2f);
+            0.25f, 0.25f, 0.1f, 0.25f, 0.2f, 0.2f, 0.0f, 0.25f, 0.25f);
         DOOM = new SpoornBountyTier(DOOM_TIER, doomConfig.spawnChance, (float)doomConfig.mobSizeScale, 8,
             doomConfig.baseBonusHealth, doomConfig.experienceScale, 5, 6, doomConfig.milestoneDamageIncrease,
-            0.25f, 0.2f, 0.05f, 0.2f, 0.2f, 0.2f, 0.2f, 0.25f, 0.25f);
+            0.3f, 0.3f, 0.15f, 0.3f, 0.3f, 0.3f, 0.2f, 0.3f, 0.3f);
     }
 
     public static SpoornBountyTier fromValue(SpoornBountyTierTypes spoornBountyTierTypes) {

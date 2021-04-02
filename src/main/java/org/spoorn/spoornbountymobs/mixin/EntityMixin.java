@@ -52,22 +52,22 @@ public abstract class EntityMixin {
             EntityDataComponent component = SpoornBountyMobsUtil.getSpoornEntityDataComponent(attacker);
             LivingEntity livingEntity = (LivingEntity) target;
             if (component.hasWeaknessAttack()) {
-                livingEntity.addStatusEffect(SpoornBountyMobsUtil.getStatusEffectInstance(StatusEffects.WEAKNESS, 200, 1));
+                livingEntity.addStatusEffect(SpoornBountyMobsUtil.getStatusEffectInstance(StatusEffects.WEAKNESS, 100, 1));
             }
             if (component.hasWitherAttack()) {
-                livingEntity.addStatusEffect(SpoornBountyMobsUtil.getStatusEffectInstance(StatusEffects.WITHER, 200, 1));
+                livingEntity.addStatusEffect(SpoornBountyMobsUtil.getStatusEffectInstance(StatusEffects.WITHER, 100, 1));
             }
             if (component.hasBlindnessAttack()) {
-                livingEntity.addStatusEffect(SpoornBountyMobsUtil.getStatusEffectInstance(StatusEffects.BLINDNESS, 200, 1));
+                livingEntity.addStatusEffect(SpoornBountyMobsUtil.getStatusEffectInstance(StatusEffects.BLINDNESS, 100, 1));
             }
             if (component.hasPoisonAttack()) {
-                livingEntity.addStatusEffect(SpoornBountyMobsUtil.getStatusEffectInstance(StatusEffects.POISON, 200, 1));
+                livingEntity.addStatusEffect(SpoornBountyMobsUtil.getStatusEffectInstance(StatusEffects.POISON, 100, 1));
             }
             if (component.hasSlownessAttack()) {
-                livingEntity.addStatusEffect(SpoornBountyMobsUtil.getStatusEffectInstance(StatusEffects.SLOWNESS, 200, 1));
+                livingEntity.addStatusEffect(SpoornBountyMobsUtil.getStatusEffectInstance(StatusEffects.SLOWNESS, 100, 1));
             }
             if (component.hasHungerAttack()) {
-                livingEntity.addStatusEffect(SpoornBountyMobsUtil.getStatusEffectInstance(StatusEffects.HUNGER, 200, 1));
+                livingEntity.addStatusEffect(SpoornBountyMobsUtil.getStatusEffectInstance(StatusEffects.HUNGER, 100, 1));
             }
             if (component.hasBurningAttack()) {
                 livingEntity.setOnFireFor(5);
