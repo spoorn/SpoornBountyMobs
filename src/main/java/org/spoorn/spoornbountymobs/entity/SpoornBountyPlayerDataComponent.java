@@ -4,6 +4,7 @@ import dev.onyxstudios.cca.api.v3.component.sync.AutoSyncedComponent;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundTag;
 import org.spoorn.spoornbountymobs.tiers.SpoornBountyTier;
 
@@ -12,7 +13,6 @@ import org.spoorn.spoornbountymobs.tiers.SpoornBountyTier;
  *
  * TODO: Optimize network sync data.
  */
-@ToString
 public class SpoornBountyPlayerDataComponent implements PlayerDataComponent, AutoSyncedComponent {
 
     // These should never change or there will be backwards incompatibility
@@ -101,5 +101,29 @@ public class SpoornBountyPlayerDataComponent implements PlayerDataComponent, Aut
         tag.putInt(DOOM_COUNT, this.doomKillCount);
         tag.putDouble(BOUNTY_SCORE, this.bountyScore);
         tag.putInt(HIGHEST_BOUNTY_HUNTER_TIER, this.highestBountyHunterTier);
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(((PlayerEntity)provider).getDisplayName().getString());
+        stringBuilder.append("(commonKillCount=");
+        stringBuilder.append(this.commonKillCount);
+        stringBuilder.append(", uncommonKillCount=");
+        stringBuilder.append(this.uncommonKillCount);
+        stringBuilder.append(", rareKillCount=");
+        stringBuilder.append(this.rareKillCount);
+        stringBuilder.append(", epicKillCount=");
+        stringBuilder.append(this.epicKillCount);
+        stringBuilder.append(", legendaryKillCount=");
+        stringBuilder.append(this.legendaryKillCount);
+        stringBuilder.append(", doomKillCount=");
+        stringBuilder.append(this.doomKillCount);
+        stringBuilder.append(", bountyScore=");
+        stringBuilder.append(this.bountyScore);
+        stringBuilder.append(", highestBountyHunterTier=");
+        stringBuilder.append(this.highestBountyHunterTier);
+        stringBuilder.append(")");
+        return stringBuilder.toString();
     }
 }
