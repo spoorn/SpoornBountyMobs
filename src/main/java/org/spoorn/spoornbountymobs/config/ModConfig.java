@@ -27,6 +27,10 @@ public class ModConfig implements ConfigData {
     @ConfigEntry.BoundedDiscrete(min=0, max=Long.MAX_VALUE)
     public double playerBonusHealthPerBountyHunterTier = 2;
 
+    @Comment("Bonus damage for Player per Bounty Hunter tier [default = 0.5]")
+    @ConfigEntry.BoundedDiscrete(min=0, max=Long.MAX_VALUE)
+    public double playerBonusDamagePerBountyHunterTier = 0.5;
+
     @Comment("Percentage of player's Bounty score LOST on death [default = 20, min=0, max=100]")
     @ConfigEntry.BoundedDiscrete(min=0, max=100)
     public double playerDeathBountyScorePenalty = 20;

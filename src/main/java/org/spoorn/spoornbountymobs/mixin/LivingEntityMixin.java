@@ -3,6 +3,7 @@ package org.spoorn.spoornbountymobs.mixin;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.entity.attribute.EntityAttributeInstance;
+import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.player.PlayerEntity;
 import org.jetbrains.annotations.Nullable;
@@ -14,6 +15,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import org.spoorn.spoornbountymobs.config.ModConfig;
 import org.spoorn.spoornbountymobs.entity.EntityDataComponent;
+import org.spoorn.spoornbountymobs.entity.PlayerDataComponent;
 import org.spoorn.spoornbountymobs.util.SpoornBountyMobsUtil;
 
 @Mixin(LivingEntity.class)
@@ -42,6 +44,21 @@ public abstract class LivingEntityMixin {
             //        ((float)ModConfig.get().playerBonusHealthPerBountyHunterTier * currTier)));
             cir.setReturnValue(cir.getReturnValue() +
                 ((float)ModConfig.get().playerBonusHealthPerBountyHunterTier * highestTier));
+        }
+    }
+
+    /**
+     * Increase player attack based on how player's Bounty Hunter tier.
+     */
+    @Inject(method = "getAttributeValue", at = @At(value = "TAIL"), cancellable = true)
+    public void overridePlayerAttack(EntityAttribute attribute, CallbackInfoReturnable<Double> cir) {
+        if (attribute.equals(EntityAttributes.GENERIC_ATTACK_DAMAGE)) {
+            LivingEntity livingEntity = (LivingEntity) (Object) this;
+            if (livingEntity instanceof PlayerEntity) {
+                double bonusDamage = ModConfig.get().playerBonusDamagePerBountyHunterTier *
+                    SpoornBountyMobsUtil.getBountyHunterTier((PlayerEntity) livingEntity);
+                cir.setReturnValue(cir.getReturnValue() + bonusDamage);
+            }
         }
     }
 }
