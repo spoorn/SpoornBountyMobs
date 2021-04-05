@@ -110,6 +110,13 @@ public class SpoornBountyMobsUtil {
     }
 
     /**
+     * Get player's bonus damage.
+     */
+    public static double getPlayerBonusDamage(PlayerEntity player) {
+        return ModConfig.get().playerBonusDamagePerBountyHunterTier * getBountyHunterTier(player);
+    }
+
+    /**
      * Bounty score calculated from weighted sum of tier kill counts.
      */
     private static double calculateBountyScore(PlayerEntity player) {

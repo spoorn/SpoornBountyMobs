@@ -3,10 +3,11 @@ package org.spoorn.spoornbountymobs.entity;
 import dev.onyxstudios.cca.api.v3.component.sync.AutoSyncedComponent;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundTag;
+import org.spoorn.spoornbountymobs.config.ModConfig;
 import org.spoorn.spoornbountymobs.tiers.SpoornBountyTier;
+import org.spoorn.spoornbountymobs.util.SpoornBountyMobsUtil;
 
 /**
  * Player data.
@@ -123,6 +124,12 @@ public class SpoornBountyPlayerDataComponent implements PlayerDataComponent, Aut
         stringBuilder.append(this.bountyScore);
         stringBuilder.append(", highestBountyHunterTier=");
         stringBuilder.append(this.highestBountyHunterTier);
+        stringBuilder.append(", currentBountyHunterTier=");
+        stringBuilder.append(SpoornBountyMobsUtil.getBountyHunterTier((PlayerEntity) this.provider));
+        stringBuilder.append(", bonusHealth=");
+        stringBuilder.append((float) ModConfig.get().playerBonusHealthPerBountyHunterTier * this.highestBountyHunterTier);
+        stringBuilder.append(", bonusDamage=");
+        stringBuilder.append(SpoornBountyMobsUtil.getPlayerBonusDamage((PlayerEntity) this.provider));
         stringBuilder.append(")");
         return stringBuilder.toString();
     }

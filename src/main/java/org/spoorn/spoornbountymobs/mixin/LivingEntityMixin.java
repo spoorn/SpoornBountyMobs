@@ -25,6 +25,10 @@ public abstract class LivingEntityMixin {
 
     @Shadow @Final private static TrackedData<Float> HEALTH;
 
+    /**
+     * Change entity's max health based on Bounty attributes such as Bounty Hunter Tier for player, or Bounty Tier for
+     * mob.
+     */
     @Inject(method = "getMaxHealth", at = @At(value = "TAIL"), cancellable = true)
     public void setMaxHealthForBountyMob(CallbackInfoReturnable<Float> cir) {
         LivingEntity livingEntity = (LivingEntity) (Object) this;
@@ -55,8 +59,7 @@ public abstract class LivingEntityMixin {
         if (attribute.equals(EntityAttributes.GENERIC_ATTACK_DAMAGE)) {
             LivingEntity livingEntity = (LivingEntity) (Object) this;
             if (livingEntity instanceof PlayerEntity) {
-                double bonusDamage = ModConfig.get().playerBonusDamagePerBountyHunterTier *
-                    SpoornBountyMobsUtil.getBountyHunterTier((PlayerEntity) livingEntity);
+                double bonusDamage = SpoornBountyMobsUtil.getPlayerBonusDamage((PlayerEntity) livingEntity);
                 cir.setReturnValue(cir.getReturnValue() + bonusDamage);
             }
         }
