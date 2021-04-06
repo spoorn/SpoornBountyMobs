@@ -10,6 +10,9 @@ public class EpicTierConfig {
     @Comment("This tier's Mob size scale [default = 2.3]")
     public double mobSizeScale = 2.3;
 
+    @Comment("This tier's mob outline color in Decimal format [default = 2949204]")
+    public int glowColor = 2949204;
+
     @Comment("Base bonus health for this tier [default = 50]")
     public int baseBonusHealth = 50;
 

@@ -10,6 +10,9 @@ public class CommonTierConfig {
     @Comment("This tier's Mob size scale [default = 1.5]")
     public double mobSizeScale = 1.5;
 
+    @Comment("This tier's mob outline color in Decimal format [default = 20228]")
+    public int glowColor = 20228;
+
     @Comment("Base bonus health for this tier [default = 20]")
     public int baseBonusHealth = 20;
 

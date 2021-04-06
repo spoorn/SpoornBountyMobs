@@ -10,6 +10,9 @@ public class LegendaryTierConfig {
     @Comment("This tier's Mob size scale [default = 2.7]")
     public double mobSizeScale = 2.7;
 
+    @Comment("This tier's mob outline color in Decimal format [default = 32093]")
+    public int glowColor = 32093;
+
     @Comment("Base bonus health for this tier [default = 60]")
     public int baseBonusHealth = 60;
 

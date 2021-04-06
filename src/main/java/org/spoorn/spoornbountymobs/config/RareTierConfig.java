@@ -10,6 +10,9 @@ public class RareTierConfig {
     @Comment("This tier's Mob size scale [default = 2.0]")
     public double mobSizeScale = 2.0;
 
+    @Comment("This tier's mob outline color in Decimal format [default = 3179]")
+    public int glowColor = 3179;
+
     @Comment("Base bonus health for this tier [default = 40]")
     public int baseBonusHealth = 40;
 

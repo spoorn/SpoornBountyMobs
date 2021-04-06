@@ -10,6 +10,9 @@ public class UncommonTierConfig {
     @Comment("This tier's Mob size scale [default = 1.75]")
     public double mobSizeScale = 1.75;
 
+    @Comment("This tier's mob outline color in Decimal format [default = 8729344]")
+    public int glowColor = 8729344;
+
     @Comment("Base bonus health for this tier [default = 30]")
     public int baseBonusHealth = 30;
 

@@ -10,6 +10,9 @@ public class DoomTierConfig {
     @Comment("This tier's Mob size scale [default = 3.0]")
     public double mobSizeScale = 3.0;
 
+    @Comment("This tier's mob outline color in Decimal format [default = 7012352]")
+    public int glowColor = 7012352;
+
     @Comment("Base bonus health for this tier [default = 70]")
     public int baseBonusHealth = 70;
 
