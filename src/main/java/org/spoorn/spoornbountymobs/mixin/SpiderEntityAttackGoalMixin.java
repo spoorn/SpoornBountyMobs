@@ -17,7 +17,8 @@ public class SpiderEntityAttackGoalMixin {
     /**
      * Update entity's attack range based on dimensions if it has a bounty.
      */
-    @Inject(method = "getSquaredMaxAttackDistance", at = @At(value = "TAIL"), cancellable = true)
+    @Inject(method = "Lnet/minecraft/entity/mob/SpiderEntity$AttackGoal;getSquaredMaxAttackDistance(Lnet/minecraft/entity/LivingEntity;)D",
+        at = @At(value = "TAIL"), cancellable = true)
     private void changeAttackDistanceForBountyMobs(LivingEntity entity, CallbackInfoReturnable<Double> cir) {
         MeleeAttackGoalAccessorMixin meleeAttackGoal = (MeleeAttackGoalAccessorMixin) (Object) this;
         Entity mob = meleeAttackGoal.getMob();
