@@ -5,6 +5,7 @@ import org.spoorn.spoornbountymobs.command.CommandRegistry;
 import org.spoorn.spoornbountymobs.config.ModConfig;
 import org.spoorn.spoornbountymobs.entity.SpoornBountyEntityRegistry;
 import org.spoorn.spoornbountymobs.tiers.SpoornBountyTier;
+import org.spoorn.spoornbountymobs.util.SpoornBountyMobsUtil;
 
 public class SpoornBountyMobs implements ModInitializer {
 

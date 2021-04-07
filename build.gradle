@@ -45,6 +45,7 @@ dependencies {
 
     // Apache Commons
     implementation "org.apache.commons:commons-math3:${project.apache_commons_version}"
+    include "org.apache.commons:commons-math3:${project.apache_commons_version}"
 
     // Brigadier for commands
     compile 'com.mojang:brigadier:${project.brigadier_version}'
