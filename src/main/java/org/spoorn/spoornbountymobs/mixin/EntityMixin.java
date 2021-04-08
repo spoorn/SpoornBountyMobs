@@ -75,16 +75,4 @@ public abstract class EntityMixin {
             }
         }
     }
-
-    /**
-     * Change outline color for Bounty mobs.
-     */
-    @Inject(method = "getTeamColorValue", at = @At(value = "TAIL"), cancellable = true)
-    public void changeBountyMobOutlineColor(CallbackInfoReturnable<Integer> cir) {
-        Entity entity = (Entity) (Object) this;
-        if (SpoornBountyMobsUtil.entityIsHostileAndHasBounty(entity)) {
-            SpoornBountyTier tier = SpoornBountyMobsUtil.getSpoornEntityDataComponent(entity).getSpoornBountyTier();
-            cir.setReturnValue(tier.getGlowColor());
-        }
-    }
 }
