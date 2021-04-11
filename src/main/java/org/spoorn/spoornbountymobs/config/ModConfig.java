@@ -35,6 +35,9 @@ public class ModConfig implements ConfigData {
     @ConfigEntry.BoundedDiscrete(min=0, max=100)
     public double playerDeathBountyScorePenalty = 20;
 
+    @Comment("Set to false if you don't want potion particle effects on HUD from Bounty mob attacks [default = true]")
+    public boolean showBountyParticleEffects = true;
+
     @Comment("Common tier bounty mobs")
     @ConfigEntry.Gui.CollapsibleObject
     public CommonTierConfig COMMON_TIER = new CommonTierConfig();
