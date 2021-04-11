@@ -50,11 +50,15 @@ public class SpoornBountyMobsUtil {
     }
 
     public static StatusEffectInstance getStatusEffectInstance(StatusEffect statusEffect, int duration, int amplifier) {
-        return new StatusEffectInstance(statusEffect, duration, amplifier, ModConfig.get().showBountyParticleEffects, true);
+        return getStatusEffectInstance(statusEffect, duration, amplifier, ModConfig.get().showBountyParticleEffects);
+    }
+
+    public static StatusEffectInstance getStatusEffectInstance(StatusEffect statusEffect, int duration, int amplifier, boolean showParticles) {
+        return new StatusEffectInstance(statusEffect, duration, amplifier, false, showParticles, true);
     }
 
     public static StatusEffectInstance getStatusEffectInstanceMaxDuration(StatusEffect statusEffect, int amplifier) {
-        return new StatusEffectInstance(statusEffect, Integer.MAX_VALUE, amplifier, false, false);
+        return getStatusEffectInstance(statusEffect, Integer.MAX_VALUE, amplifier, false);
     }
 
     /**

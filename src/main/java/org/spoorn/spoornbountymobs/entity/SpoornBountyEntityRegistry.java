@@ -103,6 +103,9 @@ public class SpoornBountyEntityRegistry implements EntityComponentInitializer {
                     if (SpoornBountyMobsUtil.RANDOM.nextFloat() < tier.getChanceRegeneration()) {
                         hostileEntity.addStatusEffect(SpoornBountyMobsUtil.getStatusEffectInstanceMaxDuration(StatusEffects.REGENERATION, 1));
                     }
+                    if (SpoornBountyMobsUtil.RANDOM.nextFloat() < tier.getChanceSpeed()) {
+                        hostileEntity.addStatusEffect(SpoornBountyMobsUtil.getStatusEffectInstanceMaxDuration(StatusEffects.SPEED, 1));
+                    }
                 }
 
                 // Set entity as tracked
