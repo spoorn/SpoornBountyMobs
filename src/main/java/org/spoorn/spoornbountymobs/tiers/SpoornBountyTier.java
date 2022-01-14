@@ -1,14 +1,17 @@
 package org.spoorn.spoornbountymobs.tiers;
 
 import static org.spoorn.spoornbountymobs.tiers.SpoornBountyTierTypes.*;
+import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
-import org.spoorn.spoornbountymobs.config.*;
+import org.spoorn.spoornbountymobs.config.ModConfig;
+import org.spoorn.spoornbountymobs.config.tiers.*;
 
 /**
  * Bounty tiers to make bounties more dynamic.
  */
+@AllArgsConstructor
 @EqualsAndHashCode
 @ToString
 public final class SpoornBountyTier {
@@ -60,33 +63,6 @@ public final class SpoornBountyTier {
     private float chanceRegeneration;
     @Getter
     private float chanceSpeed;
-
-    private SpoornBountyTier(SpoornBountyTierTypes tierType, int weight, float mobSizeScale, int glowColor,
-        double bountyScoreScale, float maxBaseHealthIncrease, int experienceScale, double minBaseDamageIncrease,
-        double maxBaseDamageIncrease, double milestoneDamageIncrease, float chanceWeaknessAttack, float chanceWitherAttack,
-        float chanceBlindnessAttack, float chancePoisonAttack, float chanceSlownessAttack, float chanceHungerAttack,
-        float chanceBurningAttack, float chanceResistance, float chanceRegeneration, float chanceSpeed) {
-        this.tierType = tierType;
-        this.weight = weight;
-        this.mobSizeScale = mobSizeScale;
-        this.glowColor = glowColor;
-        this.bountyScoreScale = bountyScoreScale;
-        this.maxBaseHealthIncrease = maxBaseHealthIncrease;
-        this.experienceScale = experienceScale;
-        this.minBaseDamageIncrease = minBaseDamageIncrease;
-        this.maxBaseDamageIncrease = maxBaseDamageIncrease;
-        this.milestoneDamageIncrease = milestoneDamageIncrease;
-        this.chanceWeaknessAttack = chanceWeaknessAttack;
-        this.chanceWitherAttack = chanceWitherAttack;
-        this.chanceBlindnessAttack = chanceBlindnessAttack;
-        this.chancePoisonAttack = chancePoisonAttack;
-        this.chanceSlownessAttack = chanceSlownessAttack;
-        this.chanceHungerAttack = chanceHungerAttack;
-        this.chanceBurningAttack = chanceBurningAttack;
-        this.chanceResistance = chanceResistance;
-        this.chanceRegeneration = chanceRegeneration;
-        this.chanceSpeed = chanceSpeed;
-    }
 
     // Lazy initialization of static values so that we can wait for ModConfig to get initialized first
     public static void init() {

@@ -1,10 +1,10 @@
-package org.spoorn.spoornbountymobs.entity;
+package org.spoorn.spoornbountymobs.entity.component;
 
 import dev.onyxstudios.cca.api.v3.component.sync.AutoSyncedComponent;
 import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import org.spoorn.spoornbountymobs.config.ModConfig;
 import org.spoorn.spoornbountymobs.tiers.SpoornBountyTier;
 import org.spoorn.spoornbountymobs.util.SpoornBountyMobsUtil;
@@ -42,7 +42,7 @@ public class SpoornBountyPlayerDataComponent implements PlayerDataComponent, Aut
     @Getter @Setter
     private double bountyScore;
     @Getter @Setter
-    private int highestBountyHunterTier;
+    private int highestBountyHunterLevel;
 
     public SpoornBountyPlayerDataComponent(Object provider) {
         this.provider = provider;
@@ -81,7 +81,7 @@ public class SpoornBountyPlayerDataComponent implements PlayerDataComponent, Aut
     }
 
     @Override
-    public void readFromNbt(CompoundTag tag) {
+    public void readFromNbt(NbtCompound tag) {
         this.commonKillCount = tag.getInt(COMMON_COUNT);
         this.uncommonKillCount = tag.getInt(UNCOMMON_COUNT);
         this.rareKillCount = tag.getInt(RARE_COUNT);
@@ -89,11 +89,11 @@ public class SpoornBountyPlayerDataComponent implements PlayerDataComponent, Aut
         this.legendaryKillCount = tag.getInt(LEGENDARY_COUNT);
         this.doomKillCount = tag.getInt(DOOM_COUNT);
         this.bountyScore = tag.getDouble(BOUNTY_SCORE);
-        this.highestBountyHunterTier = tag.getInt(HIGHEST_BOUNTY_HUNTER_TIER);
+        this.highestBountyHunterLevel = tag.getInt(HIGHEST_BOUNTY_HUNTER_TIER);
     }
 
     @Override
-    public void writeToNbt(CompoundTag tag) {
+    public void writeToNbt(NbtCompound tag) {
         tag.putInt(COMMON_COUNT, this.commonKillCount);
         tag.putInt(UNCOMMON_COUNT, this.uncommonKillCount);
         tag.putInt(RARE_COUNT, this.rareKillCount);
@@ -101,7 +101,7 @@ public class SpoornBountyPlayerDataComponent implements PlayerDataComponent, Aut
         tag.putInt(LEGENDARY_COUNT, this.legendaryKillCount);
         tag.putInt(DOOM_COUNT, this.doomKillCount);
         tag.putDouble(BOUNTY_SCORE, this.bountyScore);
-        tag.putInt(HIGHEST_BOUNTY_HUNTER_TIER, this.highestBountyHunterTier);
+        tag.putInt(HIGHEST_BOUNTY_HUNTER_TIER, this.highestBountyHunterLevel);
     }
 
     @Override
@@ -122,12 +122,12 @@ public class SpoornBountyPlayerDataComponent implements PlayerDataComponent, Aut
         stringBuilder.append(this.doomKillCount);
         stringBuilder.append(", bountyScore=");
         stringBuilder.append(this.bountyScore);
-        stringBuilder.append(", highestBountyHunterTier=");
-        stringBuilder.append(this.highestBountyHunterTier);
-        stringBuilder.append(", currentBountyHunterTier=");
-        stringBuilder.append(SpoornBountyMobsUtil.getBountyHunterTier((PlayerEntity) this.provider));
+        stringBuilder.append(", highestBountyHunterLevel=");
+        stringBuilder.append(this.highestBountyHunterLevel);
+        stringBuilder.append(", currentBountyHunterLevel=");
+        stringBuilder.append(SpoornBountyMobsUtil.getBountyHunterLevel((PlayerEntity) this.provider));
         stringBuilder.append(", bonusHealth=");
-        stringBuilder.append((float) ModConfig.get().playerBonusHealthPerBountyHunterTier * this.highestBountyHunterTier);
+        stringBuilder.append((float) ModConfig.get().playerBonusHealthPerBountyHunterLevel * this.highestBountyHunterLevel);
         stringBuilder.append(", bonusDamage=");
         stringBuilder.append(SpoornBountyMobsUtil.getPlayerBonusDamage((PlayerEntity) this.provider));
         stringBuilder.append(")");

@@ -12,8 +12,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import org.spoorn.spoornbountymobs.entity.EntityDataComponent;
-import org.spoorn.spoornbountymobs.tiers.SpoornBountyTier;
+import org.spoorn.spoornbountymobs.entity.component.EntityDataComponent;
 import org.spoorn.spoornbountymobs.util.SpoornBountyMobsUtil;
 
 @Mixin(Entity.class)
@@ -40,18 +39,19 @@ public abstract class EntityMixin {
             Box box = this.getBoundingBox();
             this.setBoundingBox(new Box(box.minX, box.minY, box.minZ, box.minX + (double)newDimensions.width,
                 box.minY + (double)newDimensions.height, box.minZ + (double)newDimensions.width));
-            cir.setReturnValue(dimensions.scaled(scale));
+            cir.setReturnValue(newDimensions);
         }
     }
 
     /**
      * Apply mob status attacks.
      */
-    @Inject(method = "dealDamage", at=@At(value = "TAIL"))
+    @Inject(method = "applyDamageEffects", at=@At(value = "TAIL"))
     public void applyStatusEffects(LivingEntity attacker, Entity target, CallbackInfo ci) {
         if ((target instanceof LivingEntity) && SpoornBountyMobsUtil.entityIsHostileAndHasBounty(attacker)) {
             EntityDataComponent component = SpoornBountyMobsUtil.getSpoornEntityDataComponent(attacker);
             LivingEntity livingEntity = (LivingEntity) target;
+            // TODO: Make durations configurable
             if (component.hasWeaknessAttack()) {
                 livingEntity.addStatusEffect(SpoornBountyMobsUtil.getStatusEffectInstance(StatusEffects.WEAKNESS, 100, 1));
             }

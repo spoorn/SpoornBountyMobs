@@ -1,4 +1,4 @@
-package org.spoorn.spoornbountymobs.entity;
+package org.spoorn.spoornbountymobs.entity.component;
 
 import dev.onyxstudios.cca.api.v3.component.ComponentV3;
 import net.minecraft.util.Identifier;
@@ -21,8 +21,8 @@ public interface EntityDataComponent extends ComponentV3 {
     SpoornBountyTier getSpoornBountyTier();
     void setSpoornBountyTier(SpoornBountyTier spoornBountyTier);
 
-    float getBonusBountyTierHealth();
-    void setBonusBountyTierHealth(float bonusHealth);
+    float getBonusBountyLevelHealth();
+    void setBonusBountyLevelHealth(float bonusHealth);
 
     boolean hasWeaknessAttack();
     void setHasWeaknessAttack(boolean hasWeaknessSkill);

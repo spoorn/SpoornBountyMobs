@@ -22,11 +22,12 @@ public class MeleeAttackGoalMixin {
     /**
      * Update entity's attack range based on dimensions if it has a bounty.
      */
-    @Inject(method = "getSquaredMaxAttackDistance", at = @At(value = "TAIL"), cancellable = true)
+    // TODO: add back if needed
+    /*@Inject(method = "getSquaredMaxAttackDistance", at = @At(value = "TAIL"), cancellable = true)
     private void changeAttackDistanceForBountyMobs(LivingEntity entity, CallbackInfoReturnable<Double> cir) {
         if (SpoornBountyMobsUtil.entityIsHostileAndHasBounty(entity)) {
             cir.setReturnValue((double) (Math.sqrt(Math.pow(this.mob.getWidth()*2,2) + Math.pow(this.mob.getHeight()*2,2))*2
                     + entity.getWidth()));
         }
-    }
+    }*/
 }

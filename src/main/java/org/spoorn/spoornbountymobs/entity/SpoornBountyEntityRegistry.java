@@ -5,13 +5,16 @@ import dev.onyxstudios.cca.api.v3.component.ComponentKey;
 import dev.onyxstudios.cca.api.v3.component.ComponentRegistryV3;
 import dev.onyxstudios.cca.api.v3.entity.EntityComponentFactoryRegistry;
 import dev.onyxstudios.cca.api.v3.entity.EntityComponentInitializer;
+import dev.onyxstudios.cca.api.v3.entity.RespawnCopyStrategy;
 import lombok.extern.log4j.Log4j2;
-import nerdhub.cardinal.components.api.util.RespawnCopyStrategy;
 import net.fabricmc.fabric.api.networking.v1.EntityTrackingEvents;
-import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.mob.HostileEntity;
 import org.spoorn.spoornbountymobs.config.ModConfig;
+import org.spoorn.spoornbountymobs.entity.component.EntityDataComponent;
+import org.spoorn.spoornbountymobs.entity.component.PlayerDataComponent;
+import org.spoorn.spoornbountymobs.entity.component.SpoornBountyHostileEntityDataComponent;
+import org.spoorn.spoornbountymobs.entity.component.SpoornBountyPlayerDataComponent;
 import org.spoorn.spoornbountymobs.tiers.SpoornBountyTier;
 import org.spoorn.spoornbountymobs.util.SpoornBountyMobsUtil;
 
@@ -35,24 +38,24 @@ public class SpoornBountyEntityRegistry implements EntityComponentInitializer {
     @Override
     public void registerEntityComponentFactories(EntityComponentFactoryRegistry registry) {
         // Entity data
-        registry.registerFor(HostileEntity.class, HOSTILE_ENTITY_DATA, e -> new SpoornBountyHostileEntityDataComponent(e));
+        registry.registerFor(HostileEntity.class, HOSTILE_ENTITY_DATA, SpoornBountyHostileEntityDataComponent::new);
 
         // Player data, should be persisted across sessions
-        registry.registerForPlayers(PLAYER_DATA, player -> new SpoornBountyPlayerDataComponent(player), RespawnCopyStrategy.ALWAYS_COPY);
+        registry.registerForPlayers(PLAYER_DATA, SpoornBountyPlayerDataComponent::new, RespawnCopyStrategy.ALWAYS_COPY);
     }
 
     // On entity being tracked by a player, chance to mark the entity as having a bounty.  Update entity data
     private static void registerStartTrackingCallback() {
         EntityTrackingEvents.START_TRACKING.register((trackedEntity, player) -> {
-            double spawnChance = ModConfig.get().bountySpawnChance;
+            double spawnChance = ModConfig.get().bountyChance;
             if (spawnChance > 0 && SpoornBountyMobsUtil.isHostileEntity(trackedEntity)) {
                 HostileEntity hostileEntity = (HostileEntity) trackedEntity;
-                EntityDataComponent component =
-                        SpoornBountyMobsUtil.getSpoornEntityDataComponent(hostileEntity);
-                if (!component.hasTracked() && (SpoornBountyMobsUtil.RANDOM.nextFloat() < (1.0/ ModConfig.get().bountySpawnChance))) {
+                EntityDataComponent component = SpoornBountyMobsUtil.getSpoornEntityDataComponent(hostileEntity);
+
+                if (!component.hasTracked() && (SpoornBountyMobsUtil.RANDOM.nextFloat() < (1.0/ ModConfig.get().bountyChance))) {
                     // Set Entity data
                     component.setHasBounty(true);
-                    component.setBonusBountyTierHealth(SpoornBountyMobsUtil.getHealthIncreaseFromBountyScore(player, hostileEntity));
+                    component.setBonusBountyLevelHealth(SpoornBountyMobsUtil.getHealthIncreaseFromBountyScore(player, hostileEntity));
 
                     SpoornBountyTier tier = SpoornBountyMobsUtil.SPOORN_BOUNTY_TIERS.sample();
                     component.setSpoornBountyTier(tier);

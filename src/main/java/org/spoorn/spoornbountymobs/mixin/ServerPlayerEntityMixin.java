@@ -8,7 +8,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spoorn.spoornbountymobs.config.ModConfig;
-import org.spoorn.spoornbountymobs.entity.PlayerDataComponent;
+import org.spoorn.spoornbountymobs.entity.component.PlayerDataComponent;
 import org.spoorn.spoornbountymobs.entity.SpoornBountyEntityRegistry;
 import org.spoorn.spoornbountymobs.util.SpoornBountyMobsUtil;
 

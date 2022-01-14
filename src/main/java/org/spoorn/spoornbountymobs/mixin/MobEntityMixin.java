@@ -9,7 +9,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import org.spoorn.spoornbountymobs.entity.EntityDataComponent;
+import org.spoorn.spoornbountymobs.entity.component.EntityDataComponent;
 import org.spoorn.spoornbountymobs.tiers.SpoornBountyTier;
 import org.spoorn.spoornbountymobs.util.SpoornBountyMobsUtil;
 
@@ -23,8 +23,10 @@ public abstract class MobEntityMixin {
      *
      * For some reason injecting into the TAIL of the method doesn't work.  I think it's because the method has
      * multiple return points.
+     *
+     * Note: This assumes that getXpToDrop is only called once when the entity dies.
      */
-    @Inject(method = "getCurrentExperience", at = @At(value = "HEAD"), cancellable = true)
+    @Inject(method = "getXpToDrop", at = @At(value = "HEAD"), cancellable = true)
     public void scaleExperience(PlayerEntity player, CallbackInfoReturnable<Integer> cir) {
         MobEntity mobEntity = (MobEntity) (Object) this;
         if (SpoornBountyMobsUtil.entityIsHostileAndHasBounty(mobEntity)) {
@@ -45,7 +47,7 @@ public abstract class MobEntityMixin {
             EntityDataComponent component = SpoornBountyMobsUtil.getSpoornEntityDataComponent(mobEntity);
             SpoornBountyTier tier = component.getSpoornBountyTier();
 
-            // Base damage
+            // Bonus base damage
             float bonusDamage = (float)(tier.getMinBaseDamageIncrease() +
                 SpoornBountyMobsUtil.RANDOM.nextFloat() * (tier.getMaxBaseDamageIncrease() - tier.getMinBaseDamageIncrease()));
 

@@ -1,17 +1,14 @@
 package org.spoorn.spoornbountymobs.mixin;
 
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spoorn.spoornbountymobs.config.ModConfig;
-import org.spoorn.spoornbountymobs.entity.EntityDataComponent;
-import org.spoorn.spoornbountymobs.entity.PlayerDataComponent;
+import org.spoorn.spoornbountymobs.entity.component.EntityDataComponent;
+import org.spoorn.spoornbountymobs.entity.component.PlayerDataComponent;
 import org.spoorn.spoornbountymobs.entity.SpoornBountyEntityRegistry;
 import org.spoorn.spoornbountymobs.util.SpoornBountyMobsUtil;
 
@@ -39,10 +36,10 @@ public class PlayerEntityMixin {
             playerDataComponent.incrementBountyKillCount(entityDataComponent.getSpoornBountyTier());
 
             // Update player's highest tier if increased
-            int highestTier = playerDataComponent.getHighestBountyHunterTier();
-            int currTier = SpoornBountyMobsUtil.getBountyHunterTier(player);
+            int highestTier = playerDataComponent.getHighestBountyHunterLevel();
+            int currTier = SpoornBountyMobsUtil.getBountyHunterLevel(player);
             if (currTier > highestTier) {
-                playerDataComponent.setHighestBountyHunterTier(currTier);
+                playerDataComponent.setHighestBountyHunterLevel(currTier);
             }
 
             // Sync new player data to clients

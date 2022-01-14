@@ -1,4 +1,4 @@
-package org.spoorn.spoornbountymobs.config;
+package org.spoorn.spoornbountymobs.config.tiers;
 
 import me.shedaniel.cloth.clothconfig.shadowed.blue.endless.jankson.Comment;
 
@@ -22,6 +22,6 @@ public class EpicTierConfig {
     @Comment("Health increase per bounty score milestone [default = 20]")
     public int milestoneHealthIncrease = 20;
 
-    @Comment("Damage increase per bounty score milestone [default = 0.4]")
+    @Comment("Damage increase per player bounty score level [default = 0.4]")
     public double milestoneDamageIncrease = 0.4;
 }

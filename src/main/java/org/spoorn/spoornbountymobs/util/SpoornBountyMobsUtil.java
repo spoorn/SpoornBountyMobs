@@ -10,9 +10,9 @@ import net.minecraft.entity.player.PlayerEntity;
 import org.apache.commons.math3.distribution.EnumeratedDistribution;
 import org.apache.commons.math3.util.Pair;
 import org.spoorn.spoornbountymobs.config.ModConfig;
-import org.spoorn.spoornbountymobs.entity.EntityDataComponent;
-import org.spoorn.spoornbountymobs.entity.PlayerDataComponent;
 import org.spoorn.spoornbountymobs.entity.SpoornBountyEntityRegistry;
+import org.spoorn.spoornbountymobs.entity.component.EntityDataComponent;
+import org.spoorn.spoornbountymobs.entity.component.PlayerDataComponent;
 import org.spoorn.spoornbountymobs.tiers.SpoornBountyTier;
 
 import java.util.Random;
@@ -38,7 +38,7 @@ public class SpoornBountyMobsUtil {
     public static boolean isPlayerEntity(Entity entity) { return entity instanceof PlayerEntity; }
 
     public static boolean entityIsHostileAndHasBounty(Entity entity) {
-        return entity instanceof HostileEntity && SpoornBountyEntityRegistry.HOSTILE_ENTITY_DATA.get(entity).hasBounty();
+        return isHostileEntity(entity) && getSpoornEntityDataComponent(entity).hasBounty();
     }
 
     public static EntityDataComponent getSpoornEntityDataComponent(Entity entity) {
@@ -53,12 +53,12 @@ public class SpoornBountyMobsUtil {
         return getStatusEffectInstance(statusEffect, duration, amplifier, ModConfig.get().showBountyParticleEffects);
     }
 
-    public static StatusEffectInstance getStatusEffectInstance(StatusEffect statusEffect, int duration, int amplifier, boolean showParticles) {
-        return new StatusEffectInstance(statusEffect, duration, amplifier, false, showParticles, true);
-    }
-
     public static StatusEffectInstance getStatusEffectInstanceMaxDuration(StatusEffect statusEffect, int amplifier) {
         return getStatusEffectInstance(statusEffect, Integer.MAX_VALUE, amplifier, false);
+    }
+
+    public static StatusEffectInstance getStatusEffectInstance(StatusEffect statusEffect, int duration, int amplifier, boolean showParticles) {
+        return new StatusEffectInstance(statusEffect, duration, amplifier, false, showParticles, true);
     }
 
     /**
@@ -72,7 +72,7 @@ public class SpoornBountyMobsUtil {
             return 0;
         }
 
-        int bountyTier = getBountyHunterTier(player);
+        int bountyTier = getBountyHunterLevel(player);
         switch (entityDataComponent.getSpoornBountyTier().getTierType()) {
             case COMMON_TIER:
                 return bountyTier * ModConfig.get().COMMON_TIER.milestoneHealthIncrease;
@@ -102,22 +102,22 @@ public class SpoornBountyMobsUtil {
             return 0;
         }
 
-        int bountyTier = getBountyHunterTier(player);
+        int bountyTier = getBountyHunterLevel(player);
         return entityDataComponent.getSpoornBountyTier().getMilestoneDamageIncrease() * bountyTier;
     }
 
     /**
      * Player's bounty hunter tier used to determine milestones in bounty hunting.
      */
-    public static int getBountyHunterTier(PlayerEntity player) {
-        return (int)calculateBountyScore(player)/ModConfig.get().playerBountyHunterTierIntervals;
+    public static int getBountyHunterLevel(PlayerEntity player) {
+        return (int)calculateBountyScore(player)/ModConfig.get().playerBountyHunterLevelIntervals;
     }
 
     /**
      * Get player's bonus damage.
      */
     public static double getPlayerBonusDamage(PlayerEntity player) {
-        return ModConfig.get().playerBonusDamagePerBountyHunterTier * getBountyHunterTier(player);
+        return ModConfig.get().playerBonusDamagePerBountyHunterTier * getBountyHunterLevel(player);
     }
 
     /**

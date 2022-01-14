@@ -1,4 +1,4 @@
-package org.spoorn.spoornbountymobs.config;
+package org.spoorn.spoornbountymobs.config.tiers;
 
 import me.shedaniel.cloth.clothconfig.shadowed.blue.endless.jankson.Comment;
 
@@ -22,6 +22,6 @@ public class DoomTierConfig {
     @Comment("Health increase per bounty score milestone [default = 30]")
     public int milestoneHealthIncrease = 30;
 
-    @Comment("Damage increase per bounty score milestone [default = 0.6]")
+    @Comment("Damage increase per player bounty score level [default = 0.6]")
     public double milestoneDamageIncrease = 0.6;
 }

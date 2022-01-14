@@ -2,11 +2,9 @@
   "required": true,
   "minVersion": "0.8",
   "package": "org.spoorn.spoornbountymobs.mixin",
-  "compatibilityLevel": "JAVA_8",
+  "compatibilityLevel": "JAVA_17",
   "mixins": [
-    "DataTrackerAccessorMixin",
     "EntityMixin",
-    "EntityAccessorMixin",
     "MeleeAttackGoalMixin",
     "SpiderEntityAttackGoalMixin",
     "MeleeAttackGoalAccessorMixin",

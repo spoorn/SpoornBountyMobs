@@ -1,11 +1,11 @@
-package org.spoorn.spoornbountymobs.entity;
+package org.spoorn.spoornbountymobs.entity.component;
 
 import dev.onyxstudios.cca.api.v3.component.sync.AutoSyncedComponent;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import net.minecraft.entity.Entity;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.PacketByteBuf;
 import org.spoorn.spoornbountymobs.tiers.SpoornBountyTier;
 import org.spoorn.spoornbountymobs.tiers.SpoornBountyTierTypes;
@@ -31,7 +31,7 @@ public class SpoornBountyHostileEntityDataComponent implements EntityDataCompone
     private boolean hasTracked;
     @Setter private boolean hasBounty;
     @Getter @Setter private SpoornBountyTier spoornBountyTier;
-    @Getter @Setter private float bonusBountyTierHealth;
+    @Getter @Setter private float bonusBountyLevelHealth;
     @Setter private boolean hasWeaknessAttack;
     @Setter private boolean hasWitherAttack;
     @Setter private boolean hasBlindnessAttack;
@@ -99,11 +99,11 @@ public class SpoornBountyHostileEntityDataComponent implements EntityDataCompone
     }
 
     @Override
-    public void readFromNbt(CompoundTag tag) {
+    public void readFromNbt(NbtCompound tag) {
         this.hasTracked = tag.getBoolean(HAS_TRACKED);
         this.hasBounty = tag.getBoolean(HAS_BOUNTY);
         this.spoornBountyTier = SpoornBountyTier.fromValue(SpoornBountyTierTypes.valueOf(tag.getString(SPOORN_BOUNTY_TIER)));
-        this.bonusBountyTierHealth = tag.getFloat(BONUS_BOUNTY_TIER_HEALTH);
+        this.bonusBountyLevelHealth = tag.getFloat(BONUS_BOUNTY_TIER_HEALTH);
         this.hasWeaknessAttack = tag.getBoolean(HAS_WEAKNESS_ATTACK);
         this.hasWitherAttack = tag.getBoolean(HAS_WITHER_ATTACK);
         this.hasBlindnessAttack = tag.getBoolean(HAS_BLINDNESS_ATTACK);
@@ -114,12 +114,12 @@ public class SpoornBountyHostileEntityDataComponent implements EntityDataCompone
     }
 
     @Override
-    public void writeToNbt(CompoundTag tag) {
+    public void writeToNbt(NbtCompound tag) {
         tag.putBoolean(HAS_TRACKED, this.hasTracked);
         tag.putBoolean(HAS_BOUNTY, this.hasBounty);
         // Could use ordinal for efficiency in future, but could cause compatibility complexities
         tag.putString(SPOORN_BOUNTY_TIER, this.spoornBountyTier.getTierType().name());
-        tag.putFloat(BONUS_BOUNTY_TIER_HEALTH, this.bonusBountyTierHealth);
+        tag.putFloat(BONUS_BOUNTY_TIER_HEALTH, this.bonusBountyLevelHealth);
         tag.putBoolean(HAS_WEAKNESS_ATTACK, this.hasWeaknessAttack);
         tag.putBoolean(HAS_WITHER_ATTACK, this.hasWitherAttack);
         tag.putBoolean(HAS_BLINDNESS_ATTACK, this.hasBlindnessAttack);
