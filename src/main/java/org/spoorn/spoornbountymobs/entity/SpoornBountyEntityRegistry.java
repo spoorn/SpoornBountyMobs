@@ -11,15 +11,27 @@ import net.fabricmc.fabric.api.networking.v1.EntityTrackingEvents;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.mob.HostileEntity;
+import net.minecraft.network.MessageType;
+import net.minecraft.text.LiteralText;
+import net.minecraft.text.MutableText;
+import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableText;
+import net.minecraft.util.Formatting;
+import net.minecraft.util.Util;
 import org.spoorn.spoornbountymobs.config.ModConfig;
 import org.spoorn.spoornbountymobs.tiers.SpoornBountyTier;
 import org.spoorn.spoornbountymobs.util.SpoornBountyMobsUtil;
+
+import java.util.UUID;
 
 /**
  * Bounty Entity registry.  All things related to registering Bounties on Entities when player starts tracking one.
  */
 @Log4j2
 public class SpoornBountyEntityRegistry implements EntityComponentInitializer {
+
+    private static final MutableText BROADCAST_1 = new TranslatableText("sbm.broadcast.part1").formatted(Formatting.WHITE);
+    private static final MutableText BROADCAST_2 = new TranslatableText("sbm.broadcast.part2").formatted(Formatting.WHITE);
 
     // Hostile Entity data
     public static final ComponentKey<EntityDataComponent> HOSTILE_ENTITY_DATA =
@@ -105,6 +117,15 @@ public class SpoornBountyEntityRegistry implements EntityComponentInitializer {
                     }
                     if (SpoornBountyMobsUtil.RANDOM.nextFloat() < tier.getChanceSpeed()) {
                         hostileEntity.addStatusEffect(SpoornBountyMobsUtil.getStatusEffectInstanceMaxDuration(StatusEffects.SPEED, 1));
+                    }
+
+                    try {
+                        MutableText playerpart = new LiteralText(player.getDisplayName().getString()).formatted(Formatting.DARK_AQUA);
+                        MutableText tierpart = new LiteralText(tier.getTierType().getName()).formatted(tier.getTierType().getFormattings());
+                        MutableText mobpart = new LiteralText(hostileEntity.getDisplayName().getString()).formatted(Formatting.DARK_GREEN);
+                        player.getServer().getPlayerManager().broadcastChatMessage(playerpart.append(BROADCAST_1).append(tierpart).append(BROADCAST_2).append(mobpart), MessageType.CHAT, Util.NIL_UUID);
+                    } catch (Exception e) {
+                        log.error("Exception while trying to broadcast message for SpoornBountyMobs", e);
                     }
                 }
 

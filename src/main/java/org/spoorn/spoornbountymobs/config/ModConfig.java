@@ -12,13 +12,13 @@ import org.spoorn.spoornbountymobs.SpoornBountyMobs;
 public class ModConfig implements ConfigData {
 
     @Comment("Chance for mob to spawn with a bounty [1/value] [default = 100]")
-    public int bountySpawnChance = 100;
+    public int bountySpawnChance = 777;
 
     @Comment("True if Bounty mobs should glow through walls permanently, else false [default = false]")
     public boolean bountyMobPermanentGlow = false;
 
     @Comment("Duration in seconds Bounty mobs should glow when they are first found if bountyMobPermanentGlow is false [default = 20]")
-    public int bountyMobGlowDuration = 20;
+    public int bountyMobGlowDuration = 10;
 
     @Comment("Player's Bounty Hunter tier increments at this value [default = 10]")
     public int playerBountyHunterTierIntervals = 10;

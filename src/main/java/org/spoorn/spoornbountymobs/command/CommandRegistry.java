@@ -6,6 +6,7 @@ import net.fabricmc.fabric.api.command.v1.CommandRegistrationCallback;
 import net.minecraft.command.argument.EntityArgumentType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.text.LiteralText;
+import net.minecraft.util.Formatting;
 import org.spoorn.spoornbountymobs.util.SpoornBountyMobsUtil;
 
 public class CommandRegistry {
@@ -22,7 +23,7 @@ public class CommandRegistry {
                         .executes(c -> {
                             PlayerEntity player = EntityArgumentType.getPlayer(c, "player");
                             c.getSource().sendFeedback(new LiteralText(
-                                SpoornBountyMobsUtil.getPlayerDataComponent(player).toString()), true);
+                                SpoornBountyMobsUtil.getPlayerDataComponent(player).toString()).formatted(Formatting.ITALIC), true);
                             return 1;
                         }))));
         });

@@ -48,7 +48,7 @@ dependencies {
     include "org.apache.commons:commons-math3:${project.apache_commons_version}"
 
     // Brigadier for commands
-    compile 'com.mojang:brigadier:${project.brigadier_version}'
+    implementation 'com.mojang:brigadier:${project.brigadier_version}'
 }
 
 repositories {
@@ -57,8 +57,8 @@ repositories {
 
     // Cardinal Components API
     maven {
-        name = "Ladysnake Libs"
-        url = "https://dl.bintray.com/ladysnake/libs"
+        name = "Ladysnake Mods"
+        url = 'https://ladysnake.jfrog.io/artifactory/mods'
     }
 
     // Apache Commons
@@ -75,13 +75,8 @@ repositories {
 processResources {
     inputs.property "version", project.version
 
-    from(sourceSets.main.resources.srcDirs) {
-        include "fabric.mod.json"
+    filesMatching("fabric.mod.json") {
         expand "version": project.version
-    }
-
-    from(sourceSets.main.resources.srcDirs) {
-        exclude "fabric.mod.json"
     }
 }
 
