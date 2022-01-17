@@ -39,6 +39,9 @@ public class ModConfig implements ConfigData {
     @Comment("Set to false if you don't want potion particle effects on HUD from Bounty mob attacks [default = true]")
     public boolean showBountyParticleEffects = true;
 
+    @Comment("Set to false to disable chat message when a player is near a bounty mob [default = true]")
+    public boolean broadcastMessageWhenBountySpawned = true;
+
     @Comment("Common tier bounty mobs")
     @ConfigEntry.Gui.CollapsibleObject
     public CommonTierConfig COMMON_TIER = new CommonTierConfig();
