@@ -120,10 +120,13 @@ public class SpoornBountyEntityRegistry implements EntityComponentInitializer {
                     }
 
                     try {
-                        MutableText playerpart = new LiteralText(player.getDisplayName().getString()).formatted(Formatting.DARK_AQUA);
-                        MutableText tierpart = new LiteralText(tier.getTierType().getName()).formatted(tier.getTierType().getFormattings());
-                        MutableText mobpart = new LiteralText(hostileEntity.getDisplayName().getString()).formatted(Formatting.DARK_GREEN);
-                        player.getServer().getPlayerManager().broadcastChatMessage(playerpart.append(BROADCAST_1).append(tierpart).append(BROADCAST_2).append(mobpart), MessageType.CHAT, Util.NIL_UUID);
+                        if (ModConfig.get().broadcastMessageWhenBountySpawned) {
+                            MutableText playerpart = new LiteralText(player.getDisplayName().getString()).formatted(Formatting.DARK_AQUA);
+                            MutableText tierpart = new LiteralText(tier.getTierType().getName()).formatted(tier.getTierType().getFormattings());
+                            MutableText mobpart = new LiteralText(hostileEntity.getDisplayName().getString()).formatted(Formatting.DARK_GREEN);
+                            player.getServer().getPlayerManager()
+                                    .broadcastChatMessage(playerpart.append(BROADCAST_1).append(tierpart).append(BROADCAST_2).append(mobpart), MessageType.CHAT, Util.NIL_UUID);
+                        }
                     } catch (Exception e) {
                         log.error("Exception while trying to broadcast message for SpoornBountyMobs", e);
                     }
