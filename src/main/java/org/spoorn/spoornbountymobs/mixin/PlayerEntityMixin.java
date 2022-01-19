@@ -1,10 +1,14 @@
 package org.spoorn.spoornbountymobs.mixin;
 
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.network.MessageType;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.text.LiteralText;
+import net.minecraft.text.MutableText;
+import net.minecraft.text.TranslatableText;
+import net.minecraft.util.Formatting;
+import net.minecraft.util.Util;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -17,6 +21,8 @@ import org.spoorn.spoornbountymobs.util.SpoornBountyMobsUtil;
 
 @Mixin(PlayerEntity.class)
 public class PlayerEntityMixin {
+
+    private static final MutableText BROADCAST = new TranslatableText("sbm.broadcast.levelup").formatted(Formatting.WHITE);
 
     /**
      * For testing player data persistence.
@@ -39,10 +45,19 @@ public class PlayerEntityMixin {
             playerDataComponent.incrementBountyKillCount(entityDataComponent.getSpoornBountyTier());
 
             // Update player's highest tier if increased
-            int highestTier = playerDataComponent.getHighestBountyHunterTier();
-            int currTier = SpoornBountyMobsUtil.getBountyHunterTier(player);
-            if (currTier > highestTier) {
-                playerDataComponent.setHighestBountyHunterTier(currTier);
+            int highestLevel = playerDataComponent.getHighestBountyHunterTier();
+            int currLevel = SpoornBountyMobsUtil.getBountyHunterTier(player);
+            if (currLevel > highestLevel) {
+                playerDataComponent.setHighestBountyHunterTier(currLevel);
+                try {
+                    if (ModConfig.get().broadcastMessageWhenBountyLevelUp) {
+                        MutableText playerpart = new LiteralText(player.getDisplayName().getString()).formatted(Formatting.DARK_AQUA);
+                        MutableText levelpart = new LiteralText(Integer.toString(currLevel)).formatted(Formatting.LIGHT_PURPLE);
+                        player.getServer().getPlayerManager().broadcastChatMessage(playerpart.append(BROADCAST).append(levelpart), MessageType.CHAT, Util.NIL_UUID);
+                    }
+                } catch (Exception e) {
+                    System.err.println("Error broadcasting SpoornBountyMobs level up: " + e);
+                }
             }
 
             // Sync new player data to clients
