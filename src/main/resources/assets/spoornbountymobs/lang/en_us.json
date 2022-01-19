@@ -1,4 +1,5 @@
 {
   "sbm.broadcast.part1": " is near a ",
-  "sbm.broadcast.part2": " tier "
+  "sbm.broadcast.part2": " tier ",
+  "sbm.broadcast.levelup" : "'s bounty level is now "
 }
