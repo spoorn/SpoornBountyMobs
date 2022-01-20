@@ -4,9 +4,7 @@ import me.shedaniel.cloth.clothconfig.shadowed.blue.endless.jankson.Comment;
 import org.spoorn.spoornbountymobs.config.Drop;
 import org.spoorn.spoornbountymobs.config.WeightedItem;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class DoomTierConfig {
 
@@ -32,7 +30,7 @@ public class DoomTierConfig {
     public double milestoneDamageIncrease = 0.6;
 
     @Comment("Drops data.  See COMMON_TIER's config for example configuration schema and documentation.")
-    public Map<String, Drop> drops = new HashMap<>(Map.ofEntries(
-            Map.entry(".*", new Drop(0.5, 2, List.of(new WeightedItem("minecraft:diamond", 1))))
-    ));
+    public List<Drop> drops = List.of(
+        new Drop(".*", 0.5, 2, List.of(new WeightedItem("minecraft:diamond", 1)))
+    );
 }

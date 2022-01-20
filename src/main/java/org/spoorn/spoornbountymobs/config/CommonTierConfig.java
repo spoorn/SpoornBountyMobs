@@ -2,22 +2,21 @@ package org.spoorn.spoornbountymobs.config;
 
 import me.shedaniel.cloth.clothconfig.shadowed.blue.endless.jankson.Comment;
 import org.spoorn.spoornbountymobs.config.Drop;
-import org.spoorn.spoornbountymobs.config.WeightedItem;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class CommonTierConfig {
 
-    private static final String EXAMPLE_LOOT_JSON = "Here you can configure what loot drops from bounty mobs.  This is a mapping from the mob entity\n" +
-            "identifier (e.g. \"minecraft:creeper\") to the drop data.  See comments below for information on each data field.\n" +
+    private static final String EXAMPLE_LOOT_JSON = "Here you can configure what loot drops from bounty mobs.  See comments below for information on each data field.\n" +
             "This works for any modded mobs or items as well, as long as you get the identifier regexes right!\n" +
             "If any identifiers are missing or do not exist in the game, it will simply be skipped and fail safely.\n" +
             "If any of the mob identifiers conflict (e.g. you specify a \"minecraft:creeper\" entry, but also a wildcard default \".*\" entry,\n" +
-            "the first matched drop data in this configuration file will be used.  If you want to be extra safe, you can specify in regex\n" +
-            "a negative look-ahead or look-behind, but I won't dive into that here.\n" +
+            "only the first matched drop data in the drops list will be applied.\n" +
             "Example:\n\n" +
-            "\"drops\": {\n" +
-            "\t\"minecraft:creeper\": {\n" +
+            "\"drops\": [\n" +
+            "\t{\n" +
+            "\t\t\"entityId\": \"minecraft:creeper\",  // Entity identifier this drop configuration is for\n" +
             "\t\t\"dropChance\": 0.5,  // Overall chance for each roll to drop an item\n" +
             "\t\t\"rolls\": 2,  // Number of times to roll for a drop.  This allows for multiple drops.\n" +
             "\t\t// All the items that can drop from this entity\n" +
@@ -38,7 +37,19 @@ public class CommonTierConfig {
             "\t\t\t}\n" +
             "\t\t]\n" +
             "\t},\n" +
-            "\t\".*\": {  // You can use regex for the mob identifier.  \".*\" is a wildcard and matches ALL mobs.\n" +
+            "\t{\n" +
+            "\t\t\"entityId\": \"exampleModId:.*\",  // EntityId can be a regex, so you can add other mod's entities\n" +
+            "\t\t\"dropChance\": 0.9,\n" +
+            "\t\t\"rolls\": 1,\n" +
+            "\t\t\"items\": [\n" +
+            "\t\t\t{\n" +
+            "\t\t\t\t\"item\": \"minecraft:.*sword\",  // Item drops can use regex as well.  This drops any sword.\n" +
+            "\t\t\t\t\"weight\": 1\n" +
+            "\t\t\t}\n" +
+            "\t\t]\n" +
+            "\t},\n" +
+            "\t{\n" +
+            "\t\t\"entityId\": \".*\", // You can use regex for the mob identifier.  \".*\" is a wildcard and matches ALL mobs.\n" +
             "\t\t\"dropChance\": 0.5,\n" +
             "\t\t\"rolls\": 1,\n" +
             "\t\t\"items\": [\n" +
@@ -52,7 +63,7 @@ public class CommonTierConfig {
             "\t\t\t}\n" +
             "\t\t]\n" +
             "\t}\n" +
-            "}";
+            "]";
 
     @Comment("Spawn weight of this tier (higher number is higher chance of spawn) [default = 20]")
     public int spawnChance = 20;
@@ -75,6 +86,7 @@ public class CommonTierConfig {
     @Comment("Damage increase per bounty score milestone [default = 0.2]")
     public double milestoneDamageIncrease = 0.2;
 
+    // WARNING: Setting defaults may override set configurations in the json file.  See https://github.com/shedaniel/cloth-config/issues/104.
     @Comment(EXAMPLE_LOOT_JSON)
-    public Map<String, Drop> drops = new HashMap<>();
+    public List<Drop> drops = new ArrayList<>();
 }

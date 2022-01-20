@@ -1,5 +1,7 @@
 package org.spoorn.spoornbountymobs.util;
 
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
 import com.google.common.collect.ImmutableList;
 import lombok.extern.log4j.Log4j2;
 import net.minecraft.entity.Entity;
@@ -15,10 +17,8 @@ import org.spoorn.spoornbountymobs.entity.PlayerDataComponent;
 import org.spoorn.spoornbountymobs.entity.SpoornBountyEntityRegistry;
 import org.spoorn.spoornbountymobs.tiers.SpoornBountyTier;
 
-import java.util.Map;
-import java.util.Map.Entry;
+import java.util.List;
 import java.util.Random;
-import java.util.regex.Pattern;
 
 @Log4j2
 public class SpoornBountyMobsUtil {
@@ -33,6 +33,10 @@ public class SpoornBountyMobsUtil {
             new Pair(SpoornBountyTier.LEGENDARY, SpoornBountyTier.LEGENDARY.getWeight()),
             new Pair(SpoornBountyTier.DOOM, SpoornBountyTier.DOOM.getWeight())
     ));
+
+    private static final Cache<Pair<SpoornBountyTier, String>, DropDistributionData> ENTITY_TO_DROP_DATA = CacheBuilder.newBuilder()
+            .maximumSize(100)
+            .build();
 
     public static boolean isHostileEntity(Entity entity) {
         return entity instanceof HostileEntity;
@@ -126,13 +130,27 @@ public class SpoornBountyMobsUtil {
     /**
      * Finds a given input String in a regex keyed map.
      */
-    public static <T> T findPatternInMap(String s, Map<Pattern, T> patternMap) {
-        for (Entry<Pattern, T> entry : patternMap.entrySet()) {
-            if (entry.getKey().asMatchPredicate().test(s)) {
-                return entry.getValue();
+    public static DropDistributionData findPatternInMap(SpoornBountyTier tier, String s, List<DropDistributionData> dropDists) {
+        Pair<SpoornBountyTier, String> cacheKey = Pair.create(tier, s);
+        DropDistributionData cacheEntry = ENTITY_TO_DROP_DATA.getIfPresent(cacheKey);
+        if (cacheEntry != null) {
+            return cacheEntry;
+        } else {
+            for (DropDistributionData dropDist : dropDists) {
+                if (dropDist.entityIdPattern.matcher(s).matches()) {
+                    ENTITY_TO_DROP_DATA.put(cacheKey, dropDist);
+                    return dropDist;
+                }
             }
+            return null;
         }
-        return null;
+    }
+
+    /**
+     * Samples a random element from a List.
+     */
+    public static <T> T sampleFromList(List<T> l) {
+        return l.get(RANDOM.nextInt(l.size()));
     }
 
     /**

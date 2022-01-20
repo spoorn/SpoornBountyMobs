@@ -15,6 +15,9 @@ import java.util.List;
 @Data
 public class Drop {
 
+    // Minecraft identifier for the entity this drop is configured for (e.g. "minecraft:creeper")
+    public String entityId;
+
     // Total chance for any of the following list of items to drop per roll
     public double dropChance;
 
