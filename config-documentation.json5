@@ -1,6 +1,6 @@
 {
-	// Chance for mob to spawn with a bounty [1/value] [default = 100]
-	"bountyChance": 2,
+	// Chance for mob to spawn with a bounty [1/value] [default = 777]
+	"bountyChance": 777,
 	// True if Bounty mobs should glow through walls permanently, else false [default = false]
 	"bountyMobPermanentGlow": false,
 	// Duration in seconds Bounty mobs should glow when they are first found if bountyMobPermanentGlow is false [default = 20]
@@ -22,7 +22,7 @@
 	// Common tier bounty mobs
 	"COMMON_TIER": {
 		// Spawn weight of this tier (higher number is higher chance of spawn) [default = 20]
-		"spawnChance": 100,
+		"spawnChance": 20,
 		// This tier's Mob size scale [default = 1.5]
 		"mobSizeScale": 1.5,
 		// This tier's mob outline color in Decimal format [default = 20228]
