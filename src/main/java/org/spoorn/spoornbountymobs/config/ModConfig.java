@@ -19,7 +19,7 @@ public class ModConfig implements ConfigData {
     public boolean bountyMobPermanentGlow = false;
 
     @Comment("Duration in seconds Bounty mobs should glow when they are first found if bountyMobPermanentGlow is false [default = 20]")
-    public int bountyMobGlowDuration = 10;
+    public int bountyMobGlowDuration = 20;
 
     @Comment("Player's Bounty Hunter level increments at this value [default = 10]")
     public int playerBountyHunterLevelIntervals = 10;

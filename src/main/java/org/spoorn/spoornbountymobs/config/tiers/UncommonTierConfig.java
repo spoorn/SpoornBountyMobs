@@ -1,6 +1,10 @@
 package org.spoorn.spoornbountymobs.config.tiers;
 
 import me.shedaniel.cloth.clothconfig.shadowed.blue.endless.jankson.Comment;
+import org.spoorn.spoornbountymobs.config.Drop;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class UncommonTierConfig {
 
@@ -24,4 +28,7 @@ public class UncommonTierConfig {
 
     @Comment("Damage increase per player bounty score level [default = 0.2]")
     public double milestoneDamageIncrease = 0.2;
+
+    @Comment("Drops data.  See COMMON_TIER's config for example configuration schema and documentation.")
+    public Map<String, Drop> drops = new HashMap<>();
 }

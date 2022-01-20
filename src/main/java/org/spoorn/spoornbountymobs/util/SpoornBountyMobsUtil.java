@@ -10,18 +10,22 @@ import net.minecraft.entity.player.PlayerEntity;
 import org.apache.commons.math3.distribution.EnumeratedDistribution;
 import org.apache.commons.math3.util.Pair;
 import org.spoorn.spoornbountymobs.config.ModConfig;
+import org.spoorn.spoornbountymobs.config.WeightedItem;
 import org.spoorn.spoornbountymobs.entity.SpoornBountyEntityRegistry;
 import org.spoorn.spoornbountymobs.entity.component.EntityDataComponent;
 import org.spoorn.spoornbountymobs.entity.component.PlayerDataComponent;
 import org.spoorn.spoornbountymobs.tiers.SpoornBountyTier;
 
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Random;
+import java.util.regex.Pattern;
 
 @Log4j2
 public class SpoornBountyMobsUtil {
 
     public static final Random RANDOM = new Random();
-    public static final EnumeratedDistribution<SpoornBountyTier> SPOORN_BOUNTY_TIERS = new EnumeratedDistribution(
+    public static final EnumeratedDistribution<SpoornBountyTier> SPOORN_BOUNTY_TIERS = new EnumeratedDistribution<>(
         ImmutableList.of(
             new Pair(SpoornBountyTier.COMMON, SpoornBountyTier.COMMON.getWeight()),
             new Pair(SpoornBountyTier.UNCOMMON, SpoornBountyTier.UNCOMMON.getWeight()),
@@ -118,6 +122,30 @@ public class SpoornBountyMobsUtil {
      */
     public static double getPlayerBonusDamage(PlayerEntity player) {
         return ModConfig.get().playerBonusDamagePerBountyHunterTier * getBountyHunterLevel(player);
+    }
+
+    /**
+     * Finds a given input String in a regex keyed map.
+     */
+    public static <T> T findPatternInMap(String s, Map<Pattern, T> patternMap) {
+        for (Entry<Pattern, T> entry : patternMap.entrySet()) {
+            if (entry.getKey().asMatchPredicate().test(s)) {
+                return entry.getValue();
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Bound a double between some min and max.
+     */
+    public static double bound(double value, double min, double max) {
+        if (value < min) {
+            return min;
+        } else if (value > max) {
+            return max;
+        }
+        return value;
     }
 
     /**

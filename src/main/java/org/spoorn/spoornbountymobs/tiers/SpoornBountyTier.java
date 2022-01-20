@@ -10,6 +10,8 @@ import org.spoorn.spoornbountymobs.config.tiers.*;
 
 /**
  * Bounty tiers to make bounties more dynamic.
+ *
+ * TODO: Make tiers entirely dynamic and configurable.
  */
 @AllArgsConstructor
 @EqualsAndHashCode
