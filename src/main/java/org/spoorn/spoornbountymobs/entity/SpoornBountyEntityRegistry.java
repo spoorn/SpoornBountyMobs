@@ -8,27 +8,35 @@ import dev.onyxstudios.cca.api.v3.entity.EntityComponentInitializer;
 import lombok.extern.log4j.Log4j2;
 import nerdhub.cardinal.components.api.util.RespawnCopyStrategy;
 import net.fabricmc.fabric.api.networking.v1.EntityTrackingEvents;
-import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.network.MessageType;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.MutableText;
-import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Util;
+import org.apache.commons.math3.distribution.EnumeratedDistribution;
+import org.apache.commons.math3.util.Pair;
+import org.spoorn.spoornbountymobs.config.Drop;
 import org.spoorn.spoornbountymobs.config.ModConfig;
 import org.spoorn.spoornbountymobs.tiers.SpoornBountyTier;
 import org.spoorn.spoornbountymobs.util.SpoornBountyMobsUtil;
 
-import java.util.UUID;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 /**
  * Bounty Entity registry.  All things related to registering Bounties on Entities when player starts tracking one.
  */
 @Log4j2
 public class SpoornBountyEntityRegistry implements EntityComponentInitializer {
+
+    private static final double ZERO = 0.0;
+    private static final double ONE = 1.0;
 
     private static final MutableText BROADCAST_1 = new TranslatableText("sbm.broadcast.part1").formatted(Formatting.WHITE);
     private static final MutableText BROADCAST_2 = new TranslatableText("sbm.broadcast.part2").formatted(Formatting.WHITE);
@@ -40,8 +48,12 @@ public class SpoornBountyEntityRegistry implements EntityComponentInitializer {
     public static final ComponentKey<PlayerDataComponent> PLAYER_DATA =
             ComponentRegistryV3.INSTANCE.getOrCreate(PlayerDataComponent.ID, PlayerDataComponent.class);
 
+    public static final Map<SpoornBountyTier, Map<Pattern, Pair<Double, EnumeratedDistribution<String>>>> DROP_REGISTRY = new HashMap<>();
+
     public static void init() {
         registerStartTrackingCallback();
+        DROP_REGISTRY.clear();  // Just in case mod is reloaded dynamically
+        generateDropRegistry();
     }
 
     @Override
@@ -51,6 +63,37 @@ public class SpoornBountyEntityRegistry implements EntityComponentInitializer {
 
         // Player data, should be persisted across sessions
         registry.registerForPlayers(PLAYER_DATA, player -> new SpoornBountyPlayerDataComponent(player), RespawnCopyStrategy.ALWAYS_COPY);
+    }
+
+    // Generates a cached registry of all configured drops.  Requires ModConfig and SpoornBountyTiers to have already been initialized.
+    private static void generateDropRegistry() {
+        Map<String, Drop> commonDrops = ModConfig.get().COMMON_TIER.drops;
+        Map<String, Drop> uncommonDrops = ModConfig.get().UNCOMMON_TIER.drops;
+        Map<String, Drop> rareDrops = ModConfig.get().RARE_TIER.drops;
+        Map<String, Drop> epicDrops = ModConfig.get().EPIC_TIER.drops;
+        Map<String, Drop> legendaryDrops = ModConfig.get().LEGENDARY_TIER.drops;
+        Map<String, Drop> doomDrops = ModConfig.get().DOOM_TIER.drops;
+
+        addToDropRegistry(SpoornBountyTier.COMMON, commonDrops);
+        addToDropRegistry(SpoornBountyTier.UNCOMMON, uncommonDrops);
+        addToDropRegistry(SpoornBountyTier.RARE, rareDrops);
+        addToDropRegistry(SpoornBountyTier.EPIC, epicDrops);
+        addToDropRegistry(SpoornBountyTier.LEGENDARY, legendaryDrops);
+        addToDropRegistry(SpoornBountyTier.DOOM, doomDrops);
+    }
+
+    private static void addToDropRegistry(SpoornBountyTier tier, Map<String, Drop> drops) {
+        Map<Pattern, Pair<Double, EnumeratedDistribution<String>>> dropDistributions = new HashMap<>();
+        for (Entry<String, Drop> entry : drops.entrySet()) {
+            Drop drop = entry.getValue();
+            EnumeratedDistribution<String> dropDistribution = new EnumeratedDistribution(drop.items.stream().map(e -> {
+                return Pair.create(e.item, (double) e.weight);
+            }).collect(Collectors.toList()));
+
+            Pattern regex = Pattern.compile(entry.getKey());
+            dropDistributions.put(regex, Pair.create(SpoornBountyMobsUtil.bound(drop.dropChance, ZERO, ONE), dropDistribution));
+        }
+        DROP_REGISTRY.put(tier, dropDistributions);
     }
 
     // On entity being tracked by a player, chance to mark the entity as having a bounty.  Update entity data

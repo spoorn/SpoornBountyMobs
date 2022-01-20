@@ -8,6 +8,8 @@ import org.spoorn.spoornbountymobs.config.*;
 
 /**
  * Bounty tiers to make bounties more dynamic.
+ *
+ * TODO: Make tiers entirely dynamic and configurable.
  */
 @EqualsAndHashCode
 @ToString

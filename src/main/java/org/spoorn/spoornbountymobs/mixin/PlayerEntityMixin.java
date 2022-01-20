@@ -2,13 +2,18 @@ package org.spoorn.spoornbountymobs.mixin;
 
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Item;
 import net.minecraft.network.MessageType;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.Util;
+import net.minecraft.util.registry.Registry;
+import org.apache.commons.math3.distribution.EnumeratedDistribution;
+import org.apache.commons.math3.util.Pair;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -18,6 +23,9 @@ import org.spoorn.spoornbountymobs.entity.EntityDataComponent;
 import org.spoorn.spoornbountymobs.entity.PlayerDataComponent;
 import org.spoorn.spoornbountymobs.entity.SpoornBountyEntityRegistry;
 import org.spoorn.spoornbountymobs.util.SpoornBountyMobsUtil;
+
+import java.util.Map;
+import java.util.regex.Pattern;
 
 @Mixin(PlayerEntity.class)
 public class PlayerEntityMixin {
@@ -58,6 +66,18 @@ public class PlayerEntityMixin {
                 } catch (Exception e) {
                     System.err.println("Error broadcasting SpoornBountyMobs level up: " + e);
                 }
+            }
+
+            //System.out.println(Registry.ENTITY_TYPE.getId(livingEntity.getType()));
+            // drop loot from the bounty mob if applicable
+            String entityId = Registry.ENTITY_TYPE.getId(livingEntity.getType()).toString();
+            Map<Pattern, Pair<Double, EnumeratedDistribution<String>>> dropDistributions =
+                    SpoornBountyEntityRegistry.DROP_REGISTRY.get(entityDataComponent.getSpoornBountyTier());
+            Pair<Double, EnumeratedDistribution<String>> dropDist = SpoornBountyMobsUtil.findPatternInMap(entityId, dropDistributions);
+            if (dropDist != null && SpoornBountyMobsUtil.RANDOM.nextDouble() < dropDist.getKey()) {
+                Item itemToDrop = Registry.ITEM.get(new Identifier(dropDist.getValue().sample()));
+                livingEntity.dropItem(itemToDrop);
+                //System.out.println("dropped item " + itemToDrop + " from " + livingEntity);
             }
 
             // Sync new player data to clients

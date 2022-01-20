@@ -1,6 +1,10 @@
 package org.spoorn.spoornbountymobs.config;
 
 import me.shedaniel.cloth.clothconfig.shadowed.blue.endless.jankson.Comment;
+import org.spoorn.spoornbountymobs.config.Drop;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class RareTierConfig {
 
@@ -24,4 +28,7 @@ public class RareTierConfig {
 
     @Comment("Damage increase per bounty score milestone [default = 0.3]")
     public double milestoneDamageIncrease = 0.3;
+
+    @Comment("Drops data.  See COMMON_TIER's config for example configuration schema and documentation.")
+    public Map<String, Drop> drops = new HashMap<>();
 }
