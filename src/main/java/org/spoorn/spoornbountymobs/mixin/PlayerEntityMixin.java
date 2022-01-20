@@ -9,7 +9,6 @@ import net.minecraft.text.LiteralText;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.Util;
 import net.minecraft.util.registry.Registry;
 import org.apache.commons.math3.distribution.EnumeratedDistribution;
@@ -22,8 +21,12 @@ import org.spoorn.spoornbountymobs.config.ModConfig;
 import org.spoorn.spoornbountymobs.entity.SpoornBountyEntityRegistry;
 import org.spoorn.spoornbountymobs.entity.component.EntityDataComponent;
 import org.spoorn.spoornbountymobs.entity.component.PlayerDataComponent;
+import org.spoorn.spoornbountymobs.tiers.SpoornBountyTier;
+import org.spoorn.spoornbountymobs.util.DropDistributionData;
 import org.spoorn.spoornbountymobs.util.SpoornBountyMobsUtil;
 
+import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
@@ -64,20 +67,31 @@ public class PlayerEntityMixin {
                         player.getServer().getPlayerManager().broadcast(playerpart.append(BROADCAST).append(levelpart), MessageType.CHAT, Util.NIL_UUID);
                     }
                 } catch (Exception e) {
-                    System.err.println("Error broadcasting SpoornBountyMobs level up: " + e);
+                    System.err.println("[SpoornBountyMobs] Error broadcasting SpoornBountyMobs level up: " + e);
                 }
             }
 
             //System.out.println(Registry.ENTITY_TYPE.getId(livingEntity.getType()));
             // drop loot from the bounty mob if applicable
+            SpoornBountyTier tier = entityDataComponent.getSpoornBountyTier();
             String entityId = Registry.ENTITY_TYPE.getId(livingEntity.getType()).toString();
-            Map<Pattern, Pair<Double, EnumeratedDistribution<String>>> dropDistributions =
-                    SpoornBountyEntityRegistry.DROP_REGISTRY.get(entityDataComponent.getSpoornBountyTier());
-            Pair<Double, EnumeratedDistribution<String>> dropDist = SpoornBountyMobsUtil.findPatternInMap(entityId, dropDistributions);
-            if (dropDist != null && SpoornBountyMobsUtil.RANDOM.nextDouble() < dropDist.getKey()) {
-                Item itemToDrop = Registry.ITEM.get(new Identifier(dropDist.getValue().sample()));
-                livingEntity.dropItem(itemToDrop);
-                //System.out.println("dropped item " + itemToDrop + " from " + livingEntity);
+            List<DropDistributionData> dropDists = SpoornBountyEntityRegistry.DROP_REGISTRY.get(tier);
+            DropDistributionData dropDist = SpoornBountyMobsUtil.findPatternInMap(tier, entityId, dropDists);
+            if (dropDist != null && SpoornBountyMobsUtil.RANDOM.nextDouble() < dropDist.dropChance) {
+                //System.out.println("rolling " + dropDist.rolls + " times");
+                for (int i = 0; i < dropDist.rolls; i++) {
+                    String sampledItemRegex = dropDist.itemDrops.sample();
+                    List<Item> matchingItems = SpoornBountyEntityRegistry.CACHED_ITEM_REGISTRY.get(sampledItemRegex);
+                    //System.out.println("matching items: " + matchingItems);
+                    if (matchingItems == null || matchingItems.isEmpty()) {
+                        System.err.println("[SpoornBountyMobs] Configuration specified item \"" + sampledItemRegex + "\" " +
+                                "did not match any item in the registry!  Did you configure SpoornBountyMobs drops correctly?");
+                    } else {
+                        Item itemToDrop = SpoornBountyMobsUtil.sampleFromList(matchingItems);
+                        livingEntity.dropItem(itemToDrop);
+                        //System.out.println("dropped item " + itemToDrop + " from " + livingEntity);
+                    }
+                }
             }
 
             // Sync new player data to clients

@@ -7,16 +7,18 @@ import dev.onyxstudios.cca.api.v3.entity.EntityComponentFactoryRegistry;
 import dev.onyxstudios.cca.api.v3.entity.EntityComponentInitializer;
 import dev.onyxstudios.cca.api.v3.entity.RespawnCopyStrategy;
 import lombok.extern.log4j.Log4j2;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.networking.v1.EntityTrackingEvents;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.mob.HostileEntity;
+import net.minecraft.item.Item;
 import net.minecraft.network.MessageType;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Util;
-import org.apache.commons.lang3.RegExUtils;
+import net.minecraft.util.registry.Registry;
 import org.apache.commons.math3.distribution.EnumeratedDistribution;
 import org.apache.commons.math3.util.Pair;
 import org.spoorn.spoornbountymobs.config.Drop;
@@ -26,11 +28,11 @@ import org.spoorn.spoornbountymobs.entity.component.PlayerDataComponent;
 import org.spoorn.spoornbountymobs.entity.component.SpoornBountyHostileEntityDataComponent;
 import org.spoorn.spoornbountymobs.entity.component.SpoornBountyPlayerDataComponent;
 import org.spoorn.spoornbountymobs.tiers.SpoornBountyTier;
+import org.spoorn.spoornbountymobs.util.DropDistributionData;
 import org.spoorn.spoornbountymobs.util.SpoornBountyMobsUtil;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Map.Entry;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -53,12 +55,18 @@ public class SpoornBountyEntityRegistry implements EntityComponentInitializer {
     public static final ComponentKey<PlayerDataComponent> PLAYER_DATA =
             ComponentRegistryV3.INSTANCE.getOrCreate(PlayerDataComponent.ID, PlayerDataComponent.class);
 
-    public static final Map<SpoornBountyTier, Map<Pattern, Pair<Double, EnumeratedDistribution<String>>>> DROP_REGISTRY = new HashMap<>();
+    // This maps to a List of DropDistributionData so that when there are conflicting configurations, we take the first one
+    // specified in the config file.
+    public static final Map<SpoornBountyTier, List<DropDistributionData>> DROP_REGISTRY = new HashMap<>();
+    public static final Map<String, List<Item>> CACHED_ITEM_REGISTRY = new HashMap<>();
+
+    private static final Set<String> CONFIGURED_DROPS = ConcurrentHashMap.newKeySet();
 
     public static void init() {
         registerStartTrackingCallback();
         DROP_REGISTRY.clear();  // Just in case mod is reloaded dynamically
         generateDropRegistry();
+        registerServerStartedCallback();
     }
 
     @Override
@@ -72,12 +80,12 @@ public class SpoornBountyEntityRegistry implements EntityComponentInitializer {
 
     // Generates a cached registry of all configured drops.  Requires ModConfig and SpoornBountyTiers to have already been initialized.
     private static void generateDropRegistry() {
-        Map<String, Drop> commonDrops = ModConfig.get().COMMON_TIER.drops;
-        Map<String, Drop> uncommonDrops = ModConfig.get().UNCOMMON_TIER.drops;
-        Map<String, Drop> rareDrops = ModConfig.get().RARE_TIER.drops;
-        Map<String, Drop> epicDrops = ModConfig.get().EPIC_TIER.drops;
-        Map<String, Drop> legendaryDrops = ModConfig.get().LEGENDARY_TIER.drops;
-        Map<String, Drop> doomDrops = ModConfig.get().DOOM_TIER.drops;
+        List<Drop> commonDrops = ModConfig.get().COMMON_TIER.drops;
+        List<Drop> uncommonDrops = ModConfig.get().UNCOMMON_TIER.drops;
+        List<Drop> rareDrops = ModConfig.get().RARE_TIER.drops;
+        List<Drop> epicDrops = ModConfig.get().EPIC_TIER.drops;
+        List<Drop> legendaryDrops = ModConfig.get().LEGENDARY_TIER.drops;
+        List<Drop> doomDrops = ModConfig.get().DOOM_TIER.drops;
 
         addToDropRegistry(SpoornBountyTier.COMMON, commonDrops);
         addToDropRegistry(SpoornBountyTier.UNCOMMON, uncommonDrops);
@@ -85,20 +93,39 @@ public class SpoornBountyEntityRegistry implements EntityComponentInitializer {
         addToDropRegistry(SpoornBountyTier.EPIC, epicDrops);
         addToDropRegistry(SpoornBountyTier.LEGENDARY, legendaryDrops);
         addToDropRegistry(SpoornBountyTier.DOOM, doomDrops);
+
+        //System.out.println("Drop Registry: " + DROP_REGISTRY);
     }
 
-    private static void addToDropRegistry(SpoornBountyTier tier, Map<String, Drop> drops) {
-        Map<Pattern, Pair<Double, EnumeratedDistribution<String>>> dropDistributions = new HashMap<>();
-        for (Entry<String, Drop> entry : drops.entrySet()) {
-            Drop drop = entry.getValue();
+    private static void addToDropRegistry(SpoornBountyTier tier, List<Drop> drops) {
+        List<DropDistributionData> dropDists = new ArrayList<>();
+        for (Drop drop : drops) {
             EnumeratedDistribution<String> dropDistribution = new EnumeratedDistribution(drop.items.stream().map(e -> {
+                CONFIGURED_DROPS.add(e.item);
                 return Pair.create(e.item, (double) e.weight);
             }).collect(Collectors.toList()));
 
-            Pattern regex = Pattern.compile(entry.getKey());
-            dropDistributions.put(regex, Pair.create(SpoornBountyMobsUtil.bound(drop.dropChance, ZERO, ONE), dropDistribution));
+            Pattern regex = Pattern.compile(drop.entityId);
+            dropDists.add(new DropDistributionData(regex, SpoornBountyMobsUtil.bound(drop.dropChance, ZERO, ONE), Math.max(drop.rolls, 0), dropDistribution));
         }
-        DROP_REGISTRY.put(tier, dropDistributions);
+        DROP_REGISTRY.put(tier, dropDists);
+    }
+
+    private static void registerServerStartedCallback() {
+        ServerLifecycleEvents.SERVER_STARTED.register((server) -> {
+            // Cache all registered items that match all configured drop regexes
+            for (String item : CONFIGURED_DROPS) {
+                Pattern regex = Pattern.compile(item);
+                List<Item> matchingItems = Registry.ITEM.stream()
+                        .filter(e -> regex.asMatchPredicate().test(Registry.ITEM.getId(e).toString()))
+                        .collect(Collectors.toList());
+                CACHED_ITEM_REGISTRY.putIfAbsent(item, matchingItems);
+            }
+
+            // Free up CONFIGURED_DROPS as it's not needed anymore
+            CONFIGURED_DROPS.clear();
+            //System.out.println("CachedItemRegistry:" + CACHED_ITEM_REGISTRY);
+        });
     }
 
     // On entity being tracked by a player, chance to mark the entity as having a bounty.  Update entity data
