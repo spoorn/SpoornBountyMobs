@@ -18,7 +18,7 @@ public class CommonTierConfig {
             "Example:\n\n" +
             "\"drops\": {\n" +
             "\t\"minecraft:creeper\": {\n" +
-            "\t\t\"totalDropChance\": 0.5,  // Overall chance for each roll to drop an item\n" +
+            "\t\t\"dropChance\": 0.5,  // Overall chance for each roll to drop an item\n" +
             "\t\t\"rolls\": 2,  // Number of times to roll for a drop.  This allows for multiple drops.\n" +
             "\t\t// All the items that can drop from this entity\n" +
             "\t\t\"items\": [\n" +
@@ -39,7 +39,7 @@ public class CommonTierConfig {
             "\t\t]\n" +
             "\t},\n" +
             "\t\".*\": {  // You can use regex for the mob identifier.  \".*\" is a wildcard and matches ALL mobs.\n" +
-            "\t\t\"totalDropChance\": 0.5,\n" +
+            "\t\t\"dropChance\": 0.5,\n" +
             "\t\t\"rolls\": 1,\n" +
             "\t\t\"items\": [\n" +
             "\t\t\t{\n" +

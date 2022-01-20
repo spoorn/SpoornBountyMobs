@@ -96,7 +96,7 @@ public class SpoornBountyEntityRegistry implements EntityComponentInitializer {
             }).collect(Collectors.toList()));
 
             Pattern regex = Pattern.compile(entry.getKey());
-            dropDistributions.put(regex, Pair.create(SpoornBountyMobsUtil.bound(drop.totalDropChance, ZERO, ONE), dropDistribution));
+            dropDistributions.put(regex, Pair.create(SpoornBountyMobsUtil.bound(drop.dropChance, ZERO, ONE), dropDistribution));
         }
         DROP_REGISTRY.put(tier, dropDistributions);
     }
