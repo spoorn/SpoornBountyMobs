@@ -12,7 +12,7 @@ import org.spoorn.spoornbountymobs.SpoornBountyMobs;
 public class ModConfig implements ConfigData {
 
     @Comment("Chance for mob to spawn with a bounty [1/value] [default = 777]")
-    public int bountySpawnChance = 777;
+    public int bountySpawnChance = 1337;
 
     @Comment("True if Bounty mobs should glow through walls permanently, else false [default = false]")
     public boolean bountyMobPermanentGlow = false;
