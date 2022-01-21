@@ -72,19 +72,21 @@ public class PlayerEntityMixin {
             String entityId = Registry.ENTITY_TYPE.getId(livingEntity.getType()).toString();
             List<DropDistributionData> dropDists = SpoornBountyEntityRegistry.DROP_REGISTRY.get(tier);
             DropDistributionData dropDist = SpoornBountyMobsUtil.findPatternInMap(tier, entityId, dropDists);
-            if (dropDist != null && SpoornBountyMobsUtil.RANDOM.nextDouble() < dropDist.dropChance) {
+            if (dropDist != null) {
                 //System.out.println("rolling " + dropDist.rolls + " times");
                 for (int i = 0; i < dropDist.rolls; i++) {
-                    String sampledItemRegex = dropDist.itemDrops.sample();
-                    List<Item> matchingItems = SpoornBountyEntityRegistry.CACHED_ITEM_REGISTRY.get(sampledItemRegex);
-                    //System.out.println("matching items: " + matchingItems);
-                    if (matchingItems == null || matchingItems.isEmpty()) {
-                        System.err.println("[SpoornBountyMobs] Configuration specified item \"" + sampledItemRegex + "\" " +
-                                "did not match any item in the registry!  Did you configure SpoornBountyMobs drops correctly?");
-                    } else {
-                        Item itemToDrop = SpoornBountyMobsUtil.sampleFromList(matchingItems);
-                        livingEntity.dropItem(itemToDrop);
-                        //System.out.println("dropped item " + itemToDrop + " from " + livingEntity);
+                    if (SpoornBountyMobsUtil.RANDOM.nextDouble() < dropDist.dropChance) {
+                        String sampledItemRegex = dropDist.itemDrops.sample();
+                        List<Item> matchingItems = SpoornBountyEntityRegistry.CACHED_ITEM_REGISTRY.get(sampledItemRegex);
+                        //System.out.println("matching items: " + matchingItems);
+                        if (matchingItems == null || matchingItems.isEmpty()) {
+                            System.err.println("[SpoornBountyMobs] Configuration specified item \"" + sampledItemRegex + "\" " +
+                                    "did not match any item in the registry!  Did you configure SpoornBountyMobs drops correctly?");
+                        } else {
+                            Item itemToDrop = SpoornBountyMobsUtil.sampleFromList(matchingItems);
+                            livingEntity.dropItem(itemToDrop);
+                            //System.out.println("dropped item " + itemToDrop + " from " + livingEntity);
+                        }
                     }
                 }
             }
