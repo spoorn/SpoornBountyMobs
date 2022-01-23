@@ -11,8 +11,6 @@ import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Util;
 import net.minecraft.util.registry.Registry;
-import org.apache.commons.math3.distribution.EnumeratedDistribution;
-import org.apache.commons.math3.util.Pair;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -25,15 +23,15 @@ import org.spoorn.spoornbountymobs.tiers.SpoornBountyTier;
 import org.spoorn.spoornbountymobs.util.DropDistributionData;
 import org.spoorn.spoornbountymobs.util.SpoornBountyMobsUtil;
 
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.regex.Pattern;
 
 @Mixin(PlayerEntity.class)
 public class PlayerEntityMixin {
 
     private static final MutableText BROADCAST = new TranslatableText("sbm.broadcast.levelup").formatted(Formatting.WHITE);
+
+    private static final MutableText TAKEDOWN_BROADCAST_1 = new TranslatableText("sbm.broadcast.playerkillbounty.part1").formatted(Formatting.WHITE);
+    private static final MutableText TAKEDOWN_BROADCAST_2 = new TranslatableText("sbm.broadcast.playerkillbounty.part2").formatted(Formatting.WHITE);
 
     /**
      * For testing player data persistence.
@@ -98,6 +96,19 @@ public class PlayerEntityMixin {
 
             // Sync new player data to clients
             SpoornBountyEntityRegistry.PLAYER_DATA.sync(player);
+
+            if (ModConfig.get().broadcastMessageWhenPlayerKillBountyMob) {
+                try {
+                    MutableText playerpart = new LiteralText(player.getDisplayName().getString()).formatted(Formatting.DARK_AQUA);
+                    MutableText tierpart = new LiteralText(tier.getTierType().getName()).formatted(tier.getTierType().getFormattings());
+                    MutableText mobpart = new LiteralText(livingEntity.getDisplayName().getString()).formatted(Formatting.DARK_GREEN);
+                    player.getServer().getPlayerManager()
+                            .broadcast(playerpart.append(TAKEDOWN_BROADCAST_1).append(tierpart).append(TAKEDOWN_BROADCAST_2).append(mobpart),
+                                    MessageType.CHAT, Util.NIL_UUID);
+                } catch (Exception e) {
+                    System.err.println("Exception while trying to broadcast player killed bounty mob message for SpoornBountyMobs: " + e);
+                }
+            }
         }
     }
 }

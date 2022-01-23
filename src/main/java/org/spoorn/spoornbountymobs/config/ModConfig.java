@@ -42,6 +42,9 @@ public class ModConfig implements ConfigData {
     @Comment("Set to false to disable broadcast message when a player is near a bounty mob [default = true]")
     public boolean broadcastMessageWhenBountySpawned = true;
 
+    @Comment("Set to false to disable broadcast message when a player kills a bounty mob [default = true]")
+    public boolean broadcastMessageWhenPlayerKillBountyMob = true;
+
     @Comment("Set to false to disable broadcast message when a player increases their Bounty Level [default = true]")
     public boolean broadcastMessageWhenBountyLevelUp = true;
 
