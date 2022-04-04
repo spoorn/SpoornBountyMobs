@@ -2,8 +2,9 @@
 https://www.curseforge.com/minecraft/mc-mods/spoorn-bounty-mobs
 
 
-![gif1](https://i.imgur.com/vadvELV.gif)
-![gif2](https://i.imgur.com/MVdDInI.gif)
+https://i.imgur.com/vadvELV.gif
+
+https://i.imgur.com/MVdDInI.gif
 
 # Overview
 
@@ -57,7 +58,6 @@ Loot drops are finally here!  This is FULLY CONFIGURABLE end to end.  You can
 I want to eventually add a UI for this
 
 ## Requirements
-
 Also requires Cloth Config API: https://www.curseforge.com/minecraft/mc-mods/cloth-config
 
 Recommended to include HealthOverlay so you can see how many Hearts you have beyond the vanilla cap: https://www.curseforge.com/minecraft/mc-mods/health-overlay-fabric 
