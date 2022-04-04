@@ -2,8 +2,8 @@
 https://www.curseforge.com/minecraft/mc-mods/spoorn-bounty-mobs
 
 
-![](https://i.imgur.com/vadvELV.gif)
-![](https://i.imgur.com/MVdDInI.gif)
+![gif1](https://i.imgur.com/vadvELV.gif)
+![gif2](https://i.imgur.com/MVdDInI.gif)
 
 # Overview
 
