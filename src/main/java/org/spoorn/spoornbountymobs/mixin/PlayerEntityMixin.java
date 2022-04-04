@@ -101,7 +101,7 @@ public class PlayerEntityMixin {
                 try {
                     MutableText playerpart = new LiteralText(player.getDisplayName().getString()).formatted(Formatting.DARK_AQUA);
                     MutableText tierpart = new LiteralText(tier.getTierType().getName()).formatted(tier.getTierType().getFormattings());
-                    MutableText mobpart = new LiteralText(livingEntity.getDisplayName().getString()).formatted(Formatting.DARK_GREEN);
+                    MutableText mobpart = new TranslatableText(livingEntity.getDisplayName().getString()).formatted(Formatting.DARK_GREEN);
                     player.getServer().getPlayerManager()
                             .broadcast(playerpart.append(TAKEDOWN_BROADCAST_1).append(tierpart).append(TAKEDOWN_BROADCAST_2).append(mobpart),
                                     MessageType.CHAT, Util.NIL_UUID);
