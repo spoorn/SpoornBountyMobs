@@ -12,12 +12,10 @@ import net.fabricmc.fabric.api.networking.v1.EntityTrackingEvents;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.item.Item;
-import net.minecraft.network.MessageType;
-import net.minecraft.text.LiteralText;
+import net.minecraft.network.message.MessageType;
 import net.minecraft.text.MutableText;
-import net.minecraft.text.TranslatableText;
+import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
-import net.minecraft.util.Util;
 import net.minecraft.util.registry.Registry;
 import org.apache.commons.math3.distribution.EnumeratedDistribution;
 import org.apache.commons.math3.util.Pair;
@@ -45,8 +43,8 @@ public class SpoornBountyEntityRegistry implements EntityComponentInitializer {
     private static final double ZERO = 0.0;
     private static final double ONE = 1.0;
 
-    private static final MutableText BROADCAST_1 = new TranslatableText("sbm.broadcast.part1").formatted(Formatting.WHITE);
-    private static final MutableText BROADCAST_2 = new TranslatableText("sbm.broadcast.part2").formatted(Formatting.WHITE);
+    private static final MutableText BROADCAST_1 = Text.translatable("sbm.broadcast.part1").formatted(Formatting.WHITE);
+    private static final MutableText BROADCAST_2 = Text.translatable("sbm.broadcast.part2").formatted(Formatting.WHITE);
 
     // Hostile Entity data
     public static final ComponentKey<EntityDataComponent> HOSTILE_ENTITY_DATA =
@@ -196,10 +194,10 @@ public class SpoornBountyEntityRegistry implements EntityComponentInitializer {
 
                     try {
                         if (ModConfig.get().broadcastMessageWhenBountySpawned) {
-                            MutableText playerpart = new LiteralText(player.getDisplayName().getString()).formatted(Formatting.DARK_AQUA);
-                            MutableText tierpart = new LiteralText(tier.getTierType().getName()).formatted(tier.getTierType().getFormattings());
-                            MutableText mobpart = new TranslatableText(hostileEntity.getDisplayName().getString()).formatted(Formatting.DARK_GREEN);
-                            player.getServer().getPlayerManager().broadcast(playerpart.append(BROADCAST_1).append(tierpart).append(BROADCAST_2).append(mobpart), MessageType.CHAT, Util.NIL_UUID);
+                            MutableText playerpart = Text.literal(player.getDisplayName().getString()).formatted(Formatting.DARK_AQUA);
+                            MutableText tierpart = Text.literal(tier.getTierType().getName()).formatted(tier.getTierType().getFormattings());
+                            MutableText mobpart = Text.translatable(hostileEntity.getDisplayName().getString()).formatted(Formatting.DARK_GREEN);
+                            player.getServer().getPlayerManager().broadcast(playerpart.append(BROADCAST_1).append(tierpart).append(BROADCAST_2).append(mobpart), MessageType.SYSTEM);
                         }
                     } catch (Exception e) {
                         log.error("Exception while trying to broadcast message for SpoornBountyMobs", e);

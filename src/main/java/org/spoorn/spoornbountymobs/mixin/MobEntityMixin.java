@@ -27,7 +27,7 @@ public abstract class MobEntityMixin {
      * Note: This assumes that getXpToDrop is only called once when the entity dies.
      */
     @Inject(method = "getXpToDrop", at = @At(value = "HEAD"), cancellable = true)
-    public void scaleExperience(PlayerEntity player, CallbackInfoReturnable<Integer> cir) {
+    public void scaleExperience(CallbackInfoReturnable<Integer> cir) {
         MobEntity mobEntity = (MobEntity) (Object) this;
         if (SpoornBountyMobsUtil.entityIsHostileAndHasBounty(mobEntity)) {
             EntityDataComponent component = SpoornBountyMobsUtil.getSpoornEntityDataComponent(mobEntity);
