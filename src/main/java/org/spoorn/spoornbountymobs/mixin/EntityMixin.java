@@ -57,7 +57,7 @@ public abstract class EntityMixin {
                 } else {
                     entityDataComponent.setSpoornBountyTier(entityDataComponent.getSpoornBountyTier().toBuilder().mobSizeScale(1.0f).build());
                     SpoornBountyEntityRegistry.HOSTILE_ENTITY_DATA.sync(entity);
-                    log.warn("Entity at {} could not increase scale as it collides with terrain/entities.", entity.getBlockPos());
+                    log.warn("Entity {} could not increase scale as it collides with terrain/entities.", entity);
                 }
             }
         }
