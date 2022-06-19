@@ -1,10 +1,7 @@
 package org.spoorn.spoornbountymobs.tiers;
 
 import static org.spoorn.spoornbountymobs.tiers.SpoornBountyTierTypes.*;
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.ToString;
+import lombok.*;
 import org.spoorn.spoornbountymobs.config.ModConfig;
 import org.spoorn.spoornbountymobs.config.tiers.*;
 
@@ -14,6 +11,7 @@ import org.spoorn.spoornbountymobs.config.tiers.*;
  * TODO: Make tiers entirely dynamic and configurable.
  */
 @AllArgsConstructor
+@Builder(toBuilder = true)  // For cloning
 @EqualsAndHashCode
 @ToString
 public final class SpoornBountyTier {
@@ -30,6 +28,7 @@ public final class SpoornBountyTier {
     @Getter
     private double weight;
     @Getter
+    @EqualsAndHashCode.Exclude
     private float mobSizeScale;
     @Getter
     private int glowColor;
