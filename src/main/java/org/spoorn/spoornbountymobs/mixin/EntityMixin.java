@@ -6,23 +6,30 @@ import net.minecraft.entity.EntityPose;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.util.math.Box;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import org.spoorn.spoornbountymobs.entity.SpoornBountyEntityRegistry;
 import org.spoorn.spoornbountymobs.entity.component.EntityDataComponent;
 import org.spoorn.spoornbountymobs.util.SpoornBountyMobsUtil;
 
 @Mixin(Entity.class)
 public abstract class EntityMixin {
+    
+    private Logger log = LogManager.getLogger("SpoornBountyMobsEntityMixin");
 
     @Shadow private EntityDimensions dimensions;
 
-    @Shadow public abstract Box getBoundingBox();
-
     @Shadow public abstract void setBoundingBox(Box boundingBox);
+
+    @Shadow protected abstract boolean doesNotCollide(Box box);
+
+    @Shadow private Box boundingBox;
 
     /**
      * Resize entity bounding box if it has a bounty.
@@ -31,15 +38,28 @@ public abstract class EntityMixin {
     private void resizeEntity(EntityPose pose, CallbackInfoReturnable<EntityDimensions> cir) {
         Entity entity = (Entity) (Object) this;
         if (SpoornBountyMobsUtil.entityIsHostileAndHasBounty(entity)) {
-            EntityDimensions dimensions = cir.getReturnValue();
             EntityDataComponent entityDataComponent = SpoornBountyMobsUtil.getSpoornEntityDataComponent(entity);
             float scale = entityDataComponent.getSpoornBountyTier().getMobSizeScale();
-            EntityDimensions newDimensions = dimensions.scaled(scale);
-            this.dimensions = newDimensions;
-            Box box = this.getBoundingBox();
-            this.setBoundingBox(new Box(box.minX, box.minY, box.minZ, box.minX + (double)newDimensions.width,
-                box.minY + (double)newDimensions.height, box.minZ + (double)newDimensions.width));
-            cir.setReturnValue(newDimensions);
+            if (scale > 1) {
+                EntityDimensions dimensions = cir.getReturnValue();
+                EntityDimensions newDimensions = dimensions.scaled(scale, scale);
+                Box box = this.boundingBox;
+                double distX = box.maxX - box.minX;
+                double distZ = box.maxZ - box.minZ;
+                double diffX = distX / 2 * scale - distX / 2;
+                double diffZ = distZ / 2 * scale - distZ / 2;
+                Box newBox = new Box(box.minX - diffX, box.minY, box.minZ - diffZ, box.maxX + diffX, box.minY + newDimensions.height, box.maxZ + diffZ);
+                if (this.doesNotCollide(newBox)) {
+                    this.setBoundingBox(newBox);
+                    this.dimensions = newDimensions;
+                    cir.setReturnValue(newDimensions);
+                    cir.cancel();
+                } else {
+                    entityDataComponent.setSpoornBountyTier(entityDataComponent.getSpoornBountyTier().toBuilder().mobSizeScale(1.0f).build());
+                    SpoornBountyEntityRegistry.HOSTILE_ENTITY_DATA.sync(entity);
+                    log.warn("Entity at {} could not increase scale as it collides with terrain/entities.", entity.getBlockPos());
+                }
+            }
         }
     }
 
