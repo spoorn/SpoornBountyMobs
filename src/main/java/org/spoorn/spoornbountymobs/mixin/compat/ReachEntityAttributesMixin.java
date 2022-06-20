@@ -24,7 +24,7 @@ public class ReachEntityAttributesMixin {
      * Note: This is an @Pseudo mixin, so it does not check that this mixin actually applied.  If REA changes the code,
      * this mixin will need to be updated.
      */
-    @Redirect(method = "isWithinAttackRange", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerEntity;squaredDistanceTo(Lnet/minecraft/entity/Entity;)D"), remap = false)
+    @Redirect(method = "isWithinAttackRange", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerEntity;squaredDistanceTo(Lnet/minecraft/entity/Entity;)D", remap = true), remap = false)
     private static double scaleMaxDistanceForInteractingWithEntityREACompat(PlayerEntity instance, Entity entity) {
         double original = instance.squaredDistanceTo(entity);
         if (SpoornBountyMobsUtil.entityIsHostileAndHasBounty(entity)) {
