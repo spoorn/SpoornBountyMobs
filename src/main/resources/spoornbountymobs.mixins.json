@@ -12,7 +12,8 @@
     "LivingEntityMixin",
     "PlayerEntityMixin",
     "ServerPlayerEntityMixin",
-    "ServerPlayNetworkHandlerMixin"
+    "ServerPlayNetworkHandlerMixin",
+    "compat.ReachEntityAttributesMixin"
   ],
   "client": [
     "LivingEntityRendererMixin",
