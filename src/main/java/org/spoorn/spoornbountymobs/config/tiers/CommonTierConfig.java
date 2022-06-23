@@ -10,9 +10,9 @@ public class CommonTierConfig {
 
     private static final String EXAMPLE_LOOT_JSON = "Here you can configure what loot drops from bounty mobs.  See comments below for information on each data field.\n" +
             "This works for any modded mobs or items as well, as long as you get the identifier regexes right!\n" +
-            "If any identifiers are missing or do not exist in the game, it will simply be skipped and fail safely.\n" +
             "If any of the mob identifiers conflict (e.g. you specify a \"minecraft:creeper\" entry, but also a wildcard default \".*\" entry,\n" +
             "only the first matched drop data in the drops list will be applied.\n" +
+            "The entityId can be a regex, and each item field is in the format: \"<optional-item-count> <item-identifier> <optional-NBT-data>\"\n" +
             "Example:\n\n" +
             "\"drops\": [\n" +
             "\t{\n" +
@@ -34,6 +34,20 @@ public class CommonTierConfig {
             "\t\t\t{\n" +
             "\t\t\t\t\"item\": \"minecraft:gunpowder\",\n" +
             "\t\t\t\t\"weight\": 1\n" +
+            "\t\t\t}\n" +
+            "\t\t\t{\n" +
+            "\t\t\t\t// The item field can contain the item count as a prefix, and NBT data as the suffix\n" +
+            "\t\t\t\t\"item\": \"2 minecraft:enchanted_book {StoredEnchantments:[{id:\\\"minecraft:blast_protection\\\",lvl:2s}]}\",\n" +
+            "\t\t\t\t\"weight\": 100\n" +
+            "\t\t\t},\n" +
+            "\t\t\t{\n" +
+            "\t\t\t\t\"item\": \"minecraft:iron_sword {Damage:10}\",\n" +
+            "\t\t\t\t\"weight\": 100\n" +
+            "\t\t\t},\n" +
+            "\t\t\t{\n" +
+            "\t\t\t\t// The <item-identifier> section of the item field can also be a regex.  This would for example drop 3 gold swords, or 3 iron swords, etc.\n" +
+            "\t\t\t\t\"item\": \"3 minecraft:.*sword {Damage:10}\",\n" +
+            "\t\t\t\t\"weight\": 100\n" +
             "\t\t\t}\n" +
             "\t\t]\n" +
             "\t},\n" +

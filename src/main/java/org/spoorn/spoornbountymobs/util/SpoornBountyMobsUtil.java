@@ -19,6 +19,7 @@ import org.spoorn.spoornbountymobs.tiers.SpoornBountyTier;
 
 import java.util.List;
 import java.util.Random;
+import java.util.regex.Pattern;
 
 @Log4j2
 public class SpoornBountyMobsUtil {
@@ -33,6 +34,10 @@ public class SpoornBountyMobsUtil {
             new Pair(SpoornBountyTier.LEGENDARY, SpoornBountyTier.LEGENDARY.getWeight()),
             new Pair(SpoornBountyTier.DOOM, SpoornBountyTier.DOOM.getWeight())
     ));
+
+    // Regex for the item Id in drops config
+    // In the format of "<optional-count> <itemId> <optional-NBT>"
+    public static final Pattern ITEM_REGEX = Pattern.compile("^((?<count>\\d+)\\s+)?\\s*(?<item>[^{].+:.+[^}])\\s*(\\s+(?<nbt>\\{.*\\}))?$");
 
     private static final Cache<Pair<SpoornBountyTier, String>, DropDistributionData> ENTITY_TO_DROP_DATA = CacheBuilder.newBuilder()
             .maximumSize(100)
@@ -130,14 +135,14 @@ public class SpoornBountyMobsUtil {
     /**
      * Finds a given input String in a regex keyed map.
      */
-    public static DropDistributionData findPatternInMap(SpoornBountyTier tier, String s, List<DropDistributionData> dropDists) {
-        Pair<SpoornBountyTier, String> cacheKey = Pair.create(tier, s);
+    public static DropDistributionData findPatternInMap(SpoornBountyTier tier, String entityId, List<DropDistributionData> dropDists) {
+        Pair<SpoornBountyTier, String> cacheKey = Pair.create(tier, entityId);
         DropDistributionData cacheEntry = ENTITY_TO_DROP_DATA.getIfPresent(cacheKey);
         if (cacheEntry != null) {
             return cacheEntry;
         } else {
             for (DropDistributionData dropDist : dropDists) {
-                if (dropDist.entityIdPattern.asMatchPredicate().test(s)) {
+                if (dropDist.entityIdPattern.asMatchPredicate().test(entityId)) {
                     ENTITY_TO_DROP_DATA.put(cacheKey, dropDist);
                     return dropDist;
                 }
