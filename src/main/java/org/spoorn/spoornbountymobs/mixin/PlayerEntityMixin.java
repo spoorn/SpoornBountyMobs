@@ -3,6 +3,7 @@ package org.spoorn.spoornbountymobs.mixin;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.network.MessageType;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.LiteralText;
@@ -21,6 +22,7 @@ import org.spoorn.spoornbountymobs.entity.component.EntityDataComponent;
 import org.spoorn.spoornbountymobs.entity.component.PlayerDataComponent;
 import org.spoorn.spoornbountymobs.tiers.SpoornBountyTier;
 import org.spoorn.spoornbountymobs.util.DropDistributionData;
+import org.spoorn.spoornbountymobs.util.ItemInfo;
 import org.spoorn.spoornbountymobs.util.SpoornBountyMobsUtil;
 
 import java.util.List;
@@ -80,14 +82,22 @@ public class PlayerEntityMixin {
                 for (int i = 0; i < dropDist.rolls; i++) {
                     if (SpoornBountyMobsUtil.RANDOM.nextDouble() < dropDist.dropChance) {
                         String sampledItemRegex = dropDist.itemDrops.sample();
-                        List<Item> matchingItems = SpoornBountyEntityRegistry.CACHED_ITEM_REGISTRY.get(sampledItemRegex);
+
+                        ItemInfo itemInfo = SpoornBountyEntityRegistry.CACHED_ITEM_REGISTRY.get(sampledItemRegex);
+                        List<Item> matchingItems = itemInfo.items;
                         //System.out.println("matching items: " + matchingItems);
                         if (matchingItems == null || matchingItems.isEmpty()) {
                             System.err.println("[SpoornBountyMobs] Configuration specified item \"" + sampledItemRegex + "\" " +
                                     "did not match any item in the registry!  Did you configure SpoornBountyMobs drops correctly?");
                         } else {
                             Item itemToDrop = SpoornBountyMobsUtil.sampleFromList(matchingItems);
-                            livingEntity.dropItem(itemToDrop);
+                            
+                            // Get count, and NBT for the item.  We already have the matching list of items from above
+                            ItemStack itemStackToDrop = new ItemStack(itemToDrop, itemInfo.count);
+                            if (itemInfo.nbt != null) {
+                                itemStackToDrop.setNbt(itemInfo.nbt);
+                            }
+                            livingEntity.dropStack(itemStackToDrop);
                             //System.out.println("dropped item " + itemToDrop + " from " + livingEntity);
                         }
                     }

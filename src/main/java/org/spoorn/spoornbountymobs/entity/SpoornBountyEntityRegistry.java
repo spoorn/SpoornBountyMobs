@@ -1,6 +1,8 @@
 package org.spoorn.spoornbountymobs.entity;
 
+import static org.spoorn.spoornbountymobs.util.SpoornBountyMobsUtil.ITEM_REGEX;
 import static org.spoorn.spoornbountymobs.util.SpoornBountyMobsUtil.getStatusEffectInstance;
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import dev.onyxstudios.cca.api.v3.component.ComponentKey;
 import dev.onyxstudios.cca.api.v3.component.ComponentRegistryV3;
 import dev.onyxstudios.cca.api.v3.entity.EntityComponentFactoryRegistry;
@@ -12,6 +14,8 @@ import net.fabricmc.fabric.api.networking.v1.EntityTrackingEvents;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.item.Item;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.StringNbtReader;
 import net.minecraft.network.MessageType;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.MutableText;
@@ -29,10 +33,12 @@ import org.spoorn.spoornbountymobs.entity.component.SpoornBountyHostileEntityDat
 import org.spoorn.spoornbountymobs.entity.component.SpoornBountyPlayerDataComponent;
 import org.spoorn.spoornbountymobs.tiers.SpoornBountyTier;
 import org.spoorn.spoornbountymobs.util.DropDistributionData;
+import org.spoorn.spoornbountymobs.util.ItemInfo;
 import org.spoorn.spoornbountymobs.util.SpoornBountyMobsUtil;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -58,7 +64,7 @@ public class SpoornBountyEntityRegistry implements EntityComponentInitializer {
     // This maps to a List of DropDistributionData so that when there are conflicting configurations, we take the first one
     // specified in the config file.
     public static final Map<SpoornBountyTier, List<DropDistributionData>> DROP_REGISTRY = new HashMap<>();
-    public static final Map<String, List<Item>> CACHED_ITEM_REGISTRY = new HashMap<>();
+    public static final Map<String, ItemInfo> CACHED_ITEM_REGISTRY = new HashMap<>();
 
     private static final Set<String> CONFIGURED_DROPS = ConcurrentHashMap.newKeySet();
 
@@ -115,11 +121,34 @@ public class SpoornBountyEntityRegistry implements EntityComponentInitializer {
         ServerLifecycleEvents.SERVER_STARTED.register((server) -> {
             // Cache all registered items that match all configured drop regexes
             for (String item : CONFIGURED_DROPS) {
-                Pattern regex = Pattern.compile(item);
+                Matcher matcher = ITEM_REGEX.matcher(item.trim());
+                
+                if (!matcher.matches()) {
+                    throw new RuntimeException("[SpoornBountyMobs] [SpoornBountyEntityRegistry] Item regex {" + item.trim() + "} is not in a valid format.  " +
+                            "Please check the config file at config/spoornbountymobs.json5 for acceptable formats.");
+                }
+
+                // Middle of regex is the item regex
+                Pattern regex = Pattern.compile(matcher.group("item"));
                 List<Item> matchingItems = Registry.ITEM.stream()
                         .filter(e -> regex.asMatchPredicate().test(Registry.ITEM.getId(e).toString()))
                         .collect(Collectors.toList());
-                CACHED_ITEM_REGISTRY.putIfAbsent(item, matchingItems);
+                
+                // Count and NBT
+                String countStr = matcher.group("count");
+                int count = countStr == null ? 1 : Integer.parseInt(countStr.trim());
+                String nbtStr = matcher.group("nbt");
+
+                NbtCompound nbtCompound = null;
+                if (nbtStr != null) {
+                    try {
+                        nbtCompound = StringNbtReader.parse(nbtStr);
+                    } catch (CommandSyntaxException e) {
+                        throw new RuntimeException("[SpoornBountyMobs] Could not read Nbt compound from \"" + item + "\"");
+                    }
+                }
+                
+                CACHED_ITEM_REGISTRY.putIfAbsent(item, new ItemInfo(count, matchingItems, nbtCompound));
             }
 
             // Free up CONFIGURED_DROPS as it's not needed anymore
