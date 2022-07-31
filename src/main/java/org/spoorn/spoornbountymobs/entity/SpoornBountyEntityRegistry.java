@@ -16,7 +16,6 @@ import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.item.Item;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.StringNbtReader;
-import net.minecraft.network.message.MessageType;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
@@ -226,7 +225,7 @@ public class SpoornBountyEntityRegistry implements EntityComponentInitializer {
                             MutableText playerpart = Text.literal(player.getDisplayName().getString()).formatted(Formatting.DARK_AQUA);
                             MutableText tierpart = Text.literal(tier.getTierType().getName()).formatted(tier.getTierType().getFormattings());
                             MutableText mobpart = Text.translatable(hostileEntity.getDisplayName().getString()).formatted(Formatting.DARK_GREEN);
-                            player.getServer().getPlayerManager().broadcast(playerpart.append(BROADCAST_1).append(tierpart).append(BROADCAST_2).append(mobpart), MessageType.SYSTEM);
+                            player.getServer().getPlayerManager().broadcast(playerpart.append(BROADCAST_1).append(tierpart).append(BROADCAST_2).append(mobpart), false);
                         }
                     } catch (Exception e) {
                         log.error("Exception while trying to broadcast message for SpoornBountyMobs", e);

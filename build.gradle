@@ -70,11 +70,6 @@ repositories {
     maven {
         url "https://libraries.minecraft.net"
     }
-
-    // Mod Menu
-    maven {
-        url "https://maven.terraformersmc.com/releases/"
-    }
 }
 
 processResources {
