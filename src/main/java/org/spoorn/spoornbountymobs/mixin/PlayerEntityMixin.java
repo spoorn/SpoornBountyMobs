@@ -59,9 +59,13 @@ public class PlayerEntityMixin {
                 playerDataComponent.setHighestBountyHunterLevel(currLevel);
                 try {
                     if (ModConfig.get().broadcastMessageWhenBountyLevelUp) {
-                        MutableText playerpart = Text.literal(player.getDisplayName().getString()).formatted(Formatting.DARK_AQUA);
-                        MutableText levelpart = Text.literal(Integer.toString(currLevel)).formatted(Formatting.LIGHT_PURPLE);
-                        player.getServer().getPlayerManager().broadcast(playerpart.append(BROADCAST).append(levelpart), false);
+                        String playerName = player.getDisplayName().getString();
+                        List<String> broadcastDisabled = ModConfig.get().broadcastDisabled;
+                        if (!broadcastDisabled.contains(playerName)) {
+                            MutableText playerpart = Text.literal(playerName).formatted(Formatting.DARK_AQUA);
+                            MutableText levelpart = Text.literal(Integer.toString(currLevel)).formatted(Formatting.LIGHT_PURPLE);
+                            player.getServer().getPlayerManager().broadcast(playerpart.append(BROADCAST).append(levelpart), false);
+                        }
                     }
                 } catch (Exception e) {
                     System.err.println("[SpoornBountyMobs] Error broadcasting SpoornBountyMobs level up: " + e);
@@ -106,12 +110,25 @@ public class PlayerEntityMixin {
 
             if (ModConfig.get().broadcastMessageWhenPlayerKillBountyMob) {
                 try {
+<<<<<<< HEAD
                     MutableText playerpart = Text.literal(player.getDisplayName().getString()).formatted(Formatting.DARK_AQUA);
                     MutableText tierpart = Text.literal(tier.getTierType().getName()).formatted(tier.getTierType().getFormattings());
                     MutableText mobpart = Text.translatable(other.getDisplayName().getString()).formatted(Formatting.DARK_GREEN);
                     player.getServer().getPlayerManager()
                             .broadcast(playerpart.append(TAKEDOWN_BROADCAST_1).append(tierpart).append(TAKEDOWN_BROADCAST_2).append(mobpart),
                                     false);
+=======
+                    String playerName = player.getDisplayName().getString();
+                    List<String> broadcastDisabled = ModConfig.get().broadcastDisabled;
+                    if (!broadcastDisabled.contains(playerName) && !broadcastDisabled.contains(Registry.ENTITY_TYPE.getId(livingEntity.getType()).toString())) {
+                        MutableText playerpart = new LiteralText(playerName).formatted(Formatting.DARK_AQUA);
+                        MutableText tierpart = new LiteralText(tier.getTierType().getName()).formatted(tier.getTierType().getFormattings());
+                        MutableText mobpart = new TranslatableText(livingEntity.getDisplayName().getString()).formatted(Formatting.DARK_GREEN);
+                        player.getServer().getPlayerManager()
+                                .broadcast(playerpart.append(TAKEDOWN_BROADCAST_1).append(tierpart).append(TAKEDOWN_BROADCAST_2).append(mobpart),
+                                        MessageType.CHAT, Util.NIL_UUID);
+                    }
+>>>>>>> ba9a115 (Switch to OmegaConfig to fix issues with Lists and Maps:)
                 } catch (Exception e) {
                     System.err.println("Exception while trying to broadcast player killed bounty mob message for SpoornBountyMobs: " + e);
                 }

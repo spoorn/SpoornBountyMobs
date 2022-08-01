@@ -1,6 +1,6 @@
 package org.spoorn.spoornbountymobs.config.tiers;
 
-import me.shedaniel.cloth.clothconfig.shadowed.blue.endless.jankson.Comment;
+import draylar.omegaconfig.api.Comment;
 import org.spoorn.spoornbountymobs.config.Drop;
 
 import java.util.ArrayList;
@@ -100,7 +100,9 @@ public class CommonTierConfig {
     @Comment("Damage increase per player bounty score level [default = 0.2]")
     public double milestoneDamageIncrease = 0.2;
 
-    // WARNING: Setting defaults may override set configurations in the json file.  See https://github.com/shedaniel/cloth-config/issues/104.
+    // WARNING: Setting defaults may override set configurations in the json file if we use cloth config.
+    // See https://github.com/shedaniel/cloth-config/issues/104.
+    // Shouldn't happen now that I switched to OmegaConfig?
     @Comment(EXAMPLE_LOOT_JSON)
     public List<Drop> drops = new ArrayList<>();
 }

@@ -36,8 +36,7 @@
   "depends": {
     "fabricloader": "*",
     "fabric": "*",
-    "minecraft": ">=1.18",
-    "cloth-config2": "*"
+    "minecraft": ">=1.18"
   },
   "suggests": {
     "healthoverlay": "*"

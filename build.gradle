@@ -23,10 +23,9 @@ dependencies {
     // PSA: Some older mods, compiled on Loom 0.2.1, might have outdated Maven POMs.
     // You may need to force-disable transitiveness on them.
 
-    // Cloth-config API
-    modApi("me.shedaniel.cloth:cloth-config-fabric:${project.cloth_config_version}") {
-        exclude(group: "net.fabricmc.fabric-api")
-    }
+    // Omega Config
+    include("com.github.Draylar.omega-config:omega-config-base:${project.omega_config_version}")
+    modImplementation("com.github.Draylar.omega-config:omega-config-base:${project.omega_config_version}")
 
     // Cardinal Components API
 
@@ -52,8 +51,10 @@ dependencies {
 }
 
 repositories {
-    // Cloth Config
-    maven { url "https://maven.shedaniel.me/" }
+    // OmegaConfig
+    maven {
+        url "https://jitpack.io"
+    }
 
     // Cardinal Components API
     maven {
