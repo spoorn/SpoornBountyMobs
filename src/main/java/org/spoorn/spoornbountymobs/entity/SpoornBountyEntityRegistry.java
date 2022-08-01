@@ -222,10 +222,14 @@ public class SpoornBountyEntityRegistry implements EntityComponentInitializer {
 
                     try {
                         if (ModConfig.get().broadcastMessageWhenBountySpawned) {
-                            MutableText playerpart = Text.literal(player.getDisplayName().getString()).formatted(Formatting.DARK_AQUA);
-                            MutableText tierpart = Text.literal(tier.getTierType().getName()).formatted(tier.getTierType().getFormattings());
-                            MutableText mobpart = Text.translatable(hostileEntity.getDisplayName().getString()).formatted(Formatting.DARK_GREEN);
-                            player.getServer().getPlayerManager().broadcast(playerpart.append(BROADCAST_1).append(tierpart).append(BROADCAST_2).append(mobpart), false);
+                            String playerName = player.getDisplayName().getString();
+                            List<String> broadcastDisabled = ModConfig.get().broadcastDisabled;
+                            if (!broadcastDisabled.contains(playerName) && !broadcastDisabled.contains(Registry.ENTITY_TYPE.getId(hostileEntity.getType()).toString())) {
+                                MutableText playerpart = Text.literal(playerName).formatted(Formatting.DARK_AQUA);
+                                MutableText tierpart = Text.literal(tier.getTierType().getName()).formatted(tier.getTierType().getFormattings());
+                                MutableText mobpart = Text.translatable(hostileEntity.getDisplayName().getString()).formatted(Formatting.DARK_GREEN);
+                                player.getServer().getPlayerManager().broadcast(playerpart.append(BROADCAST_1).append(tierpart).append(BROADCAST_2).append(mobpart), false);
+                            }
                         }
                     } catch (Exception e) {
                         log.error("Exception while trying to broadcast message for SpoornBountyMobs", e);
