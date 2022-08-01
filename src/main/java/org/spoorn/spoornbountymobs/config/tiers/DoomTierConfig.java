@@ -1,8 +1,7 @@
 package org.spoorn.spoornbountymobs.config.tiers;
 
-import me.shedaniel.cloth.clothconfig.shadowed.blue.endless.jankson.Comment;
+import draylar.omegaconfig.api.Comment;
 import org.spoorn.spoornbountymobs.config.Drop;
-import org.spoorn.spoornbountymobs.config.WeightedItem;
 
 import java.util.ArrayList;
 import java.util.List;
