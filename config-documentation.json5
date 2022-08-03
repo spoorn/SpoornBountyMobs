@@ -28,11 +28,6 @@
 	"broadcastDisabled": [
 		"fake"
 	],
-	//inner test 1
-	"testInner": {
-		//test inner outside
-		"test": false
-	},
 	//Common tier bounty mobs
 	"COMMON_TIER": {
 		//Spawn weight of this tier (higher number is higher chance of spawn) [default = 20]
@@ -52,7 +47,7 @@
 		//Here you can configure what loot drops from bounty mobs.  See comments below for information on each data field.
 		//This works for any modded mobs or items as well, as long as you get the identifier regexes right!
 		//If any of the mob identifiers conflict (e.g. you specify a "minecraft:creeper" entry, but also a wildcard default ".*" entry,
-		//only the first matched drop data in the drops list will be applied.
+		//ALL of the matched drop data in the drops list will be rolled and applied.
 		//The entityId can be a regex, and each item field is in the format: "<optional-item-count> <item-identifier> <optional-NBT-data>"
 		//Example:
 		//
@@ -120,7 +115,50 @@
 		//		]
 		//	}
 		//]
-		"drops": []
+		"drops": [
+			{
+				"entityId": ".*",
+				"dropChance": 0.5,
+				"rolls": 1,
+				"items": [
+					{
+						"item": "minecraft:diamond",
+						"weight": 1
+					},
+					{
+						"item": "minecraft:emerald",
+						"weight": 1
+					},
+					{
+						"item": "minecraft:.*_(sword|axe|shovel|pickaxe|hoe|helmet|chestplate|leggings|boots)",
+						"weight": 1
+					},
+					{
+						"item": "minecraft:.*ingot",
+						"weight": 1
+					}
+				]
+			},
+			{
+				"entityId": ".*",
+				"dropChance": 0.5,
+				"rolls": 2,
+				"items": [
+					{
+						"item": "minecraft:.*golden_apple",
+						"weight": 10
+					},
+					{
+						"item": "minecraft:golden_carrot",
+						"weight": 10
+					},
+					{
+						"item": "minecraft:cake",
+						"weight": 1
+					}
+				]
+			}
+		]
 	},
 	//Uncommon tier bounty mobs
 	"UNCOMMON_TIER": {
@@ -139,7 +177,50 @@
 		//Damage increase per player bounty score level [default = 0.2]
 		"milestoneDamageIncrease": 0.2,
 		//Drops data.  See COMMON_TIER's config for example configuration schema and documentation.
-		"drops": []
+		"drops": [
+			{
+				"entityId": ".*",
+				"dropChance": 0.5,
+				"rolls": 2,
+				"items": [
+					{
+						"item": "minecraft:diamond",
+						"weight": 1
+					},
+					{
+						"item": "minecraft:emerald",
+						"weight": 1
+					},
+					{
+						"item": "minecraft:.*_(sword|axe|shovel|pickaxe|hoe|helmet|chestplate|leggings|boots)",
+						"weight": 1
+					},
+					{
+						"item": "minecraft:.*ingot",
+						"weight": 1
+					}
+				]
+			},
+			{
+				"entityId": ".*",
+				"dropChance": 0.5,
+				"rolls": 3,
+				"items": [
+					{
+						"item": "minecraft:.*golden_apple",
+						"weight": 10
+					},
+					{
+						"item": "minecraft:golden_carrot",
+						"weight": 10
+					},
+					{
+						"item": "minecraft:cake",
+						"weight": 1
+					}
+				]
+			}
+		]
 	},
 	//Rare tier bounty mobs
 	"RARE_TIER": {
@@ -158,7 +239,65 @@
 		//Damage increase per player bounty score level [default = 0.3]
 		"milestoneDamageIncrease": 0.3,
 		//Drops data.  See COMMON_TIER's config for example configuration schema and documentation.
-		"drops": []
+		"drops": [
+			{
+				"entityId": ".*",
+				"dropChance": 1.0,
+				"rolls": 2,
+				"items": [
+					{
+						"item": "minecraft:diamond",
+						"weight": 1
+					},
+					{
+						"item": "minecraft:emerald",
+						"weight": 1
+					},
+					{
+						"item": "minecraft:.*_(sword|axe|shovel|pickaxe|hoe|helmet|chestplate|leggings|boots)",
+						"weight": 1
+					},
+					{
+						"item": "minecraft:.*ingot",
+						"weight": 1
+					}
+				]
+			},
+			{
+				"entityId": ".*",
+				"dropChance": 1.0,
+				"rolls": 3,
+				"items": [
+					{
+						"item": "minecraft:.*golden_apple",
+						"weight": 10
+					},
+					{
+						"item": "minecraft:golden_carrot",
+						"weight": 10
+					},
+					{
+						"item": "minecraft:cake",
+						"weight": 1
+					}
+				]
+			},
+			{
+				"entityId": ".*",
+				"dropChance": 0.5,
+				"rolls": 2,
+				"items": [
+					{
+						"item": "minecraft:ender_pearl",
+						"weight": 1
+					},
+					{
+						"item": "minecraft:firework_rocket",
+						"weight": 1
+					}
+				]
+			}
+		]
 	},
 	//Epic tier bounty mobs
 	"EPIC_TIER": {
@@ -177,7 +316,65 @@
 		//Damage increase per player bounty score level [default = 0.4]
 		"milestoneDamageIncrease": 0.4,
 		//Drops data.  See COMMON_TIER's config for example configuration schema and documentation.
-		"drops": []
+		"drops": [
+			{
+				"entityId": ".*",
+				"dropChance": 1.0,
+				"rolls": 2,
+				"items": [
+					{
+						"item": "minecraft:diamond.*",
+						"weight": 1
+					},
+					{
+						"item": "minecraft:emerald_block",
+						"weight": 1
+					},
+					{
+						"item": "minecraft:netherite.*",
+						"weight": 1
+					},
+					{
+						"item": "minecraft:.*_(sword|axe|shovel|pickaxe|hoe|helmet|chestplate|leggings|boots)",
+						"weight": 2
+					}
+				]
+			},
+			{
+				"entityId": ".*",
+				"dropChance": 1.0,
+				"rolls": 4,
+				"items": [
+					{
+						"item": "minecraft:.*golden_apple",
+						"weight": 10
+					},
+					{
+						"item": "minecraft:golden_carrot",
+						"weight": 10
+					},
+					{
+						"item": "minecraft:cake",
+						"weight": 1
+					}
+				]
+			},
+			{
+				"entityId": ".*",
+				"dropChance": 0.5,
+				"rolls": 4,
+				"items": [
+					{
+						"item": "minecraft:ender_pearl",
+						"weight": 1
+					},
+					{
+						"item": "minecraft:firework_rocket",
+						"weight": 1
+					}
+				]
+			}
+		]
 	},
 	//Legendary tier bounty mobs
 	"LEGENDARY_TIER": {
@@ -196,7 +393,106 @@
 		//Damage increase per player bounty score level [default = 0.5]
 		"milestoneDamageIncrease": 0.5,
 		//Drops data.  See COMMON_TIER's config for example configuration schema and documentation.
-		"drops": []
+		"drops": [
+			{
+				"entityId": ".*",
+				"dropChance": 0.02,
+				"rolls": 1,
+				"items": [
+					{
+						"item": "minecraft:nether_star",
+						"weight": 1
+					}
+				]
+			},
+			{
+				"entityId": ".*",
+				"dropChance": 1.0,
+				"rolls": 2,
+				"items": [
+					{
+						"item": "minecraft:diamond.*",
+						"weight": 2
+					},
+					{
+						"item": "minecraft:emerald_block",
+						"weight": 1
+					},
+					{
+						"item": "minecraft:netherite.*",
+						"weight": 1
+					}
+				]
+			},
+			{
+				"entityId": ".*",
+				"dropChance": 0.1,
+				"rolls": 2,
+				"items": [
+					{
+						"item": "minecraft:carved_pumpkin",
+						"weight": 1
+					},
+					{
+						"item": "minecraft:pumpkin_pie",
+						"weight": 1
+					},
+					{
+						"item": "minecraft:music_disc.*",
+						"weight": 1
+					}
+				]
+			},
+			{
+				"entityId": ".*",
+				"dropChance": 1.0,
+				"rolls": 4,
+				"items": [
+					{
+						"item": "minecraft:.*golden_apple",
+						"weight": 10
+					},
+					{
+						"item": "minecraft:golden_carrot",
+						"weight": 10
+					},
+					{
+						"item": "minecraft:cake",
+						"weight": 1
+					}
+				]
+			},
+			{
+				"entityId": ".*",
+				"dropChance": 0.5,
+				"rolls": 4,
+				"items": [
+					{
+						"item": "minecraft:ender_pearl",
+						"weight": 1
+					},
+					{
+						"item": "minecraft:firework_rocket",
+						"weight": 1
+					}
+				]
+			},
+			{
+				"entityId": ".*",
+				"dropChance": 0.02,
+				"rolls": 1,
+				"items": [
+					{
+						"item": "minecraft:elytra",
+						"weight": 1
+					},
+					{
+						"item": "minecraft:totem_of_undying",
+						"weight": 1
+					}
+				]
+			}
+		]
 	},
 	//Doom tier bounty mobs
 	"DOOM_TIER": {
@@ -215,6 +511,105 @@
 		//Damage increase per player bounty score level [default = 0.6]
 		"milestoneDamageIncrease": 0.6,
 		//Drops data.  See COMMON_TIER's config for example configuration schema and documentation.
-		"drops": []
+		"drops": [
+			{
+				"entityId": ".*",
+				"dropChance": 0.05,
+				"rolls": 1,
+				"items": [
+					{
+						"item": "minecraft:nether_star",
+						"weight": 1
+					}
+				]
+			},
+			{
+				"entityId": ".*",
+				"dropChance": 1.0,
+				"rolls": 4,
+				"items": [
+					{
+						"item": "minecraft:diamond.*",
+						"weight": 2
+					},
+					{
+						"item": "minecraft:emerald_block",
+						"weight": 1
+					},
+					{
+						"item": "minecraft:netherite.*",
+						"weight": 1
+					}
+				]
+			},
+			{
+				"entityId": ".*",
+				"dropChance": 0.1,
+				"rolls": 2,
+				"items": [
+					{
+						"item": "minecraft:carved_pumpkin",
+						"weight": 1
+					},
+					{
+						"item": "minecraft:pumpkin_pie",
+						"weight": 1
+					},
+					{
+						"item": "minecraft:music_disc.*",
+						"weight": 1
+					}
+				]
+			},
+			{
+				"entityId": ".*",
+				"dropChance": 1.0,
+				"rolls": 4,
+				"items": [
+					{
+						"item": "minecraft:.*golden_apple",
+						"weight": 10
+					},
+					{
+						"item": "minecraft:golden_carrot",
+						"weight": 10
+					},
+					{
+						"item": "minecraft:cake",
+						"weight": 1
+					}
+				]
+			},
+			{
+				"entityId": ".*",
+				"dropChance": 0.5,
+				"rolls": 8,
+				"items": [
+					{
+						"item": "minecraft:ender_pearl",
+						"weight": 1
+					},
+					{
+						"item": "minecraft:firework_rocket",
+						"weight": 1
+					}
+				]
+			},
+			{
+				"entityId": ".*",
+				"dropChance": 0.05,
+				"rolls": 1,
+				"items": [
+					{
+						"item": "minecraft:elytra",
+						"weight": 1
+					},
+					{
+						"item": "minecraft:totem_of_undying",
+						"weight": 1
+					}
+				]
+			}
+		]
 	}
 }
