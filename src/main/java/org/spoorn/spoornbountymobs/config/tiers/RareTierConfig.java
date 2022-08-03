@@ -2,6 +2,7 @@ package org.spoorn.spoornbountymobs.config.tiers;
 
 import draylar.omegaconfig.api.Comment;
 import org.spoorn.spoornbountymobs.config.Drop;
+import org.spoorn.spoornbountymobs.config.WeightedItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,5 +31,21 @@ public class RareTierConfig {
     public double milestoneDamageIncrease = 0.3;
 
     @Comment("Drops data.  See COMMON_TIER's config for example configuration schema and documentation.")
-    public List<Drop> drops = new ArrayList<>();
+    public List<Drop> drops = new ArrayList<>(List.of(
+            new Drop(".*", 1.0, 2, new ArrayList<>(List.of(
+                    new WeightedItem("minecraft:diamond", 1),
+                    new WeightedItem("minecraft:emerald", 1),
+                    new WeightedItem("minecraft:.*_(sword|axe|shovel|pickaxe|hoe|helmet|chestplate|leggings|boots)", 1),
+                    new WeightedItem("minecraft:.*ingot", 1)
+            ))),
+            new Drop(".*", 1.0, 3, new ArrayList<>(List.of(
+                    new WeightedItem("minecraft:.*golden_apple", 10),
+                    new WeightedItem("minecraft:golden_carrot", 10),
+                    new WeightedItem("minecraft:cake", 1)
+            ))),
+            new Drop(".*", 0.5, 2, new ArrayList<>(List.of(
+                    new WeightedItem("minecraft:ender_pearl", 1),
+                    new WeightedItem("minecraft:firework_rocket", 1)
+            )))
+    ));
 }

@@ -2,6 +2,7 @@ package org.spoorn.spoornbountymobs.config.tiers;
 
 import draylar.omegaconfig.api.Comment;
 import org.spoorn.spoornbountymobs.config.Drop;
+import org.spoorn.spoornbountymobs.config.WeightedItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -104,5 +105,17 @@ public class CommonTierConfig {
     // See https://github.com/shedaniel/cloth-config/issues/104.
     // Shouldn't happen now that I switched to OmegaConfig?
     @Comment(EXAMPLE_LOOT_JSON)
-    public List<Drop> drops = new ArrayList<>();
+    public List<Drop> drops = new ArrayList<>(List.of(
+            new Drop(".*", 0.5, 1, new ArrayList<>(List.of(
+                    new WeightedItem("minecraft:diamond", 1),
+                    new WeightedItem("minecraft:emerald", 1),
+                    new WeightedItem("minecraft:.*_(sword|axe|shovel|pickaxe|hoe|helmet|chestplate|leggings|boots)", 1),
+                    new WeightedItem("minecraft:.*ingot", 1)
+            ))),
+            new Drop(".*", 0.5, 2, new ArrayList<>(List.of(
+                    new WeightedItem("minecraft:.*golden_apple", 10),
+                    new WeightedItem("minecraft:golden_carrot", 10),
+                    new WeightedItem("minecraft:cake", 1)
+            )))
+    ));
 }
