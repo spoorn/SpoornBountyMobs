@@ -76,30 +76,34 @@ public class PlayerEntityMixin {
             // drop loot from the bounty mob if applicable
             SpoornBountyTier tier = entityDataComponent.getSpoornBountyTier();
             String entityId = Registry.ENTITY_TYPE.getId(other.getType()).toString();
-            List<DropDistributionData> dropDists = SpoornBountyEntityRegistry.DROP_REGISTRY.get(tier);
-            DropDistributionData dropDist = SpoornBountyMobsUtil.findPatternInMap(tier, entityId, dropDists);
-            if (dropDist != null) {
-                //System.out.println("rolling " + dropDist.rolls + " times");
-                for (int i = 0; i < dropDist.rolls; i++) {
-                    if (SpoornBountyMobsUtil.RANDOM.nextDouble() < dropDist.dropChance) {
-                        String sampledItemRegex = dropDist.itemDrops.sample();
+            List<DropDistributionData> allDropDists = SpoornBountyEntityRegistry.DROP_REGISTRY.get(tier);
+            List<DropDistributionData> filteredDropDists = SpoornBountyMobsUtil.filterPatternInMap(tier, entityId, allDropDists);
+            // Applies all matching drops for the tier and entity identifier
+            if (!filteredDropDists.isEmpty()) {
+                for (int k = 0; k < filteredDropDists.size(); k++) {
+                    DropDistributionData dropDist = filteredDropDists.get(k);
+                    //System.out.println("rolling " + dropDist.rolls + " times");
+                    for (int i = 0; i < dropDist.rolls; i++) {
+                        if (SpoornBountyMobsUtil.RANDOM.nextDouble() < dropDist.dropChance) {
+                            String sampledItemRegex = dropDist.itemDrops.sample();
 
-                        ItemInfo itemInfo = SpoornBountyEntityRegistry.CACHED_ITEM_REGISTRY.get(sampledItemRegex);
-                        List<Item> matchingItems = itemInfo.items;
-                        //System.out.println("matching items: " + matchingItems);
-                        if (matchingItems == null || matchingItems.isEmpty()) {
-                            System.err.println("[SpoornBountyMobs] Configuration specified item \"" + sampledItemRegex + "\" " +
-                                    "did not match any item in the registry!  Did you configure SpoornBountyMobs drops correctly?");
-                        } else {
-                            Item itemToDrop = SpoornBountyMobsUtil.sampleFromList(matchingItems);
+                            ItemInfo itemInfo = SpoornBountyEntityRegistry.CACHED_ITEM_REGISTRY.get(sampledItemRegex);
+                            List<Item> matchingItems = itemInfo.items;
+                            //System.out.println("matching items: " + matchingItems);
+                            if (matchingItems == null || matchingItems.isEmpty()) {
+                                System.err.println("[SpoornBountyMobs] Configuration specified item \"" + sampledItemRegex + "\" " +
+                                        "did not match any item in the registry!  Did you configure SpoornBountyMobs drops correctly?");
+                            } else {
+                                Item itemToDrop = SpoornBountyMobsUtil.sampleFromList(matchingItems);
 
-                            // Get count, and NBT for the item.  We already have the matching list of items from above
-                            ItemStack itemStackToDrop = new ItemStack(itemToDrop, itemInfo.count);
-                            if (itemInfo.nbt != null) {
-                                itemStackToDrop.setNbt(itemInfo.nbt);
+                                // Get count, and NBT for the item.  We already have the matching list of items from above
+                                ItemStack itemStackToDrop = new ItemStack(itemToDrop, itemInfo.count);
+                                if (itemInfo.nbt != null) {
+                                    itemStackToDrop.setNbt(itemInfo.nbt);
+                                }
+                                other.dropStack(itemStackToDrop);
+                                //System.out.println("dropped item " + itemToDrop + " from " + livingEntity);
                             }
-                            other.dropStack(itemStackToDrop);
-                            //System.out.println("dropped item " + itemToDrop + " from " + livingEntity);
                         }
                     }
                 }

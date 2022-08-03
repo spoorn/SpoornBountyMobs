@@ -17,6 +17,7 @@ import org.spoorn.spoornbountymobs.entity.component.EntityDataComponent;
 import org.spoorn.spoornbountymobs.entity.component.PlayerDataComponent;
 import org.spoorn.spoornbountymobs.tiers.SpoornBountyTier;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.regex.Pattern;
@@ -39,7 +40,7 @@ public class SpoornBountyMobsUtil {
     // In the format of "<optional-count> <itemId> <optional-NBT>"
     public static final Pattern ITEM_REGEX = Pattern.compile("^((?<count>\\d+)\\s+)?\\s*(?<item>[^{].+:.+[^}])\\s*(\\s+(?<nbt>\\{.*\\}))?$");
 
-    private static final Cache<Pair<SpoornBountyTier, String>, DropDistributionData> ENTITY_TO_DROP_DATA = CacheBuilder.newBuilder()
+    private static final Cache<Pair<SpoornBountyTier, String>, List<DropDistributionData>> ENTITY_TO_DROP_DATA = CacheBuilder.newBuilder()
             .maximumSize(100)
             .build();
 
@@ -135,19 +136,20 @@ public class SpoornBountyMobsUtil {
     /**
      * Finds a given input String in a regex keyed map.
      */
-    public static DropDistributionData findPatternInMap(SpoornBountyTier tier, String entityId, List<DropDistributionData> dropDists) {
+    public static List<DropDistributionData> filterPatternInMap(SpoornBountyTier tier, String entityId, List<DropDistributionData> dropDists) {
         Pair<SpoornBountyTier, String> cacheKey = Pair.create(tier, entityId);
-        DropDistributionData cacheEntry = ENTITY_TO_DROP_DATA.getIfPresent(cacheKey);
+        List<DropDistributionData> cacheEntry = ENTITY_TO_DROP_DATA.getIfPresent(cacheKey);
         if (cacheEntry != null) {
             return cacheEntry;
         } else {
+            List<DropDistributionData> res = new ArrayList<>();
             for (DropDistributionData dropDist : dropDists) {
                 if (dropDist.entityIdPattern.asMatchPredicate().test(entityId)) {
-                    ENTITY_TO_DROP_DATA.put(cacheKey, dropDist);
-                    return dropDist;
+                    res.add(dropDist);
                 }
             }
-            return null;
+            ENTITY_TO_DROP_DATA.put(cacheKey, res);
+            return res;
         }
     }
 

@@ -2,6 +2,7 @@ package org.spoorn.spoornbountymobs.config.tiers;
 
 import draylar.omegaconfig.api.Comment;
 import org.spoorn.spoornbountymobs.config.Drop;
+import org.spoorn.spoornbountymobs.config.WeightedItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,5 +31,22 @@ public class DoomTierConfig {
     public double milestoneDamageIncrease = 0.6;
 
     @Comment("Drops data.  See COMMON_TIER's config for example configuration schema and documentation.")
-    public List<Drop> drops = new ArrayList<>();
+    public List<Drop> drops = new ArrayList<>(List.of(
+            new Drop(".*", 0.05, 1, new ArrayList<>(List.of(
+                    new WeightedItem("minecraft:nether_star", 1)
+            ))),
+            new Drop(".*", 1.0, 2, new ArrayList<>(List.of(
+                    new WeightedItem("minecraft:diamond_.*", 2),
+                    new WeightedItem("minecraft:emerald_block", 1),
+                    new WeightedItem("minecraft:netherite_.*", 1)
+            ))),
+            new Drop(".*", 0.1, 2, new ArrayList<>(List.of(
+                    new WeightedItem("minecraft:carved_pumpkin", 1),
+                    new WeightedItem("minecraft:music_disc.*", 1)
+            ))),
+            new Drop(".*", 0.5, 4, new ArrayList<>(List.of(
+                    new WeightedItem("minecraft:.*golden_apple", 2),
+                    new WeightedItem("minecraft:cake", 1)
+            )))
+    ));
 }

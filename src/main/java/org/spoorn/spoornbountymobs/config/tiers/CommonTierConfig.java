@@ -11,7 +11,7 @@ public class CommonTierConfig {
     private static final String EXAMPLE_LOOT_JSON = "Here you can configure what loot drops from bounty mobs.  See comments below for information on each data field.\n" +
             "This works for any modded mobs or items as well, as long as you get the identifier regexes right!\n" +
             "If any of the mob identifiers conflict (e.g. you specify a \"minecraft:creeper\" entry, but also a wildcard default \".*\" entry,\n" +
-            "only the first matched drop data in the drops list will be applied.\n" +
+            "ALL of the matched drop data in the drops list will be rolled and applied.\n" +
             "The entityId can be a regex, and each item field is in the format: \"<optional-item-count> <item-identifier> <optional-NBT-data>\"\n" +
             "Example:\n\n" +
             "\"drops\": [\n" +
