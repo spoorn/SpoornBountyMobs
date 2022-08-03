@@ -35,18 +35,28 @@ public class DoomTierConfig {
             new Drop(".*", 0.05, 1, new ArrayList<>(List.of(
                     new WeightedItem("minecraft:nether_star", 1)
             ))),
-            new Drop(".*", 1.0, 2, new ArrayList<>(List.of(
-                    new WeightedItem("minecraft:diamond_.*", 2),
+            new Drop(".*", 1.0, 4, new ArrayList<>(List.of(
+                    new WeightedItem("minecraft:diamond.*", 2),
                     new WeightedItem("minecraft:emerald_block", 1),
-                    new WeightedItem("minecraft:netherite_.*", 1)
+                    new WeightedItem("minecraft:netherite.*", 1)
             ))),
             new Drop(".*", 0.1, 2, new ArrayList<>(List.of(
                     new WeightedItem("minecraft:carved_pumpkin", 1),
+                    new WeightedItem("minecraft:pumpkin_pie", 1),
                     new WeightedItem("minecraft:music_disc.*", 1)
             ))),
-            new Drop(".*", 0.5, 4, new ArrayList<>(List.of(
-                    new WeightedItem("minecraft:.*golden_apple", 2),
+            new Drop(".*", 1.0, 4, new ArrayList<>(List.of(
+                    new WeightedItem("minecraft:.*golden_apple", 10),
+                    new WeightedItem("minecraft:golden_carrot", 10),
                     new WeightedItem("minecraft:cake", 1)
+            ))),
+            new Drop(".*", 0.5, 8, new ArrayList<>(List.of(
+                    new WeightedItem("minecraft:ender_pearl", 1),
+                    new WeightedItem("minecraft:firework_rocket", 1)
+            ))),
+            new Drop(".*", 0.05, 1, new ArrayList<>(List.of(
+                    new WeightedItem("minecraft:elytra", 1),
+                    new WeightedItem("minecraft:totem_of_undying", 1)
             )))
     ));
 }
