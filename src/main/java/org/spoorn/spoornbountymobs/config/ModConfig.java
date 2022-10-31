@@ -80,6 +80,9 @@ public class ModConfig implements Config {
 
     public static void init() {
         CONFIG = OmegaConfig.register(ModConfig.class);
+        if (CONFIG.playerBountyHunterLevelIntervals <= 0) {
+            throw new IllegalArgumentException("playerBountyHunterLevelIntervals must be > 0");
+        }
     }
 
     public static ModConfig get() {
