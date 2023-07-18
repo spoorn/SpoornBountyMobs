@@ -4,8 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.ToString;
 import net.minecraft.item.Item;
 import net.minecraft.nbt.NbtCompound;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nullable;
 import java.util.List;
 
 @AllArgsConstructor

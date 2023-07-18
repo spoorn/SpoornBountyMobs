@@ -16,10 +16,10 @@ import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.item.Item;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.StringNbtReader;
+import net.minecraft.registry.Registries;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
-import net.minecraft.util.registry.Registry;
 import org.apache.commons.math3.distribution.EnumeratedDistribution;
 import org.apache.commons.math3.util.Pair;
 import org.spoorn.spoornbountymobs.config.Drop;
@@ -127,8 +127,8 @@ public class SpoornBountyEntityRegistry implements EntityComponentInitializer {
 
                 // Middle of regex is the item regex
                 Pattern regex = Pattern.compile(matcher.group("item"));
-                List<Item> matchingItems = Registry.ITEM.stream()
-                        .filter(e -> regex.asMatchPredicate().test(Registry.ITEM.getId(e).toString()))
+                List<Item> matchingItems = Registries.ITEM.stream()
+                        .filter(e -> regex.asMatchPredicate().test(Registries.ITEM.getId(e).toString()))
                         .collect(Collectors.toList());
                 
                 // Count and NBT
@@ -224,7 +224,7 @@ public class SpoornBountyEntityRegistry implements EntityComponentInitializer {
                         if (ModConfig.get().broadcastMessageWhenBountySpawned) {
                             String playerName = player.getDisplayName().getString();
                             List<String> broadcastDisabled = ModConfig.get().broadcastDisabled;
-                            if (!broadcastDisabled.contains(playerName) && !broadcastDisabled.contains(Registry.ENTITY_TYPE.getId(hostileEntity.getType()).toString())) {
+                            if (!broadcastDisabled.contains(playerName) && !broadcastDisabled.contains(Registries.ENTITY_TYPE.getId(hostileEntity.getType()).toString())) {
                                 MutableText playerpart = Text.literal(playerName).formatted(Formatting.DARK_AQUA);
                                 MutableText tierpart = Text.literal(tier.getTierType().getName()).formatted(tier.getTierType().getFormattings());
                                 MutableText mobpart = Text.translatable(hostileEntity.getDisplayName().getString()).formatted(Formatting.DARK_GREEN);

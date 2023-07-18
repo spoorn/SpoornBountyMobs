@@ -22,7 +22,7 @@ public class CommandRegistry {
                     .then(argument("player", EntityArgumentType.player())
                         .executes(c -> {
                             PlayerEntity player = EntityArgumentType.getPlayer(c, "player");
-                            c.getSource().sendFeedback(Text.literal(
+                            c.getSource().sendFeedback(() -> Text.literal(
                                     SpoornBountyMobsUtil.getPlayerDataComponent(player).toString()).formatted(Formatting.ITALIC), true);
                             return 1;
                         }))));

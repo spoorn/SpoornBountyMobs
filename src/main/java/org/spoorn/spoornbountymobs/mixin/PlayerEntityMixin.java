@@ -4,11 +4,11 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.registry.Registries;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
-import net.minecraft.util.registry.Registry;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -75,7 +75,7 @@ public class PlayerEntityMixin {
             //System.out.println(Registry.ENTITY_TYPE.getId(livingEntity.getType()));
             // drop loot from the bounty mob if applicable
             SpoornBountyTier tier = entityDataComponent.getSpoornBountyTier();
-            String entityId = Registry.ENTITY_TYPE.getId(other.getType()).toString();
+            String entityId = Registries.ENTITY_TYPE.getId(other.getType()).toString();
             List<DropDistributionData> allDropDists = SpoornBountyEntityRegistry.DROP_REGISTRY.get(tier);
             List<DropDistributionData> filteredDropDists = SpoornBountyMobsUtil.filterPatternInMap(tier, entityId, allDropDists);
             // Applies all matching drops for the tier and entity identifier
@@ -116,7 +116,7 @@ public class PlayerEntityMixin {
                 try {
                     String playerName = player.getDisplayName().getString();
                     List<String> broadcastDisabled = ModConfig.get().broadcastDisabled;
-                    if (!broadcastDisabled.contains(playerName) && !broadcastDisabled.contains(Registry.ENTITY_TYPE.getId(other.getType()).toString())) {
+                    if (!broadcastDisabled.contains(playerName) && !broadcastDisabled.contains(Registries.ENTITY_TYPE.getId(other.getType()).toString())) {
                         MutableText playerpart = Text.literal(playerName).formatted(Formatting.DARK_AQUA);
                         MutableText tierpart = Text.literal(tier.getTierType().getName()).formatted(tier.getTierType().getFormattings());
                         MutableText mobpart = Text.translatable(other.getDisplayName().getString()).formatted(Formatting.DARK_GREEN);

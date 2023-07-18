@@ -44,7 +44,7 @@ public abstract class LivingEntityMixin {
     /**
      * Increase player attack based on player's Bounty Hunter level.
      */
-    @Inject(method = "getAttributeValue", at = @At(value = "TAIL"), cancellable = true)
+    @Inject(method = "getAttributeValue(Lnet/minecraft/entity/attribute/EntityAttribute;)D", at = @At(value = "TAIL"), cancellable = true)
     public void overridePlayerAttack(EntityAttribute attribute, CallbackInfoReturnable<Double> cir) {
         if (attribute.equals(EntityAttributes.GENERIC_ATTACK_DAMAGE)) {
             LivingEntity livingEntity = (LivingEntity) (Object) this;
